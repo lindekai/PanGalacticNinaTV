@@ -1,0 +1,490 @@
+{
+  "Response": {
+    "Camera": {
+      "TargetTemp": -10,
+      "AtTargetTemp": false,
+      "CanSetTemperature": true,
+      "HasShutter": false,
+      "Temperature": 53.2,
+      "Gain": 100,
+      "DefaultGain": 100,
+      "ElectronsPerADU": "NaN",
+      "BinX": 1,
+      "BitDepth": 16,
+      "BinY": 1,
+      "CanSetOffset": true,
+      "CanGetGain": true,
+      "OffsetMin": 0,
+      "OffsetMax": 7936,
+      "Offset": 180,
+      "DefaultOffset": 180,
+      "USBLimit": 9,
+      "IsSubSampleEnabled": false,
+      "CameraState": "NoState",
+      "XSize": 6224,
+      "YSize": 4168,
+      "PixelSize": 3.76,
+      "HasBattery": false,
+      "Battery": -1,
+      "GainMin": 100,
+      "GainMax": 10000,
+      "CanSetGain": true,
+      "Gains": [],
+      "CoolerOn": false,
+      "CoolerPower": 0,
+      "HasDewHeater": true,
+      "DewHeaterOn": true,
+      "CanSubSample": true,
+      "SubSampleX": 0,
+      "SubSampleY": 0,
+      "SubSampleWidth": 0,
+      "SubSampleHeight": 0,
+      "TemperatureSetPoint": 10,
+      "ReadoutModes": [
+        "Low Conversion Gain",
+        "High Conversion Gain"
+      ],
+      "ReadoutMode": 1,
+      "ReadoutModeForSnapImages": 0,
+      "ReadoutModeForNormalImages": 0,
+      "IsExposing": false,
+      "ExposureEndTime": "2026-11-09T19:03:58.1775945+01:00",
+      "LastDownloadTime": -1,
+      "SensorType": "RGGB",
+      "BayerOffsetX": 0,
+      "BayerOffsetY": 0,
+      "BinningModes": [
+        {
+          "Name": "1x1",
+          "X": 1,
+          "Y": 1
+        },
+        {
+          "Name": "2x2",
+          "X": 2,
+          "Y": 2
+        },
+        {
+          "Name": "3x3",
+          "X": 3,
+          "Y": 3
+        },
+        {
+          "Name": "4x4",
+          "X": 4,
+          "Y": 4
+        }
+      ],
+      "ExposureMax": 3600,
+      "ExposureMin": 0.0001,
+      "LiveViewEnabled": false,
+      "CanShowLiveView": false,
+      "SupportedActions": [
+        "Bin Average",
+        "Dew Heater Strength",
+        "Ultra Mode",
+        "High Fullwell Mode",
+        "LED Lights"
+      ],
+      "CanSetUSBLimit": true,
+      "USBLimitMin": 0,
+      "USBLimitMax": 9,
+      "Connected": true,
+      "Name": "ATR2600C",
+      "DisplayName": "ATR2600C (fec&0&14)",
+      "DeviceId": "<redacted>"
+    },
+    "Dome": {
+      "IsFollowing": false,
+      "IsSynchronized": false,
+      "FollowingType": "Aus",
+      "AzimuthDMS": "",
+      "AltitudeDMS": "",
+      "ShutterStatus": "ShutterNone",
+      "DriverCanFollow": false,
+      "CanSetShutter": false,
+      "CanSetPark": false,
+      "CanSetAzimuth": false,
+      "CanSyncAzimuth": false,
+      "CanPark": false,
+      "CanFindHome": false,
+      "AtPark": false,
+      "AtHome": false,
+      "DriverFollowing": false,
+      "ApplicationFollowing": false,
+      "Slewing": false,
+      "Azimuth": "NaN",
+      "Altitude": "NaN",
+      "SupportedActions": [],
+      "Connected": false
+    },
+    "FilterWheel": {
+      "Connected": true,
+      "Name": "Manual Filter Wheel",
+      "DisplayName": "Manuelles Filterrad",
+      "Description": "Spiegelt die Filter, die in den Filteroptionen eingestellt sind wieder. Wenn ein Filter gewechselt wird, öffnet sich eine Mitteilung, um den Filter zu wechseln",
+      "DriverInfo": "n.A.",
+      "DriverVersion": "1.0",
+      "DeviceId": "<redacted>",
+      "SupportedActions": [],
+      "IsMoving": false,
+      "SelectedFilter": {
+        "Name": "UV/IR",
+        "Id": 0
+      },
+      "AvailableFilters": [
+        {
+          "Name": "UV/IR",
+          "Id": 0
+        },
+        {
+          "Name": "DNB",
+          "Id": 1
+        }
+      ]
+    },
+    "FlatDevice": {
+      "CoverState": "Unknown",
+      "LocalizedCoverState": "Unbekannt",
+      "LocalizedLightOnState": "Aus",
+      "LightOn": false,
+      "Brightness": 0,
+      "SupportsOpenClose": true,
+      "MinBrightness": 0,
+      "MaxBrightness": 255,
+      "SupportsOnOff": true,
+      "SupportedActions": [],
+      "Connected": true,
+      "Name": "FlipFlat Panel",
+      "DisplayName": "FlipFlat Panel (ASCOM)",
+      "Description": "ASCOM CoverCalibrator Driver for FlipFlatPanel",
+      "DriverInfo": "FlipFlat Panel ASCOM CoverCalibrator Driver. Version: 7.0",
+      "DriverVersion": "7.0",
+      "DeviceId": "<redacted>"
+    },
+    "Focuser": {},
+    "Guider": {
+      "Connected": true,
+      "Name": "PHD2",
+      "DisplayName": "PHD2",
+      "Description": "PHD2 Guider",
+      "DriverInfo": "PHD2 Guider",
+      "DriverVersion": "1.0",
+      "DeviceId": "<redacted>",
+      "CanClearCalibration": true,
+      "CanSetShiftRate": true,
+      "CanGetLockPosition": true,
+      "SupportedActions": [],
+      "RMSError": {
+        "RA": {
+          "Pixel": 0,
+          "Arcseconds": 0
+        },
+        "Dec": {
+          "Pixel": 0,
+          "Arcseconds": 0
+        },
+        "Total": {
+          "Pixel": 0,
+          "Arcseconds": 0
+        },
+        "PeakRA": {
+          "Pixel": 0,
+          "Arcseconds": 0
+        },
+        "PeakDec": {
+          "Pixel": 0,
+          "Arcseconds": 0
+        }
+      },
+      "PixelScale": 0.773494,
+      "State": "Stopped"
+    },
+    "Mount": {
+      "TrackingMode": "Stopped",
+      "SiderealTime": 22.68749600884815,
+      "RightAscension": 4.68749600884815,
+      "Declination": 89.99999999999999,
+      "SiteLatitude": 0.0,
+      "SiteLongitude": 0.0,
+      "SiteElevation": 0.0,
+      "RightAscensionString": "04:41:15",
+      "DeclinationString": "90° 00' 00\"",
+      "Coordinates": {
+        "RA": 4.68749600884815,
+        "RAString": "04:41:15",
+        "RADegrees": 70.31244013272226,
+        "Dec": 89.99999999999999,
+        "DecString": "90° 00' 00\"",
+        "Epoch": "JNOW",
+        "DateTime": {
+          "Now": "2026-11-09T19:33:00.2199571+01:00",
+          "UtcNow": "2026-11-09T18:33:00.2202158Z"
+        }
+      },
+      "TimeToMeridianFlip": 24,
+      "SideOfPier": "pierEast",
+      "Altitude": 52.320476000000006,
+      "AltitudeString": "52° 19' 14\"",
+      "Azimuth": 2.6553145992287748e-14,
+      "AzimuthString": "00° 00' 00\"",
+      "SiderealTimeString": "22:41:15",
+      "HoursToMeridianString": "24:00:00",
+      "AtPark": true,
+      "TrackingRate": {},
+      "TrackingEnabled": false,
+      "TrackingModes": [
+        "Sidereal",
+        "King",
+        "Lunar",
+        "Solar",
+        "Custom",
+        "Stopped"
+      ],
+      "AtHome": true,
+      "CanFindHome": true,
+      "CanPark": true,
+      "CanSetPark": true,
+      "CanSetTrackingEnabled": true,
+      "CanSetDeclinationRate": true,
+      "CanSetRightAscensionRate": true,
+      "EquatorialSystem": "JNOW",
+      "HasUnknownEpoch": false,
+      "TimeToMeridianFlipString": "24:00:00",
+      "Slewing": false,
+      "GuideRateRightAscensionArcsecPerSec": 7.520533589349999,
+      "GuideRateDeclinationArcsecPerSec": 7.520533589349999,
+      "CanMovePrimaryAxis": true,
+      "CanMoveSecondaryAxis": true,
+      "PrimaryAxisRates": [
+        {}
+      ],
+      "SecondaryAxisRates": [
+        {}
+      ],
+      "SupportedActions": [
+        "Telescope:SetParkPosition"
+      ],
+      "AlignmentMode": "GermanPolar",
+      "CanPulseGuide": true,
+      "IsPulseGuiding": false,
+      "CanSetPierSide": true,
+      "CanSlew": true,
+      "CanSlewAltAz": true,
+      "UTCDate": "2026-11-09T18:32:59.026",
+      "Connected": true,
+      "Name": "GSServer",
+      "DisplayName": "GSServer (ASCOM)",
+      "DeviceId": "<redacted>"
+    },
+    "Rotator": {
+      "CanReverse": true,
+      "Reverse": true,
+      "MechanicalPosition": 0,
+      "Position": 0,
+      "StepSize": 0,
+      "IsMoving": false,
+      "Synced": false,
+      "SupportedActions": [],
+      "Connected": true,
+      "Name": "Manual Rotator",
+      "DisplayName": "Manueller Rotator",
+      "Description": "Wenn Rotation benötigt wird, öffnet sich eine Mitteilung um manuell zu drehen.",
+      "DriverInfo": "n.A.",
+      "DriverVersion": "1.0",
+      "DeviceId": "<redacted>"
+    },
+    "SafetyMonitor": {
+      "IsSafe": true,
+      "SupportedActions": [],
+      "Connected": true,
+      "Name": "Alpaca Safety Monitor Simulator",
+      "DisplayName": "Alpaca Safety Monitor Simulator (ASCOM)",
+      "Description": "ASCOM SafetyMonitor Simulator Driver",
+      "DriverInfo": "SafetyMonitor Simulator Drivers",
+      "DriverVersion": "0.5",
+      "DeviceId": "<redacted>"
+    },
+    "Switch": {
+      "WritableSwitches": [
+        {
+          "Maximum": 1,
+          "Minimum": 0,
+          "StepSize": 1,
+          "TargetValue": 1,
+          "Id": 6,
+          "Name": "SW EQ6",
+          "Description": "DC1 12V DC 6A MAX",
+          "Value": 1
+        },
+        {
+          "Maximum": 1,
+          "Minimum": 0,
+          "StepSize": 1,
+          "TargetValue": 1,
+          "Id": 7,
+          "Name": "FlipFlatPanel",
+          "Description": "DC2 12V DC 6A MAX",
+          "Value": 1
+        },
+        {
+          "Maximum": 1,
+          "Minimum": 0,
+          "StepSize": 1,
+          "TargetValue": 1,
+          "Id": 8,
+          "Name": "ToupTekCam",
+          "Description": "DC3 12V DC 6A MAX",
+          "Value": 1
+        },
+        {
+          "Maximum": 1,
+          "Minimum": 0,
+          "StepSize": 1,
+          "TargetValue": 1,
+          "Id": 9,
+          "Name": "DC4",
+          "Description": "DC4 12V DC 6A MAX",
+          "Value": 1
+        },
+        {
+          "Maximum": 1,
+          "Minimum": 0,
+          "StepSize": 1,
+          "TargetValue": 1,
+          "Id": 10,
+          "Name": "DC5",
+          "Description": "DC5 12V DC 6A MAX",
+          "Value": 1
+        },
+        {
+          "Maximum": 1,
+          "Minimum": 0,
+          "StepSize": 1,
+          "TargetValue": 1,
+          "Id": 11,
+          "Name": "TYPE-C+USB1-2",
+          "Description": "TYPE-C+USB1-2 5v 2.5a max",
+          "Value": 1
+        },
+        {
+          "Maximum": 1,
+          "Minimum": 0,
+          "StepSize": 1,
+          "TargetValue": 1,
+          "Id": 12,
+          "Name": "USB3-5",
+          "Description": "USB3-5 5v 2.5a max",
+          "Value": 1
+        },
+        {
+          "Maximum": 15.3,
+          "Minimum": -1,
+          "StepSize": 0.1,
+          "TargetValue": 0,
+          "Id": 13,
+          "Name": "0-15.3V",
+          "Description": "0-15.3V output",
+          "Value": 0
+        },
+        {
+          "Maximum": 253,
+          "Minimum": -1,
+          "StepSize": 1,
+          "TargetValue": 0,
+          "Id": 14,
+          "Name": "PWM1",
+          "Description": "0-253level Automatic control output — you can adjust the heating strip’s warming rate here",
+          "Value": 0
+        },
+        {
+          "Maximum": 253,
+          "Minimum": 0,
+          "StepSize": 1,
+          "TargetValue": 0,
+          "Id": 15,
+          "Name": "PWM2",
+          "Description": "0-253level Manual control output",
+          "Value": 0
+        },
+        {
+          "Maximum": 1,
+          "Minimum": 0,
+          "StepSize": 1,
+          "TargetValue": 1,
+          "Id": 16,
+          "Name": "Time sequence open/close switch",
+          "Value": 1
+        }
+      ],
+      "ReadonlySwitches": [
+        {
+          "Id": 0,
+          "Name": "POWER(W)",
+          "Value": 17
+        },
+        {
+          "Id": 1,
+          "Name": "VOLTAGE(V)",
+          "Value": 11.67
+        },
+        {
+          "Id": 2,
+          "Name": "Ambient temperature(°)",
+          "Value": 25.5
+        },
+        {
+          "Id": 3,
+          "Name": "Ambient humidity(%)",
+          "Value": 43
+        },
+        {
+          "Id": 4,
+          "Name": "DEW point(°)",
+          "Value": 11.99
+        },
+        {
+          "Id": 5,
+          "Name": "Lens temperature(°)",
+          "Value": 23.84
+        }
+      ],
+      "SupportedActions": [],
+      "Connected": true,
+      "Name": "ASCOM.SVBONY.Switch",
+      "DisplayName": "ASCOM.SVBONY.Switch (ASCOM)",
+      "Description": "ASCOM Driver for Svbony Switch",
+      "DriverInfo": "Information about the driver itself. Version: 6.6",
+      "DriverVersion": "6.6",
+      "DeviceId": "<redacted>"
+    },
+    "WeatherData": {
+      "AveragePeriod": 0,
+      "CloudCover": 100,
+      "DewPoint": 1.4563663921114849,
+      "Humidity": 93,
+      "Pressure": 1011.3877324274195,
+      "RainRate": 0,
+      "SkyBrightness": "NaN",
+      "SkyQuality": "NaN",
+      "SkyTemperature": "NaN",
+      "StarFWHM": "NaN",
+      "Temperature": 2.4500000000000455,
+      "WindDirection": 0,
+      "WindGust": 0.89,
+      "WindSpeed": 0.45,
+      "SupportedActions": [],
+      "Connected": true,
+      "Name": "OpenWeatherMap",
+      "DisplayName": "OpenWeatherMap",
+      "Description": "Nutze aktuelle OpenWeatherMap API für konfigurierte Koordianten. Wetterdaten werden alle 10 Minuten aktualisiert.",
+      "DriverInfo": "N.I.N.A. internal OpenWeatherMap API client",
+      "DriverVersion": "1.0",
+      "DeviceId": "<redacted>"
+    }
+  },
+  "Error": "",
+  "StatusCode": 200,
+  "Success": true,
+  "Type": "API"
+}

@@ -1,0 +1,30 @@
+{
+  "Response": {
+    "AveragePeriod": 0,
+    "CloudCover": 100,
+    "DewPoint": 1.4563663921114849,
+    "Humidity": 93,
+    "Pressure": 1011.3877324274195,
+    "RainRate": 0,
+    "SkyBrightness": "NaN",
+    "SkyQuality": "NaN",
+    "SkyTemperature": "NaN",
+    "StarFWHM": "NaN",
+    "Temperature": 2.4500000000000455,
+    "WindDirection": 0,
+    "WindGust": 0.89,
+    "WindSpeed": 0.45,
+    "SupportedActions": [],
+    "Connected": true,
+    "Name": "OpenWeatherMap",
+    "DisplayName": "OpenWeatherMap",
+    "Description": "Nutze aktuelle OpenWeatherMap API für konfigurierte Koordianten. Wetterdaten werden alle 10 Minuten aktualisiert.",
+    "DriverInfo": "N.I.N.A. internal OpenWeatherMap API client",
+    "DriverVersion": "1.0",
+    "DeviceId": "<redacted>"
+  },
+  "Error": "",
+  "StatusCode": 200,
+  "Success": true,
+  "Type": "API"
+}

@@ -1,6 +1,6 @@
 # API Capability Matrix
 
-Status: **M0 – desk research complete; live verification in progress** (idle snapshot 2026-11-09, see §7).
+Status: **M0 complete** – live-verified where marked; see [M0 report](m0-report.md) for go/no-go and downgrades.
 Every row below is derived from published specs and plugin source at a pinned revision. Nothing is marked *verified* until a sanitized live fixture from the owner's system exists in `Tests/Fixtures/`.
 
 ## 1. Pinned sources
@@ -66,8 +66,8 @@ Server layout at the pinned commit (`API.cs`):
 
 | Endpoint | Why tier B | Source reviewed | Live verified |
 |---|---|---|---|
-| `GET /image/thumbnail/{index}` | file read; cheap but binary | ✅ | ⬜ |
-| `GET /image/{index}?resize=true&size=WxH&quality=Q&stream=true&autoPrepare=true` | full decode/debayer/stretch on telescope PC | ✅ | ⬜ |
+| `GET /image/thumbnail/{index}` | file read; cheap but binary | ✅ | ✅ 0.1 s, 622×417 JPEG |
+| `GET /image/{index}?resize=true&size=WxH&quality=Q&stream=true&autoPrepare=true` | full decode/debayer/stretch on telescope PC | ✅ | ✅ **10.4 s** for 26 MP → 1920×1286 JPEG (q 85, 637 KB) |
 | `GET /prepared-image?resize=true&size=WxH&quality=Q&autoPrepare=true` | as above, last prepared image | ✅ | ⬜ |
 | `GET /equipment/focuser/last-af` | reads newest AF JSON from disk | ✅ | ✅ idle |
 | `GET /astro-util/moon-separation?ra=&dec=` | server-side calc using profile site | ✅ | ⬜ |
@@ -83,7 +83,7 @@ Everything not listed above. Notably: all `connect`/`disconnect`/`rescan`/`list-
 | Plugin identity / version | Advanced API | `/version`, `/version/nina` | spec + source | Envelope `{Response, Error, StatusCode, Success, Type}` |
 | Sequence state & progress | Advanced API | `/sequence/json`, WS `SEQUENCE-STARTING`, `SEQUENCE-FINISHED`, `SEQUENCE-ENTITY-FAILED` | spec + source | Exposure count/progress must be derived from tree; schema is free-form (`Response` untyped in spec) → **fixture required** |
 | Current exposure | Advanced API | `camera/info` `IsExposing`, `ExposureEndTime`, `LastDownloadTime` | spec | Remaining time only if `ExposureEndTime` is reliable |
-| Completed image event | Advanced API WS | `IMAGE-SAVE` with `ImageStatistics` (ExposureTime, Index, Filter, Temperature, Gain, Offset, Date, HFR, HFRStDev, Stars, Mean, Median, StDev, Min, Max, TargetName, TelescopeName, FocalLength, Filename, IsBayered, RmsText) | spec | Primary trigger for preview refresh. `Filename` is a local path → sanitize |
+| Completed image event | Advanced API WS | `IMAGE-SAVE` with `ImageStatistics` (live: **no `Index`**, plus `ImageType`; ExposureTime, Filter, Temperature, Gain, Offset, Date, HFR, HFRStDev, Stars, Mean, Median, StDev, Min, Max, TargetName, TelescopeName, FocalLength, Filename, IsBayered, RmsText) | spec | Primary trigger for preview refresh. `Filename` is a local path → sanitize |
 | Preview image | Advanced API | thumbnail / `/image/{index}` resized+stretched | spec + source | Server-side stretch; JPEG streaming |
 | Camera temp / cooler | Advanced API | `camera/info` | spec + source | |
 | Filter | Advanced API | `filterwheel/info`, WS `FILTERWHEEL-CHANGED` | spec | |
@@ -104,7 +104,7 @@ Everything not listed above. Notably: all `connect`/`disconnect`/`rescan`/`list-
 |---|---|---|---|
 | R1 | Control endpoints are `GET`; a bug or URL typo could move hardware | **Critical** | Path allowlist enforced in the HTTP client, not in views; unit test that every request path matches allowlist; network-log audit in M6 |
 | R2 | No auth on plugin | High | LAN-only guidance; never proxy; never store/forward API base URL to third parties |
-| R3 | `/image/{index}` stretches full-res frames on the telescope PC (MeLE Quieter C4, IMX571 ≈ 26 MP) | Medium–High (could slow capture/download) | One in-flight request, only after `IMAGE-SAVE`, prefer thumbnail + one resized fetch; measure CPU impact in M0 live test |
+| R3 | `/image/{index}` stretches full-res frames on the telescope PC (MeLE Quieter C4, IMX571 ≈ 26 MP) – **measured 10.4 s per request** | Medium–High (could slow capture/download) | One in-flight request, only after `IMAGE-SAVE`, prefer thumbnail + one resized fetch; measure CPU impact in M0 live test |
 | R4 | `guider/graph` uses reflection on N.I.N.A. internals | Medium | Treat as optional; fall back to PHD2 stream |
 | R5 | `/event-history` grows unbounded for the session | Low–Medium | Fetch once on connect; avoid polling |
 | R6 | WebSocket spec header says 2.2.13.0 | Low | Live capture of each event type in M0 |
@@ -115,6 +115,8 @@ Everything not listed above. Notably: all `connect`/`disconnect`/`rescan`/`list-
 | R10 | Timestamps: N.I.N.A. responses use server local time without guaranteed offset | Medium | Use `/time` to measure skew; label times by source |
 
 ## 6. Go / no-go (desk research)
+
+Superseded by the live verdicts in the [M0 report](m0-report.md).
 
 | Capability | Desk verdict | Live gate |
 |---|---|---|
@@ -152,4 +154,23 @@ Owner's system, 2026-11-09, idle (equipment connected, no sequence running, moun
 | WebSocket | Connects; no messages while idle | – |
 | PHD2 | On connect: `Version` (2.6.14, `PHDSubver` empty, `OverlapSupport` true), `CalibrationComplete`, `AppState` `Stopped`; `Timestamp` epoch seconds with milliseconds | Matches documentation |
 
-Pending: running session (`IMAGE-SAVE`, preview timing, filter change), PHD2 `GuideStep`/dither/star-lost (simulator), sequence JSON while running.
+### Snapshots and camera fault (2026-11-09, 19:43–19:50)
+
+Manual 10 s snapshots from the Imaging tab with saving enabled; the camera driver crashed once during an exposure.
+
+| Topic | Finding | Consequence |
+|---|---|---|
+| Hung exposure | `IsExposing` stayed `true` 3 min past `ExposureEndTime`, `LastDownloadTime` = −1, no events | App can flag an **overdue exposure** from REST alone |
+| Camera fault sequence | WS: `CAMERA-DISCONNECTED` ×2 → `CAMERA-DOWNLOAD-TIMEOUT` → `CAMERA-CONNECTED` within 3 s | Alert fixture for "camera disconnected"; debounce reconnect flaps |
+| Image events | Each saved frame: `IMAGE-PREPARED` (name only) then `IMAGE-SAVE` | Trigger preview fetch on `IMAGE-SAVE` |
+| `IMAGE-SAVE` payload | **No `Index` field** (spec lists one); has `ImageType` (`SNAPSHOT`); `Date` ISO with offset; `Filename` is a local path | Resolve index via `/image-history?count=true`; never store `Filename` |
+| Placeholders | Without star analysis: `Stars` = −1, `HFR` = 0, `HFRStDev` = `"NaN"` | Normalised to unavailable in `NINAImageSaveStatistics` |
+| History entry | `/image-history?index=n` returns the same object shape as `IMAGE-SAVE.ImageStatistics` | One decoder for both |
+| Thumbnail | 622×417 JPEG (not 256 px as documented), ~200 KB, 0.1 s | Good enough for the Overview tile |
+| Full preview | 10.4 s server time for 1920×1080 request; aspect ratio kept (1920×1286) | Single in-flight request; only after `IMAGE-SAVE`; prefer thumbnail on Overview |
+| PHD2 `LoopingExposures` | Carries undocumented `StarMass`, `SNR`, `HFD`, `ErrorCode` | Tolerated; usable for star quality while looping |
+| PHD2 `CalibrationFailed` | `Reason` text, e.g. "RA Calibration Failed: star did not move enough"; repeated `Alert` events with localized (German) messages during failing calibration | State becomes unknown after failure; show alert text verbatim, never translate/interpret |
+
+Later in the session PHD2 also emitted `StarLost` (`ErrorCode` 4, localized `Status` "Stern verloren - geringe HFD") and N.I.N.A. emitted `GUIDER-DISCONNECTED`/`GUIDER-CONNECTED` when the guider was reconnected.
+
+Not verified in M0 (downgraded, see report): PHD2 `GuideStep`/dither/settle, sequence JSON while running, `prepared-image`, filter-change/dither/autofocus WebSocket events.

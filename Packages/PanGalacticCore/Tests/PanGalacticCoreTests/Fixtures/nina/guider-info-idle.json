@@ -1,0 +1,43 @@
+{
+  "Response": {
+    "Connected": true,
+    "Name": "PHD2",
+    "DisplayName": "PHD2",
+    "Description": "PHD2 Guider",
+    "DriverInfo": "PHD2 Guider",
+    "DriverVersion": "1.0",
+    "DeviceId": "<redacted>",
+    "CanClearCalibration": true,
+    "CanSetShiftRate": true,
+    "CanGetLockPosition": true,
+    "SupportedActions": [],
+    "RMSError": {
+      "RA": {
+        "Pixel": 0,
+        "Arcseconds": 0
+      },
+      "Dec": {
+        "Pixel": 0,
+        "Arcseconds": 0
+      },
+      "Total": {
+        "Pixel": 0,
+        "Arcseconds": 0
+      },
+      "PeakRA": {
+        "Pixel": 0,
+        "Arcseconds": 0
+      },
+      "PeakDec": {
+        "Pixel": 0,
+        "Arcseconds": 0
+      }
+    },
+    "PixelScale": 0.773494,
+    "State": "Stopped"
+  },
+  "Error": "",
+  "StatusCode": 200,
+  "Success": true,
+  "Type": "API"
+}

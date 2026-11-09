@@ -1,0 +1,32 @@
+{
+  "Response": [
+    {
+      "ExposureTime": 10,
+      "ImageType": "SNAPSHOT",
+      "Filter": "UV/IR",
+      "RmsText": "Tot: 0.00 (0.00\")",
+      "Temperature": 46.4,
+      "CameraName": "ATR2600C",
+      "TargetName": "Snapshot",
+      "Gain": 100,
+      "Offset": 180,
+      "Date": "2026-11-09T19:45:01.1801337+01:00",
+      "TelescopeName": "SW PDS",
+      "FocalLength": 1000,
+      "StDev": 47.420866330231455,
+      "Mean": 200.53575334042208,
+      "Median": 200,
+      "Min": 97,
+      "Max": 65535,
+      "Stars": -1,
+      "HFR": 0,
+      "HFRStDev": "NaN",
+      "IsBayered": true,
+      "Filename": "<redacted>"
+    }
+  ],
+  "Error": "",
+  "StatusCode": 200,
+  "Success": true,
+  "Type": "API"
+}

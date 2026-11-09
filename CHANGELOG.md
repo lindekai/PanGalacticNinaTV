@@ -4,7 +4,18 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ## [Unreleased]
 
+### Changed
+- `IMAGE-SAVE` statistics: placeholder values (`Stars` −1, `HFR` 0, `"NaN"`) become unavailable; `ImageType` decoded; `Date` parsed.
+- PHD2 state tracker: `CalibrationFailed` sets the state to unknown.
+- Sanitizer redacts API keys, tokens, passwords, secrets and URLs; only LAN-style IP addresses are redacted.
+
+### Security
+- `/profile/show` removed from all allowlists: it returns third-party API keys in plain text.
+
 ### Added
+- M0 report with go/no-go and carry-over items.
+- Live fixtures from a real N.I.N.A. 3.2 / Advanced API 2.2.15.3 / PHD2 2.6.14 system (sanitized) with decoding tests.
+- `NINADate` parser for N.I.N.A. timestamps; `NINAGuiderInfo` decoder.
 - M0 API capability matrix for N.I.N.A. Advanced API 2.2.15.3 and PHD2 event monitoring, with read-only endpoint allowlist, risks and go/no-go table.
 - ADR 0001 (read-only endpoint allowlist) and ADR 0002 (tvOS local networking).
 - M0 probe tooling (`tools/m0`): allowlisted REST capture, passive WebSocket and PHD2 listeners, sanitizer, self-tests.

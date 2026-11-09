@@ -1,0 +1,32 @@
+{
+  "Response": {
+    "RMS": {
+      "RA": 0,
+      "Dec": 0,
+      "Total": 0,
+      "RAText": "RA: 0.00 (0.00\")",
+      "DecText": "Dec: 0.00 (0.00\")",
+      "TotalText": "Tot: 0.00 (0.00\")",
+      "PeakRAText": "Peak RA: 0.00 (0.00\")",
+      "PeakDecText": "Peak Dec: 0.00 (0.00\")",
+      "Scale": 0.773494,
+      "PeakRA": 0,
+      "PeakDec": 0,
+      "DataPoints": 0
+    },
+    "ChangeId": 1,
+    "Interval": 0.5,
+    "MaxY": 2,
+    "MinY": -2,
+    "MaxDurationY": 1,
+    "MinDurationY": -1,
+    "GuideSteps": [],
+    "HistorySize": 100,
+    "PixelScale": 0.773494,
+    "Scale": "ARCSECONDS"
+  },
+  "Error": "",
+  "StatusCode": 200,
+  "Success": true,
+  "Type": "API"
+}

@@ -378,7 +378,9 @@ def _redact_ips(text):
             ip = ipaddress.ip_address(m.group(1))
         except ValueError:
             return m.group(1)
-        return "<ip>" if not ip.is_loopback else m.group(1)
+        # Only LAN-style addresses: version strings such as "2.2.15.3" also look like IPv4.
+        lan = ip.is_private or ip.is_link_local or ip in ipaddress.ip_network("100.64.0.0/10")
+        return "<ip>" if lan and not ip.is_loopback else m.group(1)
     return IPV4.sub(repl, text)
 
 

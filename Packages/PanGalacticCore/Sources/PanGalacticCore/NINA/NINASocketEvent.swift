@@ -34,18 +34,25 @@ public struct NINAEventName: RawRepresentable, Hashable, Sendable, CustomStringC
     public static let safetyChanged = Self(rawValue: "SAFETY-CHANGED")
 }
 
-/// `ImageStatistics` payload of `IMAGE-SAVE` as documented in websocket_spec.yaml.
-/// All fields optional until confirmed by live fixtures.
+/// `ImageStatistics` payload of `IMAGE-SAVE`.
+///
+/// Verified against live data from plugin 2.2.15.3 (see api-capability-matrix.md §7):
+/// there is no `Index` field (despite the spec), `ImageType` is present, and frames
+/// without star analysis report `Stars: -1`, `HFR: 0`, `HFRStDev: "NaN"`. Those
+/// placeholders are normalised to `nil`. `Filename` (a local path) is not decoded.
 public struct NINAImageSaveStatistics: Decodable, Hashable, Sendable {
+    /// Documented in the spec but absent in live 2.2.15.3 messages.
     public let index: Int?
+    /// e.g. `LIGHT`, `SNAPSHOT`, `FLAT`, `DARK`.
+    public let imageType: String?
     public let exposureTime: Double?
     public let filter: String?
     public let temperature: Double?
     public let cameraName: String?
     public let gain: Double?
     public let offset: Double?
-    /// Raw date string; format to be pinned from a live fixture.
-    public let date: String?
+    /// Capture time, parsed from N.I.N.A.'s ISO 8601 local time with offset.
+    public let date: Date?
     public let telescopeName: String?
     public let focalLength: Double?
     public let targetName: String?
@@ -61,7 +68,7 @@ public struct NINAImageSaveStatistics: Decodable, Hashable, Sendable {
     public let rmsText: String?
 
     enum CodingKeys: String, CodingKey {
-        case index = "Index", exposureTime = "ExposureTime", filter = "Filter", temperature = "Temperature"
+        case index = "Index", imageType = "ImageType", exposureTime = "ExposureTime", filter = "Filter", temperature = "Temperature"
         case cameraName = "CameraName", gain = "Gain", offset = "Offset", date = "Date"
         case telescopeName = "TelescopeName", focalLength = "FocalLength", targetName = "TargetName"
         case hfr = "HFR", hfrStDev = "HFRStDev", stars = "Stars", mean = "Mean", median = "Median"
@@ -71,19 +78,22 @@ public struct NINAImageSaveStatistics: Decodable, Hashable, Sendable {
     public init(from decoder: any Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         index = c.lenientInt(.index)
+        imageType = try? c.decodeIfPresent(String.self, forKey: .imageType)
         exposureTime = c.lenientDouble(.exposureTime)
         filter = try? c.decodeIfPresent(String.self, forKey: .filter)
         temperature = c.lenientDouble(.temperature)
         cameraName = try? c.decodeIfPresent(String.self, forKey: .cameraName)
         gain = c.lenientDouble(.gain)
         offset = c.lenientDouble(.offset)
-        date = try? c.decodeIfPresent(String.self, forKey: .date)
+        date = (try? c.decodeIfPresent(String.self, forKey: .date))?.flatMap { NINADate.parse($0) }
         telescopeName = try? c.decodeIfPresent(String.self, forKey: .telescopeName)
         focalLength = c.lenientDouble(.focalLength)
         targetName = try? c.decodeIfPresent(String.self, forKey: .targetName)
-        hfr = c.lenientDouble(.hfr)
-        hfrStDev = c.lenientDouble(.hfrStDev)
-        stars = c.lenientInt(.stars)
+        // Negative star count means "not analysed"; HFR of 0 is never a real measurement.
+        let starCount = c.lenientInt(.stars)
+        stars = starCount.flatMap { $0 >= 0 ? $0 : nil }
+        hfr = c.lenientDouble(.hfr).flatMap { $0 > 0 ? $0 : nil }
+        hfrStDev = hfr == nil ? nil : c.lenientDouble(.hfrStDev)
         mean = c.lenientDouble(.mean)
         median = c.lenientDouble(.median)
         stDev = c.lenientDouble(.stDev)

@@ -4,7 +4,7 @@ Each milestone ends with a review; the next one starts only after approval.
 
 | Milestone | Scope | Gate | Status |
 |---|---|---|---|
-| **M0** API feasibility | Pin plugin/PHD2 sources, capability matrix, read-only allowlist, probe tooling, live read-only fixtures from the owner's system, go/no-go | Data availability proven or explicitly downgraded; no UI work before | **In progress** – desk research done, live capture pending |
+| **M0** API feasibility | Pin plugin/PHD2 sources, capability matrix, read-only allowlist, probe tooling, live read-only fixtures from the owner's system, go/no-go | Data availability proven or explicitly downgraded; no UI work before | **Complete** – [report](m0-report.md); awaiting approval for M1 |
 | M1 Skeleton & connections | Xcode project (tvOS 26), instance store, manual add/test, saved-host discovery, bounded subnet scan, routing 0/1/many, reconnect + stale state | Fresh app connects to real Advanced API; routing rules hold | Not started |
 | M2 Overview & imaging | Live session metrics, preview on completed image, full-screen viewer, offline fallback | No fake-live metrics; latency and memory measured | Not started |
 | M3 Guiding & alerts | Streaming chart, RMS with validated units, history, full screen, foreground-only alerts | Replays incl. pause, star lost, reconnect, dither, empty stream | Not started |
@@ -23,13 +23,13 @@ Each milestone ends with a review; the next one starts only after approval.
 - [x] tvOS local networking research ([ADR 0002](adr/0002-tvos-local-networking.md))
 - [x] `PanGalacticCore` protocol layer (no UI, no I/O): allowlisted request factory, envelope/event decoding, PHD2 framing/decoding/state, guide statistics – built from documentation, to be re-validated against live fixtures
 - [x] CI for core package and M0 tooling
-- [ ] Record PHD2 version
-- [ ] Live capture: Advanced API REST (idle and during a running sequence)
-- [ ] Live capture: Advanced API WebSocket events incl. `IMAGE-SAVE`
-- [ ] Live capture: PHD2 events incl. `GuideStep`
-- [ ] Preview image timing and telescope-PC CPU observation
-- [ ] LAN reachability from Mac and Apple TV (same subnet, Windows firewall)
-- [ ] Sanitize and commit fixtures; update matrix to *verified*
-- [ ] Replace synthetic test samples in `PanGalacticCore` with live fixtures; pin `IMAGE-SAVE` date format, sequence JSON schema
-- [ ] Decide which RMS definition (about zero vs. standard deviation) matches N.I.N.A./PHD2 display, using `guider/info` vs. captured `GuideStep`s
+- [x] Record PHD2 version (2.6.14)
+- [x] Live capture: Advanced API REST (idle and during snapshots; running sequence downgraded → M2)
+- [x] Live capture: Advanced API WebSocket events incl. `IMAGE-SAVE`
+- [x] Live capture: PHD2 events (`GuideStep` downgraded → M3)
+- [x] Preview image timing (10.4 s full render, 0.1 s thumbnail)
+- [x] LAN reachability from Mac (Apple TV deferred → M1)
+- [x] Sanitize and commit fixtures; update matrix to *verified*
+- [x] Live fixtures in `PanGalacticCore`; `IMAGE-SAVE` date format pinned (running-sequence schema → M2)
+- [ ] RMS definition (about zero vs. standard deviation) → M3
 - [ ] Review and approval for M1
