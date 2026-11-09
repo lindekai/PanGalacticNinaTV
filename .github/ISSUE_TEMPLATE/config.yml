@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security or safety issue
+    url: https://github.com/lindekai/PanGalacticNinaTV/security/advisories/new
+    about: Anything that could control hardware or leak private data – please report privately.
+  - name: N.I.N.A. Advanced API plugin
+    url: https://github.com/christian-photo/ninaAPI/issues
+    about: Problems with the plugin itself belong there.

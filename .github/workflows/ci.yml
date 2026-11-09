@@ -3,26 +3,20 @@ name: CI
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 jobs:
-  core:
-    name: PanGalacticCore (swift test)
+  test:
+    name: Tests
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Toolchain
-        run: swift --version
-      - name: Test
+        run: |
+          swift --version
+          python3 --version
+      - name: PanGalacticCore (swift test)
         working-directory: Packages/PanGalacticCore
         run: swift test
-
-  m0-tools:
-    name: M0 probe tooling
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Test
+      - name: M0 probe tooling
         run: python3 -I tools/m0/tests/test_m0probe.py

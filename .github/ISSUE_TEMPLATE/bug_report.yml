@@ -1,0 +1,47 @@
+name: Bug report
+description: Something is shown wrong, missing, or the app misbehaves.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Please **do not** include IP addresses, hostnames, site coordinates, file paths or unsanitized logs.
+        If the app could control hardware or leak data, use [private vulnerability reporting](https://github.com/lindekai/PanGalacticNinaTV/security/advisories/new) instead.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you see, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Start a sequence in N.I.N.A. …
+        2. Open the Guiding view …
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [Overview, Imaging, Guiding, Astronomy, Conditions, Statistics, Connection / discovery, Settings, Tooling, Other]
+  - type: input
+    id: app-version
+    attributes:
+      label: App version / commit
+  - type: input
+    id: device
+    attributes:
+      label: Apple TV model and tvOS version
+      placeholder: Apple TV HD, tvOS 26.6
+  - type: input
+    id: nina
+    attributes:
+      label: N.I.N.A. / Advanced API / PHD2 versions
+      placeholder: N.I.N.A. 3.2, Advanced API 2.2.15.3, PHD2 2.6.13
+  - type: textarea
+    id: extra
+    attributes:
+      label: Sanitized data, screenshots, anything else
+      description: Captures from `tools/m0` must go through `m0probe.py sanitize` first.
