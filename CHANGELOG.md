@@ -4,6 +4,17 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ## [Unreleased]
 
+### Added (M1)
+- tvOS app (`PanGalacticNinaTV.xcodeproj`, tvOS 26.0): setup, add/edit instance with read-only connection test, opt-in local network search, instance picker, dashboard placeholder with live/stale/offline badge and equipment overview, settings.
+- English and German string catalogs, including the local network usage description.
+- `PanGalacticServices` package target: allowlisted HTTP client, connection tester, instance store, polling instance connection, bounded subnet scan.
+- Instance model, host validation, launch routing and connection state machine in `PanGalacticCore`.
+- ADR 0003 (instance persistence); ADR 0002 accepted with simulator findings.
+- CI builds the tvOS app.
+
+### Changed (M1)
+- Common network failures are reported as short, localizable messages.
+
 ### Changed
 - `IMAGE-SAVE` statistics: placeholder values (`Stars` −1, `HFR` 0, `"NaN"`) become unavailable; `ImageType` decoded; `Date` parsed.
 - PHD2 state tracker: `CalibrationFailed` sets the state to unknown.

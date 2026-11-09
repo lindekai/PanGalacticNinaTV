@@ -6,7 +6,7 @@
   <a href="https://github.com/lindekai/PanGalacticNinaTV/actions/workflows/ci.yml"><img src="https://github.com/lindekai/PanGalacticNinaTV/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
   <img src="https://img.shields.io/badge/tvOS-26%2B-000000?logo=apple&logoColor=white" alt="tvOS 26+">
   <img src="https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white" alt="Swift 6">
-  <img src="https://img.shields.io/badge/status-M1%20next-yellow" alt="Status: M1 next">
+  <img src="https://img.shields.io/badge/status-M1%20in%20review-yellow" alt="Status: M1 in review">
   <img src="https://img.shields.io/badge/mode-read--only-2ea44f" alt="Read-only">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a>
 </p>
@@ -67,7 +67,7 @@ flowchart LR
 | | Milestone | Status |
 |---|---|---|
 | **M0** | API feasibility – pinned sources, capability matrix, allowlist, live read-only fixtures | ✅ Complete – [report](docs/m0-report.md) |
-| **M1** | Xcode project, instances, discovery, reconnect | ⚪ Planned |
+| **M1** | Xcode project, instances, discovery, reconnect | 🟡 In review |
 | **M2** | Overview and imaging | ⚪ Planned |
 | **M3** | Guiding and alerts | ⚪ Planned |
 | **M4** | Astronomy views | ⚪ Planned |
@@ -85,17 +85,21 @@ Details in [docs/milestones.md](docs/milestones.md) and on the [GitHub milestone
 ## Repository layout
 
 ```text
-Packages/PanGalacticCore   Swift package: request allowlist, wire decoding, PHD2 stream, statistics
+App/                       tvOS app (SwiftUI): setup, picker, dashboard, settings
+Packages/PanGalacticCore   Swift package: PanGalacticCore (allowlist, decoding, PHD2, state) and PanGalacticServices (HTTP, store, discovery)
 tools/m0                   Read-only capture tooling for API verification (Python, stdlib only)
 docs/                      Architecture, ADRs, capability matrix, milestones, procedures
-App/                       tvOS app target (from M1)
 ```
 
 ## Development
 
 ```sh
-# Core package
+# Core and services packages
 cd Packages/PanGalacticCore && swift test
+
+# tvOS app (open PanGalacticNinaTV.xcodeproj in Xcode 26+, or:)
+xcodebuild -project PanGalacticNinaTV.xcodeproj -scheme PanGalacticNinaTV \
+  -destination 'generic/platform=tvOS' CODE_SIGNING_ALLOWED=NO build
 
 # M0 capture tooling self-tests
 python3 tools/m0/tests/test_m0probe.py

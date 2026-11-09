@@ -1,0 +1,19 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "CFBundleDisplayName": {
+      "shouldTranslate": false
+    },
+    "NSLocalNetworkUsageDescription": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pan Galactic N.I.N.A. TV liest Statusdaten von N.I.N.A. und PHD2 in deinem lokalen Netzwerk. Die App steuert niemals deine Ausrüstung."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

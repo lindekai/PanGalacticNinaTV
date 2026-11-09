@@ -1,0 +1,801 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "About": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Über"
+          }
+        }
+      }
+    },
+    "Add Instance": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Instanz hinzufügen"
+          }
+        }
+      }
+    },
+    "Add Manually": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manuell hinzufügen"
+          }
+        }
+      }
+    },
+    "Advanced API %@ is not supported yet (supported: 2.x)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Advanced API %@ wird noch nicht unterstützt (unterstützt: 2.x)"
+          }
+        }
+      }
+    },
+    "Advanced API %@ is not supported yet (supported: 2.x). Monitoring stopped.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Advanced API %@ wird noch nicht unterstützt (unterstützt: 2.x). Überwachung angehalten."
+          }
+        }
+      }
+    },
+    "Advanced API port": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Port der Advanced API"
+          }
+        }
+      }
+    },
+    "Already added": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bereits hinzugefügt"
+          }
+        }
+      }
+    },
+    "An instance with this host and port already exists.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Instanz mit diesem Host und Port existiert bereits."
+          }
+        }
+      }
+    },
+    "Camera": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kamera"
+          }
+        }
+      }
+    },
+    "Checked %lld of %lld addresses": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld von %2$lld Adressen geprüft"
+          }
+        }
+      }
+    },
+    "Choose an Observatory": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sternwarte wählen"
+          }
+        }
+      }
+    },
+    "Connect to a N.I.N.A. computer with the Advanced API plugin enabled. This app only reads data – it never controls your equipment.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbinde dich mit einem N.I.N.A.-Rechner, auf dem das Advanced-API-Plugin aktiv ist. Diese App liest nur Daten – sie steuert niemals deine Ausrüstung."
+          }
+        }
+      }
+    },
+    "Connected": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbunden"
+          }
+        }
+      }
+    },
+    "Connecting…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbinde …"
+          }
+        }
+      }
+    },
+    "Connection refused": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbindung abgelehnt"
+          }
+        }
+      }
+    },
+    "Cooler": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kühlung"
+          }
+        }
+      }
+    },
+    "Could not save settings: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen konnten nicht gespeichert werden: %@"
+          }
+        }
+      }
+    },
+    "Default port 1888. The Advanced API plugin must be enabled in N.I.N.A.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standardport 1888. Das Advanced-API-Plugin muss in N.I.N.A. aktiviert sein."
+          }
+        }
+      }
+    },
+    "Default port 4400. PHD2's server must be enabled (Tools → Enable Server).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standardport 4400. Der PHD2-Server muss aktiviert sein (Tools → Enable Server)."
+          }
+        }
+      }
+    },
+    "Don't Panic. Your Telescope Is Probably Fine.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Panik. Deinem Teleskop geht es vermutlich gut."
+          }
+        }
+      }
+    },
+    "Edit Instance": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Instanz bearbeiten"
+          }
+        }
+      }
+    },
+    "Enter a host name or IP address.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gib einen Hostnamen oder eine IP-Adresse ein."
+          }
+        }
+      }
+    },
+    "Exposing": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belichtet"
+          }
+        }
+      }
+    },
+    "Exposure overdue – camera may be stuck": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belichtung überfällig – Kamera hängt möglicherweise"
+          }
+        }
+      }
+    },
+    "Filter": {
+      "shouldTranslate": false
+    },
+    "Filter Wheel": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filterrad"
+          }
+        }
+      }
+    },
+    "Found": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gefunden"
+          }
+        }
+      }
+    },
+    "Guider": {
+      "shouldTranslate": false
+    },
+    "Host not found": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Host nicht gefunden"
+          }
+        }
+      }
+    },
+    "Host or IP address": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Host oder IP-Adresse"
+          }
+        }
+      }
+    },
+    "Instances": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Instanzen"
+          }
+        }
+      }
+    },
+    "Last seen %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zuletzt gesehen %@"
+          }
+        }
+      }
+    },
+    "Last update %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Aktualisierung %@"
+          }
+        }
+      }
+    },
+    "Live": {
+      "shouldTranslate": false
+    },
+    "Manage Instances": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Instanzen verwalten"
+          }
+        }
+      }
+    },
+    "Monitor PHD2": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PHD2 überwachen"
+          }
+        }
+      }
+    },
+    "Mount": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Montierung"
+          }
+        }
+      }
+    },
+    "N.I.N.A. %@ with Advanced API %@ found": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N.I.N.A. %1$@ mit Advanced API %2$@ gefunden"
+          }
+        }
+      }
+    },
+    "N.I.N.A. %@ · Advanced API %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N.I.N.A. %1$@ · Advanced API %2$@"
+          }
+        }
+      }
+    },
+    "N.I.N.A. Advanced API": {
+      "shouldTranslate": false
+    },
+    "Name (optional)": {
+      "shouldTranslate": false
+    },
+    "Never connected": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch nie verbunden"
+          }
+        }
+      }
+    },
+    "No": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nein"
+          }
+        }
+      }
+    },
+    "No Advanced API found. Check that N.I.N.A. is running, the plugin is enabled and the Windows firewall allows port 1888 – or add the computer manually.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Advanced API gefunden. Prüfe, ob N.I.N.A. läuft, das Plugin aktiv ist und die Windows-Firewall Port 1888 zulässt – oder füge den Rechner manuell hinzu."
+          }
+        }
+      }
+    },
+    "No network connection": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Netzwerkverbindung"
+          }
+        }
+      }
+    },
+    "Not connected": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht verbunden"
+          }
+        }
+      }
+    },
+    "Not reachable: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht erreichbar: %@"
+          }
+        }
+      }
+    },
+    "Off": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus"
+          }
+        }
+      }
+    },
+    "Offline": {
+      "shouldTranslate": false
+    },
+    "On": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An"
+          }
+        }
+      }
+    },
+    "Only local network addresses are allowed": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur Adressen im lokalen Netzwerk sind erlaubt"
+          }
+        }
+      }
+    },
+    "Pan Galactic N.I.N.A. TV": {
+      "shouldTranslate": false
+    },
+    "Pan Galactic N.I.N.A. TV is an independent, unofficial companion app. It only reads data from N.I.N.A. and PHD2 and never controls equipment.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pan Galactic N.I.N.A. TV ist eine unabhängige, inoffizielle Begleit-App. Sie liest nur Daten von N.I.N.A. und PHD2 und steuert niemals Ausrüstung."
+          }
+        }
+      }
+    },
+    "Parked": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geparkt"
+          }
+        }
+      }
+    },
+    "PHD2": {
+      "shouldTranslate": false
+    },
+    "PHD2 port": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PHD2-Port"
+          }
+        }
+      }
+    },
+    "Ports must be between 1 and 65535.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ports müssen zwischen 1 und 65535 liegen."
+          }
+        }
+      }
+    },
+    "Remove": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernen"
+          }
+        }
+      }
+    },
+    "Remove %@?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ entfernen?"
+          }
+        }
+      }
+    },
+    "Response too large": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antwort zu groß"
+          }
+        }
+      }
+    },
+    "Retry in %lld s · %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Versuch in %1$lld s · %2$@"
+          }
+        }
+      }
+    },
+    "Retry Now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt erneut versuchen"
+          }
+        }
+      }
+    },
+    "Save Changes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Änderungen sichern"
+          }
+        }
+      }
+    },
+    "Save Instance": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Instanz sichern"
+          }
+        }
+      }
+    },
+    "Search Again": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erneut suchen"
+          }
+        }
+      }
+    },
+    "Search Local Network": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lokales Netzwerk durchsuchen"
+          }
+        }
+      }
+    },
+    "Sensor": {
+      "shouldTranslate": false
+    },
+    "Server error": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serverfehler"
+          }
+        }
+      }
+    },
+    "Settings": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen"
+          }
+        }
+      }
+    },
+    "Slewing": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwenkt"
+          }
+        }
+      }
+    },
+    "Something answered, but it is not the N.I.N.A. Advanced API": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etwas hat geantwortet, aber es ist nicht die N.I.N.A. Advanced API"
+          }
+        }
+      }
+    },
+    "Stale": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veraltet"
+          }
+        }
+      }
+    },
+    "Start Search": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suche starten"
+          }
+        }
+      }
+    },
+    "State": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Status"
+          }
+        }
+      }
+    },
+    "Stop Search": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suche stoppen"
+          }
+        }
+      }
+    },
+    "Switch Observatory": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sternwarte wechseln"
+          }
+        }
+      }
+    },
+    "Test Connection": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbindung testen"
+          }
+        }
+      }
+    },
+    "The app checks port 1888 on every address of your local network (at most 254 addresses) and then asks each open port for its Advanced API version. Nothing else is sent.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die App prüft Port 1888 auf jeder Adresse deines lokalen Netzwerks (höchstens 254 Adressen) und fragt jeden offenen Port nach seiner Advanced-API-Version. Sonst wird nichts gesendet."
+          }
+        }
+      }
+    },
+    "This is not a valid host name or IP address.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das ist kein gültiger Hostname und keine gültige IP-Adresse."
+          }
+        }
+      }
+    },
+    "Timed out": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeitüberschreitung"
+          }
+        }
+      }
+    },
+    "Tracking": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nachführung"
+          }
+        }
+      }
+    },
+    "Unexpected response format": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unerwartetes Antwortformat"
+          }
+        }
+      }
+    },
+    "Unknown": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unbekannt"
+          }
+        }
+      }
+    },
+    "Yes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ja"
+          }
+        }
+      }
+    },
+    "You can save an instance that is currently offline; the app keeps retrying.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du kannst auch eine Instanz sichern, die gerade offline ist; die App versucht es weiter."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

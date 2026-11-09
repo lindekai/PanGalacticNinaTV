@@ -4,8 +4,8 @@ Each milestone ends with a review; the next one starts only after approval.
 
 | Milestone | Scope | Gate | Status |
 |---|---|---|---|
-| **M0** API feasibility | Pin plugin/PHD2 sources, capability matrix, read-only allowlist, probe tooling, live read-only fixtures from the owner's system, go/no-go | Data availability proven or explicitly downgraded; no UI work before | **Complete** – [report](m0-report.md); awaiting approval for M1 |
-| M1 Skeleton & connections | Xcode project (tvOS 26), instance store, manual add/test, saved-host discovery, bounded subnet scan, routing 0/1/many, reconnect + stale state | Fresh app connects to real Advanced API; routing rules hold | Not started |
+| **M0** API feasibility | Pin plugin/PHD2 sources, capability matrix, read-only allowlist, probe tooling, live read-only fixtures from the owner's system, go/no-go | Data availability proven or explicitly downgraded; no UI work before | **Complete** – [report](m0-report.md) |
+| M1 Skeleton & connections | Xcode project (tvOS 26), instance store, manual add/test, saved-host discovery, bounded subnet scan, routing 0/1/many, reconnect + stale state | Fresh app connects to real Advanced API; routing rules hold | **In review** – simulator gate passed; Apple TV check in #8 |
 | M2 Overview & imaging | Live session metrics, preview on completed image, full-screen viewer, offline fallback | No fake-live metrics; latency and memory measured | Not started |
 | M3 Guiding & alerts | Streaming chart, RMS with validated units, history, full screen, foreground-only alerts | Replays incl. pause, star lost, reconnect, dither, empty stream | Not started |
 | M4 Astronomy | Compass, altitude plot, Sun/Moon/planets, time travel, star map, FOV overlay | Reference comparisons across sites/dates; usable on Apple TV HD | Not started |
@@ -32,4 +32,16 @@ Each milestone ends with a review; the next one starts only after approval.
 - [x] Sanitize and commit fixtures; update matrix to *verified*
 - [x] Live fixtures in `PanGalacticCore`; `IMAGE-SAVE` date format pinned (running-sequence schema → M2)
 - [ ] RMS definition (about zero vs. standard deviation) → M3
-- [ ] Review and approval for M1
+- [x] Review and approval for M1
+
+## M1 checklist ([#9](https://github.com/lindekai/PanGalacticNinaTV/issues/9))
+
+- [x] Instance model, validation (host normalisation incl. IPv6), launch routing 0/1/many
+- [x] Connection state machine: live / stale / offline, exponential backoff with jitter
+- [x] `PanGalacticServices`: allowlisted HTTP client with byte cap, connection tester, instance store ([ADR 0003](adr/0003-instance-persistence.md)), polling connection, bounded opt-in subnet scan
+- [x] Xcode project (tvOS 26.0) with shared scheme; SwiftUI shell: setup, add/edit with connection test, network search, picker, dashboard placeholder, settings
+- [x] ATS `NSAllowsLocalNetworking` only ([ADR 0002](adr/0002-tvos-local-networking.md)); EN/DE string catalogs
+- [x] CI builds the app for tvOS
+- [x] Gate test in tvOS 26.5 simulator against a real N.I.N.A. (read-only): 0 → setup, 1 → live dashboard, many → picker, unreachable → offline with retry countdown
+- [ ] Apple TV hardware check (#8)
+- [ ] Review and approval for M2

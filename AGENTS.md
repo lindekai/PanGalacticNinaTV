@@ -34,4 +34,5 @@ Rules for anyone – human or automated tooling – changing this repository.
 - Core package: `cd Packages/PanGalacticCore && swift test`
 - Core package for tvOS: `xcodebuild -scheme PanGalacticCore -destination 'generic/platform=tvOS' build` (in `Packages/PanGalacticCore`)
 - M0 tooling: `python3 tools/m0/tests/test_m0probe.py`
-- App build/test commands: added with the Xcode project in M1.
+- App (tvOS): `xcodebuild -project PanGalacticNinaTV.xcodeproj -scheme PanGalacticNinaTV -destination 'generic/platform=tvOS' CODE_SIGNING_ALLOWED=NO build`
+- App in the simulator: use a `platform=tvOS Simulator` destination; seed instances with the launch argument `-instances.v1 '<hex JSON>'` (ADR 0003). Use documentation addresses (192.0.2.0/24) in anything committed.
