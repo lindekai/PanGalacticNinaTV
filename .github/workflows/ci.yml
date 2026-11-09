@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Tests
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Toolchain
+        run: |
+          swift --version
+          python3 --version
+      - name: PanGalacticCore (swift test)
+        working-directory: Packages/PanGalacticCore
+        run: swift test
+      - name: M0 probe tooling
+        run: python3 -I tools/m0/tests/test_m0probe.py

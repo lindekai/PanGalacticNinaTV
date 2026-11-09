@@ -1,0 +1,28 @@
+name: Feature request
+description: Suggest an idea or improvement.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Phase 1 is **monitoring-only**. Requests to control the telescope, camera, guider or sequence are out of scope for now.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Describe the situation at the telescope or on the couch.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+  - type: textarea
+    id: data
+    attributes:
+      label: Data source
+      description: Which N.I.N.A. Advanced API endpoint/event or PHD2 event provides the data, if known?
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

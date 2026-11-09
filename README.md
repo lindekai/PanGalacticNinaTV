@@ -1,35 +1,126 @@
-# Pan Galactic N.I.N.A. TV
+<p align="center">
+  <img src="docs/assets/banner.svg" alt="Pan Galactic N.I.N.A. TV – Don't Panic. Your Telescope Is Probably Fine." width="100%">
+</p>
 
-> Don't Panic. Your Telescope Is Probably Fine.
+<p align="center">
+  <a href="https://github.com/lindekai/PanGalacticNinaTV/actions/workflows/ci.yml"><img src="https://github.com/lindekai/PanGalacticNinaTV/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
+  <img src="https://img.shields.io/badge/tvOS-26%2B-000000?logo=apple&logoColor=white" alt="tvOS 26+">
+  <img src="https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white" alt="Swift 6">
+  <img src="https://img.shields.io/badge/status-M0%20API%20feasibility-yellow" alt="Status: M0">
+  <img src="https://img.shields.io/badge/mode-read--only-2ea44f" alt="Read-only">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a>
+</p>
 
-A native tvOS app that turns an Apple TV into a read-only observatory monitor for [N.I.N.A.](https://nighttime-imaging.eu/) (via the [Advanced API](https://github.com/christian-photo/ninaAPI) plugin) and [PHD2](https://openphdguiding.org/): live imaging progress, latest frame preview, guiding graph, sky position and conditions – readable from the couch.
+<p align="center">
+  <b>Your observatory on the big screen.</b><br>
+  A native Apple TV app that shows what N.I.N.A. and PHD2 are doing – readable from the couch, and unable to touch your telescope.
+</p>
 
-**Status:** early development, milestone M0 (API feasibility). No app build yet. See [docs/milestones.md](docs/milestones.md).
+---
 
-## Principles
+## Why
 
-- **Monitoring only.** The app never controls the telescope, camera, guider or sequence. See [ADR 0001](docs/adr/0001-read-only-endpoint-allowlist.md).
-- **No invented data.** Values are shown as measured, derived, estimated or unavailable – never silently faked.
-- **Your network, your hardware.** Hosts, ports and site data are configured in the app, not built in.
+Imaging nights are long. The telescope PC sits outside or in a corner, and you want to know – at a glance and from across the room – whether the sequence is still running, the guiding is calm and the last frame looks right. **Pan Galactic N.I.N.A. TV** puts exactly that on your TV, and nothing more.
+
+## Planned features
+
+| View | What you see |
+|---|---|
+| **Overview** | Latest frame, target, sequence progress, camera temperature and cooler, filter, mount status, compact guide graph, alarms |
+| **Imaging** | Large stretched preview, capture metadata, HFR/stars where available, full-screen viewer with zoom and pan |
+| **Guiding** | Live RA/Dec error chart from PHD2, RMS in arcseconds when the image scale is known, dither/settle/star-lost markers |
+| **Astronomy** | Sky compass, altitude curve, Sun/Moon/planets, twilight, offline star map with target and camera field of view, time travel |
+| **Conditions** | Weather forecast and local sensor readings, always labelled by source and age |
+| **Statistics** | Integration per filter, quality and guiding trends – only metrics that are actually measured |
+
+Plus: multiple N.I.N.A. instances, automatic reconnect, German and English UI, foreground-only alarms, and an optional, strictly non-diagnostic sense of humour.
+
+## Safety first
+
+> [!IMPORTANT]
+> **The app is monitoring-only.** It never parks, slews, captures, starts or stops anything.
+>
+> The N.I.N.A. Advanced API exposes control actions as plain HTTP `GET` routes and has no authentication, so "only use GET" is not a safety guarantee. The app therefore uses an **explicit allowlist** of source-reviewed, side-effect-free endpoints, enforced twice in code and covered by tests. It never sends commands to the PHD2 socket. Details: [ADR 0001](docs/adr/0001-read-only-endpoint-allowlist.md) · [API capability matrix](docs/api-capability-matrix.md).
+
+Other ground rules: no invented data (values are *measured*, *derived*, *estimated* or *unavailable*), no hardcoded network or hardware, nothing installed on the telescope PC.
+
+## How it works
+
+```mermaid
+flowchart LR
+    subgraph PC["Telescope PC (Windows)"]
+        NINA["N.I.N.A.<br/>+ Advanced API plugin"]
+        PHD2["PHD2"]
+    end
+    subgraph TV["Apple TV"]
+        Core["PanGalacticCore<br/>allowlist · decoders · statistics"]
+        App["SwiftUI app<br/>views · alerts · astronomy"]
+    end
+    NINA -- "HTTP GET (allowlisted)<br/>:1888/v2/api" --> Core
+    NINA -- "WebSocket events (listen only)<br/>:1888/v2/socket" --> Core
+    PHD2 -- "TCP event stream (listen only)<br/>:4400" --> Core
+    Core --> App
+```
+
+## Roadmap
+
+| | Milestone | Status |
+|---|---|---|
+| **M0** | API feasibility – pinned sources, capability matrix, allowlist, live read-only fixtures | 🟡 In progress – desk work done, live capture pending |
+| **M1** | Xcode project, instances, discovery, reconnect | ⚪ Planned |
+| **M2** | Overview and imaging | ⚪ Planned |
+| **M3** | Guiding and alerts | ⚪ Planned |
+| **M4** | Astronomy views | ⚪ Planned |
+| **M5** | Conditions, statistics, localization, personality | ⚪ Planned |
+| **M6** | Reliability, field test, release readiness | ⚪ Planned |
+
+Details in [docs/milestones.md](docs/milestones.md) and on the [GitHub milestones](https://github.com/lindekai/PanGalacticNinaTV/milestones) page.
 
 ## Requirements (planned)
 
-- Apple TV HD or newer, tvOS 26+
-- N.I.N.A. with the Advanced API plugin (developed against 2.2.15.3), reachable on the local network
-- PHD2 with its server enabled (optional, for live guiding data)
+- Apple TV HD or newer with tvOS 26 or later
+- [N.I.N.A.](https://nighttime-imaging.eu/) with the [Advanced API](https://github.com/christian-photo/ninaAPI) plugin (developed against 2.2.15.3), reachable on the local network
+- [PHD2](https://openphdguiding.org/) with its server enabled – optional, for live guiding data
+
+## Repository layout
+
+```text
+Packages/PanGalacticCore   Swift package: request allowlist, wire decoding, PHD2 stream, statistics
+tools/m0                   Read-only capture tooling for API verification (Python, stdlib only)
+docs/                      Architecture, ADRs, capability matrix, milestones, procedures
+App/                       tvOS app target (from M1)
+```
+
+## Development
+
+```sh
+# Core package
+cd Packages/PanGalacticCore && swift test
+
+# M0 capture tooling self-tests
+python3 tools/m0/tests/test_m0probe.py
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) and the [contributor guidelines](AGENTS.md) before opening a pull request.
 
 ## Documentation
 
 - [Architecture](docs/architecture.md)
 - [API capability matrix](docs/api-capability-matrix.md)
+- [Decisions (ADRs)](docs/adr/)
 - [Milestones](docs/milestones.md)
 - [M0 live test procedure](docs/m0-test-procedure.md)
-- [Contributor guidelines](AGENTS.md)
+- [Changelog](CHANGELOG.md)
+- [Security policy](SECURITY.md)
+
+## Acknowledgements
+
+Built on the shoulders of the [N.I.N.A.](https://nighttime-imaging.eu/) project, Christian Palm's [Advanced API plugin](https://github.com/christian-photo/ninaAPI) and the [PHD2](https://openphdguiding.org/) team. Thank you.
 
 ## Disclaimer
 
-Independent, unofficial companion app. Not affiliated with or endorsed by the N.I.N.A. project, the Advanced API plugin author or the PHD2 project.
+Independent, unofficial companion app. Not affiliated with or endorsed by the N.I.N.A. project, the Advanced API plugin author or the PHD2 project. Apple TV and tvOS are trademarks of Apple Inc.
 
 ## License
 
-To be decided before first public release.
+[MIT](LICENSE). Third-party catalogs and data used later (star catalogs, ephemerides) keep their own licenses; see `docs/licensing-and-attribution.md` once added.
