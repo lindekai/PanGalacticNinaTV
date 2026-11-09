@@ -13,6 +13,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 - `/profile/show` removed from all allowlists: it returns third-party API keys in plain text.
 
 ### Added
+- M0 report with go/no-go and carry-over items.
 - Live fixtures from a real N.I.N.A. 3.2 / Advanced API 2.2.15.3 / PHD2 2.6.14 system (sanitized) with decoding tests.
 - `NINADate` parser for N.I.N.A. timestamps; `NINAGuiderInfo` decoder.
 - M0 API capability matrix for N.I.N.A. Advanced API 2.2.15.3 and PHD2 event monitoring, with read-only endpoint allowlist, risks and go/no-go table.

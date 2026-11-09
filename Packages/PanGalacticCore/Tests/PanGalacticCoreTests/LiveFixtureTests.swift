@@ -54,11 +54,13 @@ struct LiveFixtureTests {
         #expect(info.rmsError?.total?.arcseconds == 0)
     }
 
-    @Test func socketStreamWithCameraCrashAndSnapshots() throws {
-        let events = try Self.lines("nina/socket-camera-crash-and-snapshots.jsonl").map { try NINASocketEvent.decode($0) }
+    @Test func socketSession() throws {
+        let events = try Self.lines("nina/socket-session.jsonl").map { try NINASocketEvent.decode($0) }
         #expect(Array(events.prefix(4).map(\.name)) == [
             .cameraDisconnected, .cameraDisconnected, .cameraDownloadTimeout, .cameraConnected,
         ])
+        #expect(events.contains { $0.name == .guiderDisconnected })
+        #expect(events.contains { $0.name == .guiderConnected })
         let saves = events.filter { $0.name == .imageSave }
         #expect(!saves.isEmpty)
         #expect(saves.allSatisfy { $0.imageStatistics != nil })
@@ -86,8 +88,8 @@ struct LiveFixtureTests {
         #expect(entry.stars == nil)
     }
 
-    @Test func phd2SessionDecodesCompletely() throws {
-        let messages = try Self.lines("phd2/session-calibration-failed.jsonl").map { try PHD2EventDecoder.decode(line: $0) }
+    @Test func phd2Session() throws {
+        let messages = try Self.lines("phd2/session.jsonl").map { try PHD2EventDecoder.decode(line: $0) }
         #expect(messages.allSatisfy { $0 != nil })
         let events = messages.compactMap { $0?.event }
 
@@ -96,6 +98,9 @@ struct LiveFixtureTests {
         #expect(events.contains(.calibrationFailed(reason: "RA Calibration Failed: star did not move enough")))
         #expect(events.contains(.lockPositionLost))
         #expect(events.contains { if case .alert(let message, _) = $0 { message?.isEmpty == false } else { false } })
+        let starLost = events.compactMap { if case .starLost(let lost) = $0 { lost } else { nil } }
+        #expect(!starLost.isEmpty)
+        #expect(starLost.allSatisfy { $0.errorCode != nil && $0.status?.isEmpty == false })
         // Undocumented attributes on LoopingExposures (StarMass, SNR, …) are tolerated.
         #expect(events.contains(.loopingExposures(frame: 1)))
 

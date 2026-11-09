@@ -1,0 +1,160 @@
+{"Event":"Version","Timestamp":1794249252.538,"Host":"<redacted>","Inst":1,"PHDVersion":"2.6.14","PHDSubver":"","OverlapSupport":true,"MsgVersion":1}
+{"Event":"CalibrationComplete","Timestamp":1794249252.538,"Host":"<redacted>","Inst":1,"Mount":"GSServer (ASCOM)"}
+{"Event":"AppState","Timestamp":1794249252.539,"Host":"<redacted>","Inst":1,"State":"Stopped"}
+{"Event":"LoopingExposures","Timestamp":1794249599.14,"Host":"<redacted>","Inst":1,"Frame":1,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249601.201,"Host":"<redacted>","Inst":1,"Frame":2,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249603.484,"Host":"<redacted>","Inst":1,"Frame":3,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249605.564,"Host":"<redacted>","Inst":1,"Frame":4,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249607.864,"Host":"<redacted>","Inst":1,"Frame":5,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249609.944,"Host":"<redacted>","Inst":1,"Frame":6,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249612.226,"Host":"<redacted>","Inst":1,"Frame":7,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249614.301,"Host":"<redacted>","Inst":1,"Frame":8,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249616.6,"Host":"<redacted>","Inst":1,"Frame":9,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249618.704,"Host":"<redacted>","Inst":1,"Frame":10,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249621.015,"Host":"<redacted>","Inst":1,"Frame":11,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249623.086,"Host":"<redacted>","Inst":1,"Frame":12,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249625.407,"Host":"<redacted>","Inst":1,"Frame":13,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249627.498,"Host":"<redacted>","Inst":1,"Frame":14,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249629.795,"Host":"<redacted>","Inst":1,"Frame":15,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249631.846,"Host":"<redacted>","Inst":1,"Frame":16,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249634.119,"Host":"<redacted>","Inst":1,"Frame":17,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249636.175,"Host":"<redacted>","Inst":1,"Frame":18,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249638.449,"Host":"<redacted>","Inst":1,"Frame":19,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposures","Timestamp":1794249640.495,"Host":"<redacted>","Inst":1,"Frame":20,"ErrorCode":8,"Status":"Kein Stern ausgewählt"}
+{"Event":"LoopingExposuresStopped","Timestamp":1794249642.713,"Host":"<redacted>","Inst":1}
+{"Event":"ConfigurationChange","Timestamp":1794249663.712,"Host":"<redacted>","Inst":1}
+{"Event":"GuideParamChange","Timestamp":1794249663.915,"Host":"<redacted>","Inst":1,"Name":"Exposure","Value":"1000 ms"}
+{"Event":"GuideParamChange","Timestamp":1794249663.994,"Host":"<redacted>","Inst":1,"Name":"MultiStar","Value":"false"}
+{"Event":"ConfigurationChange","Timestamp":1794249670.584,"Host":"<redacted>","Inst":1}
+{"Event":"ConfigurationChange","Timestamp":1794249672.184,"Host":"<redacted>","Inst":1}
+{"Event":"ConfigurationChange","Timestamp":1794249681.588,"Host":"<redacted>","Inst":1}
+{"Event":"GuideParamChange","Timestamp":1794249681.591,"Host":"<redacted>","Inst":1,"Name":"RA Max Duration","Value":2500}
+{"Event":"GuideParamChange","Timestamp":1794249681.592,"Host":"<redacted>","Inst":1,"Name":"Dec Max Duration","Value":2500}
+{"Event":"GuideParamChange","Timestamp":1794249681.595,"Host":"<redacted>","Inst":1,"Name":"Dec Guide Mode","Value":"Auto"}
+{"Event":"ConfigurationChange","Timestamp":1794249696.963,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794249697.298,"Host":"<redacted>","Inst":1,"X":490.342,"Y":113.458}
+{"Event":"StarSelected","Timestamp":1794249697.31,"Host":"<redacted>","Inst":1,"X":490.342,"Y":113.458}
+{"Event":"Alert","Timestamp":1794249699.84,"Host":"<redacted>","Inst":1,"Msg":"Für beste Ergebnisse während der Nachführung eine Dunkelbildbibliothek oder Bad-Pixel-Karte verwenden. Damit wird vermieden, dass PHD an keinem Hot-Pixel hängen bleibt. Verwende das Dunkelbild-Menü, um eine Dunkelbildbibliothek oder Bad-Pixel-Karte zu erstellen.","Type":"warning"}
+{"Event":"StartCalibration","Timestamp":1794249699.987,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)"}
+{"Event":"Calibrating","Timestamp":1794249700.02,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":0,"dx":0,"dy":0,"pos":[490.32,113.04],"step":0,"State":"West Schritt   1, dist= 0.0"}
+{"Event":"Alert","Timestamp":1794249700.373,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249701.461,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":0.693918,"dx":-0.198027,"dy":0.665062,"pos":[490.51,112.37],"step":1,"State":"West Schritt   2, dist= 0.7"}
+{"Event":"Alert","Timestamp":1794249701.585,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249702.662,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":0.0852476,"dx":-0.0800636,"dy":-0.0292742,"pos":[490.4,113.07],"step":2,"State":"West Schritt   3, dist= 0.1"}
+{"Event":"Alert","Timestamp":1794249702.78,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249703.857,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":0.522986,"dx":-0.0711242,"dy":0.518127,"pos":[490.39,112.52],"step":3,"State":"West Schritt   4, dist= 0.5"}
+{"Event":"Alert","Timestamp":1794249703.972,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249705.057,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":0.214243,"dx":-0.195223,"dy":0.0882486,"pos":[490.51,112.95],"step":4,"State":"West Schritt   5, dist= 0.2"}
+{"Event":"Alert","Timestamp":1794249705.179,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249706.269,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":0.594009,"dx":-0.381926,"dy":0.45495,"pos":[490.7,112.58],"step":5,"State":"West Schritt   6, dist= 0.6"}
+{"Event":"Alert","Timestamp":1794249706.611,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249707.49,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":0.404083,"dx":-0.156094,"dy":0.372717,"pos":[490.47,112.66],"step":6,"State":"West Schritt   7, dist= 0.4"}
+{"Event":"Alert","Timestamp":1794249707.614,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249708.697,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":1.11304,"dx":-0.798727,"dy":0.775175,"pos":[491.11,112.26],"step":7,"State":"West Schritt   8, dist= 1.1"}
+{"Event":"Alert","Timestamp":1794249708.816,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249709.897,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":0.293861,"dx":0.0227671,"dy":0.292978,"pos":[490.29,112.74],"step":8,"State":"West Schritt   9, dist= 0.3"}
+{"Event":"Alert","Timestamp":1794249710.018,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249711.106,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":0.82315,"dx":-0.504278,"dy":0.650599,"pos":[490.82,112.39],"step":9,"State":"West Schritt  10, dist= 0.8"}
+{"Event":"Alert","Timestamp":1794249711.229,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249712.311,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":0.323777,"dx":-0.182894,"dy":0.267173,"pos":[490.5,112.77],"step":10,"State":"West Schritt  11, dist= 0.3"}
+{"Event":"Alert","Timestamp":1794249712.427,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249713.519,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":1.13638,"dx":-0.473026,"dy":1.03326,"pos":[490.79,112.0],"step":11,"State":"West Schritt  12, dist= 1.1"}
+{"Event":"Alert","Timestamp":1794249713.643,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249714.717,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":0.883825,"dx":-0.00123164,"dy":0.883824,"pos":[490.32,112.15],"step":12,"State":"West Schritt  13, dist= 0.9"}
+{"Event":"Alert","Timestamp":1794249714.833,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249715.918,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":1.13641,"dx":-0.207505,"dy":1.1173,"pos":[490.52,111.92],"step":13,"State":"West Schritt  14, dist= 1.1"}
+{"Event":"Alert","Timestamp":1794249716.044,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249717.13,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":1.63998,"dx":-0.596637,"dy":1.5276,"pos":[490.91,111.51],"step":14,"State":"West Schritt  15, dist= 1.6"}
+{"Event":"Alert","Timestamp":1794249717.258,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249718.34,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":1.8025,"dx":-0.760892,"dy":1.63403,"pos":[491.08,111.4],"step":15,"State":"West Schritt  16, dist= 1.8"}
+{"Event":"Alert","Timestamp":1794249718.462,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249719.536,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":1.54885,"dx":-0.611694,"dy":1.42294,"pos":[490.93,111.61],"step":16,"State":"West Schritt  17, dist= 1.5"}
+{"Event":"Alert","Timestamp":1794249719.657,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249720.732,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":1.80723,"dx":-0.791296,"dy":1.62478,"pos":[491.11,111.41],"step":17,"State":"West Schritt  18, dist= 1.8"}
+{"Event":"Alert","Timestamp":1794249720.845,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249721.933,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":1.69004,"dx":-0.697535,"dy":1.53938,"pos":[491.01,111.5],"step":18,"State":"West Schritt  19, dist= 1.7"}
+{"Event":"Alert","Timestamp":1794249722.051,"Host":"<redacted>","Inst":1,"Msg":"Das PulsGuide Kommando an die Montierung ist fehlgeschlagen - Das Guiding wird wahrscheinlich unwirksam sein","Type":"warning"}
+{"Event":"Calibrating","Timestamp":1794249723.133,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","dir":"West","dist":1.70335,"dx":-0.141044,"dy":1.6975,"pos":[490.46,111.34],"step":19,"State":"West Schritt  20, dist= 1.7"}
+{"Event":"CalibrationFailed","Timestamp":1794249773.599,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","Reason":"RA Calibration Failed: star did not move enough"}
+{"Event":"LockPositionLost","Timestamp":1794249773.611,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794249774.816,"Host":"<redacted>","Inst":1,"X":492.277,"Y":107.086}
+{"Event":"StarSelected","Timestamp":1794249774.816,"Host":"<redacted>","Inst":1,"X":492.277,"Y":107.086}
+{"Event":"StartCalibration","Timestamp":1794250077.28,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)"}
+{"Event":"CalibrationFailed","Timestamp":1794250158.034,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","Reason":"RA Calibration Failed: star did not move enough"}
+{"Event":"LockPositionLost","Timestamp":1794250158.062,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794250159.402,"Host":"<redacted>","Inst":1,"X":500.448,"Y":76.484}
+{"Event":"StarSelected","Timestamp":1794250159.405,"Host":"<redacted>","Inst":1,"X":500.448,"Y":76.484}
+{"Event":"LockPositionSet","Timestamp":1794251071.006,"Host":"<redacted>","Inst":1,"X":457.47,"Y":70.917}
+{"Event":"LockPositionLost","Timestamp":1794251071.175,"Host":"<redacted>","Inst":1}
+{"Event":"StarLost","Timestamp":1794251071.179,"Host":"<redacted>","Inst":1,"Frame":1082,"Time":3621.792,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":76.33,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"LockPositionSet","Timestamp":1794251076.317,"Host":"<redacted>","Inst":1,"X":457.247,"Y":70.72}
+{"Event":"StarSelected","Timestamp":1794251076.318,"Host":"<redacted>","Inst":1,"X":457.247,"Y":70.72}
+{"Event":"StartCalibration","Timestamp":1794251079.755,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)"}
+{"Event":"StarLost","Timestamp":1794251080.232,"Host":"<redacted>","Inst":1,"Frame":1089,"Time":3630.845,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":0.52,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251081.583,"Host":"<redacted>","Inst":1,"Frame":1090,"Time":3632.2,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":0.52,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251082.858,"Host":"<redacted>","Inst":1,"Frame":1091,"Time":3633.475,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":0.52,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251084.112,"Host":"<redacted>","Inst":1,"Frame":1092,"Time":3634.73,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":0.52,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251085.387,"Host":"<redacted>","Inst":1,"Frame":1093,"Time":3636.004,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":0.52,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251086.68,"Host":"<redacted>","Inst":1,"Frame":1094,"Time":3637.295,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":0.52,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251093.258,"Host":"<redacted>","Inst":1,"Frame":1099,"Time":3643.876,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":1.44,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251094.529,"Host":"<redacted>","Inst":1,"Frame":1100,"Time":3645.146,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":1.44,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251095.793,"Host":"<redacted>","Inst":1,"Frame":1101,"Time":3646.41,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":1.44,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251099.72,"Host":"<redacted>","Inst":1,"Frame":1104,"Time":3650.337,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":1.9,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251101.013,"Host":"<redacted>","Inst":1,"Frame":1105,"Time":3651.63,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":1.9,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251102.278,"Host":"<redacted>","Inst":1,"Frame":1106,"Time":3652.896,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":1.9,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251104.881,"Host":"<redacted>","Inst":1,"Frame":1108,"Time":3655.498,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":2.66,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251106.144,"Host":"<redacted>","Inst":1,"Frame":1109,"Time":3656.762,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":2.66,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251110.021,"Host":"<redacted>","Inst":1,"Frame":1112,"Time":3660.638,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":2.54,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251111.31,"Host":"<redacted>","Inst":1,"Frame":1113,"Time":3661.927,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":2.54,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251112.587,"Host":"<redacted>","Inst":1,"Frame":1114,"Time":3663.205,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":2.54,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251115.164,"Host":"<redacted>","Inst":1,"Frame":1116,"Time":3665.781,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":3.02,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"StarLost","Timestamp":1794251116.442,"Host":"<redacted>","Inst":1,"Frame":1117,"Time":3667.058,"StarMass":0,"SNR":0.0,"HFD":0.0,"AvgDist":3.02,"ErrorCode":4,"Status":"Stern verloren - geringe HFD"}
+{"Event":"CalibrationFailed","Timestamp":1794251242.769,"Host":"<redacted>","Inst":1,"Mount":"Simulator (ASCOM)","Reason":"RA Calibration Failed: star did not move enough"}
+{"Event":"LockPositionLost","Timestamp":1794251242.797,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794251246.649,"Host":"<redacted>","Inst":1,"X":461.093,"Y":56.556}
+{"Event":"StarSelected","Timestamp":1794251246.651,"Host":"<redacted>","Inst":1,"X":461.093,"Y":56.556}
+{"Event":"LockPositionLost","Timestamp":1794251249.257,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794251258.247,"Host":"<redacted>","Inst":1,"X":461.887,"Y":55.8}
+{"Event":"StarSelected","Timestamp":1794251258.252,"Host":"<redacted>","Inst":1,"X":461.887,"Y":55.8}
+{"Event":"LockPositionLost","Timestamp":1794251259.587,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794251264.711,"Host":"<redacted>","Inst":1,"X":461.857,"Y":54.922}
+{"Event":"StarSelected","Timestamp":1794251264.715,"Host":"<redacted>","Inst":1,"X":461.857,"Y":54.922}
+{"Event":"LockPositionLost","Timestamp":1794251267.286,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794251268.561,"Host":"<redacted>","Inst":1,"X":461.406,"Y":55.293}
+{"Event":"StarSelected","Timestamp":1794251268.564,"Host":"<redacted>","Inst":1,"X":461.406,"Y":55.293}
+{"Event":"LockPositionLost","Timestamp":1794251272.433,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794251276.275,"Host":"<redacted>","Inst":1,"X":461.174,"Y":54.831}
+{"Event":"StarSelected","Timestamp":1794251276.278,"Host":"<redacted>","Inst":1,"X":461.174,"Y":54.831}
+{"Event":"LockPositionLost","Timestamp":1794251277.587,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794251278.852,"Host":"<redacted>","Inst":1,"X":461.928,"Y":53.362}
+{"Event":"StarSelected","Timestamp":1794251278.854,"Host":"<redacted>","Inst":1,"X":461.928,"Y":53.362}
+{"Event":"LockPositionLost","Timestamp":1794251280.147,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794251281.427,"Host":"<redacted>","Inst":1,"X":461.797,"Y":54.069}
+{"Event":"StarSelected","Timestamp":1794251281.43,"Host":"<redacted>","Inst":1,"X":461.797,"Y":54.069}
+{"Event":"LockPositionLost","Timestamp":1794251284.045,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794251287.857,"Host":"<redacted>","Inst":1,"X":462.03,"Y":53.323}
+{"Event":"StarSelected","Timestamp":1794251287.86,"Host":"<redacted>","Inst":1,"X":462.03,"Y":53.323}
+{"Event":"LockPositionLost","Timestamp":1794251292.918,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794251294.204,"Host":"<redacted>","Inst":1,"X":461.937,"Y":52.793}
+{"Event":"StarSelected","Timestamp":1794251294.206,"Host":"<redacted>","Inst":1,"X":461.937,"Y":52.793}
+{"Event":"LockPositionLost","Timestamp":1794251295.544,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794251296.809,"Host":"<redacted>","Inst":1,"X":462.352,"Y":51.994}
+{"Event":"StarSelected","Timestamp":1794251296.812,"Host":"<redacted>","Inst":1,"X":462.352,"Y":51.994}
+{"Event":"LockPositionLost","Timestamp":1794251298.123,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794251299.419,"Host":"<redacted>","Inst":1,"X":462.155,"Y":51.851}
+{"Event":"StarSelected","Timestamp":1794251299.422,"Host":"<redacted>","Inst":1,"X":462.155,"Y":51.851}
+{"Event":"LockPositionLost","Timestamp":1794251303.223,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794251305.797,"Host":"<redacted>","Inst":1,"X":462.323,"Y":52.2}
+{"Event":"StarSelected","Timestamp":1794251305.8,"Host":"<redacted>","Inst":1,"X":462.323,"Y":52.2}
+{"Event":"LockPositionLost","Timestamp":1794251309.67,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794251313.479,"Host":"<redacted>","Inst":1,"X":462.413,"Y":51.072}
+{"Event":"StarSelected","Timestamp":1794251313.481,"Host":"<redacted>","Inst":1,"X":462.413,"Y":51.072}
+{"Event":"LockPositionLost","Timestamp":1794251314.778,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794251316.054,"Host":"<redacted>","Inst":1,"X":462.964,"Y":51.083}
+{"Event":"StarSelected","Timestamp":1794251316.06,"Host":"<redacted>","Inst":1,"X":462.964,"Y":51.083}
+{"Event":"LockPositionLost","Timestamp":1794251318.682,"Host":"<redacted>","Inst":1}
+{"Event":"LockPositionSet","Timestamp":1794251319.963,"Host":"<redacted>","Inst":1,"X":462.754,"Y":51.116}
+{"Event":"StarSelected","Timestamp":1794251319.964,"Host":"<redacted>","Inst":1,"X":462.754,"Y":51.116}
+{"Event":"LockPositionLost","Timestamp":1794251321.266,"Host":"<redacted>","Inst":1}
+{"Event":"StarSelected","Timestamp":1794251322.535,"Host":"<redacted>","Inst":1,"X":462.806,"Y":50.758}
+{"Event":"LockPositionLost","Timestamp":1794251323.851,"Host":"<redacted>","Inst":1}

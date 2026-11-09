@@ -1,6 +1,6 @@
 # API Capability Matrix
 
-Status: **M0 – desk research complete; live verification in progress** (idle snapshot 2026-11-09, see §7).
+Status: **M0 complete** – live-verified where marked; see [M0 report](m0-report.md) for go/no-go and downgrades.
 Every row below is derived from published specs and plugin source at a pinned revision. Nothing is marked *verified* until a sanitized live fixture from the owner's system exists in `Tests/Fixtures/`.
 
 ## 1. Pinned sources
@@ -116,6 +116,8 @@ Everything not listed above. Notably: all `connect`/`disconnect`/`rescan`/`list-
 
 ## 6. Go / no-go (desk research)
 
+Superseded by the live verdicts in the [M0 report](m0-report.md).
+
 | Capability | Desk verdict | Live gate |
 |---|---|---|
 | Identify server read-only | **Go** | `/version` fixture |
@@ -169,4 +171,6 @@ Manual 10 s snapshots from the Imaging tab with saving enabled; the camera drive
 | PHD2 `LoopingExposures` | Carries undocumented `StarMass`, `SNR`, `HFD`, `ErrorCode` | Tolerated; usable for star quality while looping |
 | PHD2 `CalibrationFailed` | `Reason` text, e.g. "RA Calibration Failed: star did not move enough"; repeated `Alert` events with localized (German) messages during failing calibration | State becomes unknown after failure; show alert text verbatim, never translate/interpret |
 
-Pending: PHD2 `GuideStep`/dither/star-lost (simulator), sequence JSON while a sequence runs, `prepared-image`.
+Later in the session PHD2 also emitted `StarLost` (`ErrorCode` 4, localized `Status` "Stern verloren - geringe HFD") and N.I.N.A. emitted `GUIDER-DISCONNECTED`/`GUIDER-CONNECTED` when the guider was reconnected.
+
+Not verified in M0 (downgraded, see report): PHD2 `GuideStep`/dither/settle, sequence JSON while running, `prepared-image`, filter-change/dither/autofocus WebSocket events.
