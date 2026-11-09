@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xcscmblueprint
+*.xccheckout
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Python (tools)
+__pycache__/
+*.pyc
+.venv/
+
+# M0 raw captures may contain real network values, site coordinates and paths.
+# Only sanitized, reviewed copies go to Tests/Fixtures/.
+captures/
