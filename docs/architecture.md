@@ -38,8 +38,10 @@ PanGalacticNinaTV (SwiftUI tvOS)
 
 ## Code layout
 
-- `Packages/PanGalacticCore` – platform-independent protocol layer (wire DTOs, request allowlist, decoders, statistics); no UI and no networking I/O; tested with `swift test` on macOS.
-- `App/` – tvOS app target (from M1), depends on the core package.
+- `Packages/PanGalacticCore`, target `PanGalacticCore` – platform-independent protocol layer (wire DTOs, request allowlist, decoders, statistics, instance model, connection state machine); no UI and no networking I/O.
+- `Packages/PanGalacticCore`, target `PanGalacticServices` – I/O behind protocols: allowlisted HTTP client (`HTTPTransport`), connection tester, `InstanceStore` ([ADR 0003](adr/0003-instance-persistence.md)), polling `InstanceConnection`, bounded `NetworkScanner`. Tested with fakes; never touches the network in tests.
+- `App/` – tvOS app (SwiftUI). `AppModel` owns the store and the one active connection; polling runs only while the scene is active. Views never see a mutating API of N.I.N.A.
+- `Config/Info.plist` – ATS and local network keys, merged into the generated Info.plist.
 
 ## Networking
 

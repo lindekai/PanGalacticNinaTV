@@ -24,6 +24,7 @@ Please read the [contributor guidelines](AGENTS.md) first. The short version:
    ```sh
    cd Packages/PanGalacticCore && swift test
    python3 tools/m0/tests/test_m0probe.py
+   xcodebuild -project PanGalacticNinaTV.xcodeproj -scheme PanGalacticNinaTV -destination 'generic/platform=tvOS' CODE_SIGNING_ALLOWED=NO build
    ```
 5. Fill in the pull request checklist.
 

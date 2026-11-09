@@ -11,8 +11,11 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v7
+      - name: Select Xcode 26 or newer
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode_2[6-9]*.app | sort -V | tail -1)"
       - name: Toolchain
         run: |
+          xcodebuild -version
           swift --version
           python3 --version
       - name: PanGalacticCore (swift test)
@@ -20,3 +23,7 @@ jobs:
         run: swift test
       - name: M0 probe tooling
         run: python3 -I tools/m0/tests/test_m0probe.py
+      - name: tvOS app (build)
+        run: >
+          xcodebuild -project PanGalacticNinaTV.xcodeproj -scheme PanGalacticNinaTV
+          -destination 'generic/platform=tvOS' CODE_SIGNING_ALLOWED=NO build

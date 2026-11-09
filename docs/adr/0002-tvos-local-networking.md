@@ -1,6 +1,6 @@
 # ADR 0002 – tvOS local networking configuration
 
-- Status: Proposed (M0, to be validated on device in M1)
+- Status: Accepted (simulator-validated in M1; Apple TV hardware check open, #8)
 - Date: 2026-11-09
 
 ## Context
@@ -38,3 +38,9 @@ Not confirmed from primary sources: ATS enforcement details specific to tvOS, an
 - Internet hosts over plain HTTP are rejected by ATS, which matches the LAN-only design.
 - M1 must verify on hardware: HTTP to an IP literal and to a bare Windows hostname, WebSocket via Network.framework, PHD2 TCP, idle-timer behaviour.
 - The locally installed simulator runtime is tvOS 27; an Apple TV HD simulator needs a tvOS 26 runtime (to be installed for M1 testing, or test on the device).
+
+## M1 validation (tvOS 26.5 simulator, 2026-11-09)
+
+- `http://<private IPv4>:1888` loads with `NSAllowsLocalNetworking` alone; the app polled a real N.I.N.A. 3.2 / Advanced API 2.2.15.3.
+- A non-local address (TEST-NET `192.0.2.10`) is rejected by ATS with `NSURLErrorAppTransportSecurityRequiresSecureConnection`. The app shows "Only local network addresses are allowed". Consequence: addresses outside the ranges ATS treats as local do not work; whether overlay networks such as 100.64.0.0/10 count as local is untested. Accepted for phase 1; revisit with a documented decision if remote viewing is requested.
+- Still open on hardware (#8): bare Windows hostname, Wi-Fi vs. Ethernet, idle timer.
