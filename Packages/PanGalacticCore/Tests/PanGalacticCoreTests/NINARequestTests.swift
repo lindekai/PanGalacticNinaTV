@@ -10,7 +10,7 @@ struct NINARequestTests {
         .version, .ninaVersion, .serverTime, .applicationStart, .equipmentInfo,
         .guiderGraph, .focuserLastAutofocus, .sequenceJSON, .sequenceState,
         .imageHistoryCount, .imageHistoryEntry(index: 3), .eventHistory, .plugins, .framingInfo,
-        .profileHorizon, .activeProfile, .thumbnail(index: 0),
+        .profileHorizon, .thumbnail(index: 0),
         .image(index: 2, size: PixelSize(width: 1920, height: 1080), quality: 85),
         .preparedImage(size: PixelSize(width: 1280, height: 720), quality: 80),
         .moonSeparation(raDegrees: 10.68, decDegrees: 41.27),
@@ -53,6 +53,7 @@ struct NINARequestTests {
         "/v2/api/sequence/stop",
         "/v2/api/sequence/skip",
         "/v2/api/profile/change-value",
+        "/v2/api/profile/show?active=true", // returns third-party API keys in plain text
         "/v2/api/framing/slew",
         "/v2/api/image/3/solve",
         "/v2/api/prepared-image/solve",

@@ -89,7 +89,7 @@ class AllowlistTests(unittest.TestCase):
         with self.assertRaises(m0probe.NotAllowed):
             m0probe.check_allowed("/image/1?raw_fits=true")
         with self.assertRaises(m0probe.NotAllowed):
-            m0probe.check_allowed("/profile/show")
+            m0probe.check_allowed("/profile/show?active=true")
 
     def test_every_tier_entry_is_in_capability_matrix(self):
         with open(os.path.join(os.path.dirname(__file__), "..", "..", "..", "docs", "api-capability-matrix.md"),
@@ -227,7 +227,9 @@ class SanitizeTests(unittest.TestCase):
                              "AstrometrySettings": {"Latitude": 52.3, "HorizonFilePath": "C:\\x\\h.hrz"},
                              "ImageStatistics": {"Filename": "C:\\Astro\\M31\\L_001.fits", "HFR": 2.1, "TargetName": "M31"},
                              "Note": "server at 192.168.1.50 and 127.0.0.1", "Host": "OBS-PC",
-                             "CameraName": "Camera on OBS-PC", "AtPark": False}}
+                             "CameraName": "Camera on OBS-PC", "AtPark": False,
+                             "AstrometryAPIKey": "abc123", "OpenWeatherMapAPIKey": "def456",
+                             "SkyGuardServerUrl": "http://x", "PinPointAllSkyApiKey": ""}}
         s = m0probe.sanitize_value(data, ("OBS-PC",))["Response"]
         self.assertEqual(s["SiteLatitude"], 0.0)
         self.assertEqual(s["SiteElevation"], 0)
@@ -239,6 +241,8 @@ class SanitizeTests(unittest.TestCase):
         self.assertEqual(s["Host"], "<redacted>")
         self.assertEqual(s["CameraName"], "Camera on <redacted>")
         self.assertIs(s["AtPark"], False)
+        for key in ("AstrometryAPIKey", "OpenWeatherMapAPIKey", "SkyGuardServerUrl", "PinPointAllSkyApiKey"):
+            self.assertEqual(s[key], "<redacted>", key)
 
 
 if __name__ == "__main__":

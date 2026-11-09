@@ -52,7 +52,6 @@ ALLOWED_PATHS = [
     r"/application/plugins",
     r"/framing/info",
     r"/profile/horizon",
-    r"/profile/show",
     r"/image/thumbnail/\d+",
     r"/image/\d+",
     r"/prepared-image",
@@ -63,7 +62,7 @@ _ALLOWED_RE = [re.compile(p) for p in ALLOWED_PATHS]
 # Query parameters allowed per request. Prevents e.g. raw_fits or
 # profile listings sneaking in.
 ALLOWED_QUERY = {
-    "friendly", "count", "index", "imageType", "active", "resize", "size",
+    "friendly", "count", "index", "imageType", "resize", "size",
     "quality", "stream", "autoPrepare", "ra", "dec",
 }
 
@@ -90,8 +89,6 @@ def check_allowed(path_and_query):
     bad = keys - ALLOWED_QUERY
     if bad:
         raise NotAllowed(f"query parameter(s) not allowed: {sorted(bad)}")
-    if parsed.path == "/profile/show" and dict(urllib.parse.parse_qsl(parsed.query)).get("active") != "true":
-        raise NotAllowed("/profile/show requires active=true")
 
 
 def http_get(host, port, path_and_query, timeout, max_bytes):
@@ -142,16 +139,17 @@ TIER_A = [
     "/profile/horizon",
 ]
 
+# /profile/show is deliberately absent: it returns third-party API keys
+# (astrometry, weather services) in plain text.
 TIER_B = [
     "/equipment/focuser/last-af",
-    "/profile/show?active=true",
 ]
 
 
 def cmd_rest(args):
     out = _outdir(args.out, "rest", args.label)
     log = []
-    plan = list(TIER_A) + ([] if args.skip_profile else TIER_B)
+    plan = list(TIER_A) + ([] if args.skip_tier_b else TIER_B)
 
     def save(pq, status, ctype, body, elapsed, truncated, ext=None):
         ext = ext or ("json" if "json" in ctype or body[:1] in (b"{", b"[") else "bin")
@@ -369,7 +367,7 @@ def cmd_phd2(args):
 
 SENSITIVE_KEY = re.compile(
     r"(latitude|longitude|elevation|path|folder|filename|^file$|host|ipaddress|^ip$|serial|"
-    r"deviceid|computer|user|email|horizonfile)", re.I)
+    r"deviceid|computer|user|email|horizonfile|key|token|password|secret|credential|url)", re.I)
 WIN_PATH = re.compile(r"([A-Za-z]:\\|\\\\)")
 IPV4 = re.compile(r"\b(\d{1,3}(?:\.\d{1,3}){3})\b")
 
@@ -481,7 +479,7 @@ def main(argv=None):
     r.add_argument("--images", action="store_true", help="also fetch latest thumbnail and one resized preview")
     r.add_argument("--image-size", default="1920x1080")
     r.add_argument("--quality", type=int, default=85)
-    r.add_argument("--skip-profile", action="store_true", help="skip /profile/show and /focuser/last-af")
+    r.add_argument("--skip-tier-b", action="store_true", help="skip /equipment/focuser/last-af")
     r.set_defaults(func=cmd_rest)
 
     w = sub.add_parser("ws")

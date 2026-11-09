@@ -27,7 +27,6 @@ public enum NINAReadOnlyGuard {
         "/application/plugins",
         "/framing/info",
         "/profile/horizon",
-        "/profile/show",
         "/image/thumbnail/[0-9]+",
         "/image/[0-9]+",
         "/prepared-image",
@@ -35,7 +34,7 @@ public enum NINAReadOnlyGuard {
     ]
 
     static let allowedQueryNames: Set<String> = [
-        "friendly", "count", "index", "active", "resize", "size", "quality", "stream", "autoPrepare", "ra", "dec",
+        "friendly", "count", "index", "resize", "size", "quality", "stream", "autoPrepare", "ra", "dec",
     ]
 
     nonisolated(unsafe) private static let allowedPathRegexes: [Regex<AnyRegexOutput>] = allowedPathPatterns.map {

@@ -4,7 +4,7 @@
 
 | Command | What it does |
 |---|---|
-| `rest` | GETs the allowlisted endpoints (Tier A, plus `/profile/show?active=true` and `/equipment/focuser/last-af` unless `--skip-profile`); `--images` adds the latest thumbnail and one resized, server-stretched preview |
+| `rest` | GETs the allowlisted endpoints (Tier A, plus `/equipment/focuser/last-af` unless `--skip-tier-b`); `--images` adds the latest thumbnail and one resized, server-stretched preview |
 | `ws` | Passive listener on `ws://<host>:1888/v2/socket`; writes `events.jsonl` |
 | `phd2` | Passive listener on PHD2 TCP 4400; writes `events.jsonl`; never writes to the socket |
 | `sanitize` | Copies JSON/JSONL captures with site, path, host and IP values redacted |

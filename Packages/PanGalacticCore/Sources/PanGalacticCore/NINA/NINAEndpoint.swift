@@ -39,7 +39,6 @@ public enum NINAEndpoint: Hashable, Sendable {
     case plugins
     case framingInfo
     case profileHorizon
-    case activeProfile
     case thumbnail(index: Int)
     /// Server-rendered (debayered, stretched, resized) JPEG of a history image.
     case image(index: Int, size: PixelSize, quality: Int)
@@ -63,7 +62,6 @@ public enum NINAEndpoint: Hashable, Sendable {
         case .plugins: "/application/plugins"
         case .framingInfo: "/framing/info"
         case .profileHorizon: "/profile/horizon"
-        case .activeProfile: "/profile/show"
         case .thumbnail(let index): "/image/thumbnail/\(index)"
         case .image(let index, _, _): "/image/\(index)"
         case .preparedImage: "/prepared-image"
@@ -79,8 +77,6 @@ public enum NINAEndpoint: Hashable, Sendable {
             [URLQueryItem(name: "count", value: "true")]
         case .imageHistoryEntry(let index):
             [URLQueryItem(name: "index", value: String(index))]
-        case .activeProfile:
-            [URLQueryItem(name: "active", value: "true")]
         case .image(_, let size, let quality):
             Self.renderQuery(size: size, quality: quality) + [URLQueryItem(name: "stream", value: "true")]
         case .preparedImage(let size, let quality):
@@ -93,10 +89,10 @@ public enum NINAEndpoint: Hashable, Sendable {
     }
 
     /// Requests that make the telescope PC do significant work (full-frame render)
-    /// or return privacy-sensitive data. Callers must rate-limit these.
+    /// or read files from its disk. Callers must rate-limit these.
     public var isExpensiveOrSensitive: Bool {
         switch self {
-        case .image, .preparedImage, .thumbnail, .focuserLastAutofocus, .activeProfile, .moonSeparation: true
+        case .image, .preparedImage, .thumbnail, .focuserLastAutofocus, .moonSeparation: true
         default: false
         }
     }
