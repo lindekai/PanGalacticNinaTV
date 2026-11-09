@@ -8,6 +8,7 @@
   <img src="https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white" alt="Swift 6">
   <img src="https://img.shields.io/badge/status-M0%20API%20feasibility-yellow" alt="Status: M0">
   <img src="https://img.shields.io/badge/mode-read--only-2ea44f" alt="Read-only">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a>
 </p>
 
 <p align="center">
@@ -122,4 +123,4 @@ Independent, unofficial companion app. Not affiliated with or endorsed by the N.
 
 ## License
 
-To be decided before the first public release.
+[MIT](LICENSE). Third-party catalogs and data used later (star catalogs, ephemerides) keep their own licenses; see `docs/licensing-and-attribution.md` once added.
