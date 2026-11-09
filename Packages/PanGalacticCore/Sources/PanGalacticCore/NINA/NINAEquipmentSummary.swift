@@ -20,6 +20,15 @@ public struct NINAEquipmentSummary: Decodable, Hashable, Sendable {
         public let coolerPower: Double?
         public let isExposing: Bool?
         public let exposureEndTime: Date?
+        /// `TemperatureSetPoint`: the setpoint reported by the camera driver.
+        /// `TargetTemp` (the value typed into N.I.N.A.'s camera panel, not necessarily
+        /// applied) and `AtTargetTemp` (exact float equality) are deliberately ignored (#5).
+        public let driverSetpoint: Double?
+        public let gain: Int?
+        public let offset: Int?
+
+        /// The setpoint the cooler is regulating to; `nil` while the cooler is off or unknown.
+        public var activeSetpoint: Double? { coolerOn == true ? driverSetpoint : nil }
     }
 
     public struct Mount: Hashable, Sendable {
@@ -27,6 +36,15 @@ public struct NINAEquipmentSummary: Decodable, Hashable, Sendable {
         public let trackingEnabled: Bool?
         public let atPark: Bool?
         public let slewing: Bool?
+        /// Formatted by N.I.N.A.; epoch is JNOW (M0 finding).
+        public let rightAscension: String?
+        public let declination: String?
+        public let altitudeDegrees: Double?
+        public let sideOfPier: SideOfPier?
+    }
+
+    public enum SideOfPier: String, Hashable, Sendable {
+        case east = "pierEast", west = "pierWest"
     }
 
     public struct FilterWheel: Hashable, Sendable {
@@ -61,6 +79,9 @@ public struct NINAEquipmentSummary: Decodable, Hashable, Sendable {
         case isExposing = "IsExposing", exposureEndTime = "ExposureEndTime"
         case trackingEnabled = "TrackingEnabled", atPark = "AtPark", slewing = "Slewing"
         case selectedFilter = "SelectedFilter", state = "State", position = "Position"
+        case temperatureSetPoint = "TemperatureSetPoint", gain = "Gain", offset = "Offset"
+        case rightAscensionString = "RightAscensionString", declinationString = "DeclinationString"
+        case altitude = "Altitude", sideOfPier = "SideOfPier"
     }
 
     enum FilterField: String, CodingKey { case name = "Name" }
@@ -84,13 +105,20 @@ public struct NINAEquipmentSummary: Decodable, Hashable, Sendable {
                    coolerPower: d.lenientDouble(.coolerPower),
                    isExposing: try? d.decodeIfPresent(Bool.self, forKey: .isExposing),
                    exposureEndTime: ((try? d.decodeIfPresent(String.self, forKey: .exposureEndTime)) ?? nil)
-                       .flatMap { NINADate.parse($0) })
+                       .flatMap { NINADate.parse($0) },
+                   driverSetpoint: d.lenientDouble(.temperatureSetPoint),
+                   gain: d.lenientInt(.gain),
+                   offset: d.lenientInt(.offset))
         }
         mount = device(.mount).map { d, dev in
             Mount(device: dev,
                   trackingEnabled: try? d.decodeIfPresent(Bool.self, forKey: .trackingEnabled),
                   atPark: try? d.decodeIfPresent(Bool.self, forKey: .atPark),
-                  slewing: try? d.decodeIfPresent(Bool.self, forKey: .slewing))
+                  slewing: try? d.decodeIfPresent(Bool.self, forKey: .slewing),
+                  rightAscension: dev.connected ? (try? d.decodeIfPresent(String.self, forKey: .rightAscensionString)) ?? nil : nil,
+                  declination: dev.connected ? (try? d.decodeIfPresent(String.self, forKey: .declinationString)) ?? nil : nil,
+                  altitudeDegrees: dev.connected ? d.lenientDouble(.altitude) : nil,
+                  sideOfPier: ((try? d.decodeIfPresent(String.self, forKey: .sideOfPier)) ?? nil).flatMap(SideOfPier.init))
         }
         filterWheel = device(.filterWheel).map { d, dev in
             let filter = try? d.nestedContainer(keyedBy: FilterField.self, forKey: .selectedFilter)

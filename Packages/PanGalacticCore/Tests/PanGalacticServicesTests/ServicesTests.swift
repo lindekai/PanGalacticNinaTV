@@ -6,17 +6,36 @@ import PanGalacticCore
 /// Scripted HTTP transport. Records every request; never touches the network.
 final class FakeTransport: HTTPTransport, @unchecked Sendable {
     typealias Handler = @Sendable (URLRequest) throws -> (Int, String)
+    typealias DataHandler = @Sendable (URLRequest) throws -> (Int, Data)
     private let lock = NSLock()
-    private var handler: Handler
+    private var handler: DataHandler
     private(set) var requests: [URLRequest] = []
 
     init(_ handler: @escaping Handler) {
-        self.handler = handler
+        self.handler = Self.wrap(handler)
+    }
+
+    private init(dataHandler: @escaping DataHandler) {
+        self.handler = dataHandler
+    }
+
+    /// For binary responses such as JPEG thumbnails.
+    static func binary(_ handler: @escaping DataHandler) -> FakeTransport {
+        FakeTransport(dataHandler: handler)
     }
 
     func setHandler(_ handler: @escaping Handler) {
-        lock.withLock { self.handler = handler }
+        lock.withLock { self.handler = Self.wrap(handler) }
     }
+
+    private static func wrap(_ handler: @escaping Handler) -> DataHandler {
+        { request in
+            let (status, body) = try handler(request)
+            return (status, Data(body.utf8))
+        }
+    }
+
+    static let jpeg = Data([0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10])
 
     var paths: [String] { lock.withLock { requests.compactMap { $0.url?.path() } } }
 
@@ -25,8 +44,7 @@ final class FakeTransport: HTTPTransport, @unchecked Sendable {
             requests.append(request)
             return self.handler
         }
-        let (status, body) = try handler(request)
-        let data = Data(body.utf8)
+        let (status, data) = try handler(request)
         if data.count > maxBytes { throw NINAClientError.responseTooLarge(limit: maxBytes) }
         let response = HTTPURLResponse(url: request.url!, statusCode: status, httpVersion: "HTTP/1.1", headerFields: nil)!
         return (data, response)
@@ -255,9 +273,109 @@ struct InstanceConnectionTests {
         _ = await conn.pollOnce()
         for request in transport.requests {
             #expect(request.httpMethod == "GET")
-            try? NINAReadOnlyGuard.validate(request)
+            #expect(throws: Never.self) { try NINAReadOnlyGuard.validate(request) }
         }
-        #expect(Set(transport.paths) == ["/v2/api/version", "/v2/api/version/nina", "/v2/api/equipment/info"])
+        #expect(Set(transport.paths) == ["/v2/api/version", "/v2/api/version/nina", "/v2/api/equipment/info",
+                                         "/v2/api/image-history"])
+    }
+}
+
+@Suite("Latest image")
+@MainActor
+struct LatestImageTests {
+    final class Server: @unchecked Sendable {
+        let lock = NSLock()
+        var count = 0
+        var thumbnailReady = false
+    }
+
+    nonisolated static let entry = #"[{"ImageType":"LIGHT","TargetName":"M 31","Filter":"L","ExposureTime":300,"HFR":2.1,"Stars":812,"Date":"2026-11-09T22:15:00.1234567+01:00"}]"#
+
+    func transport(_ server: Server) -> FakeTransport {
+        FakeTransport.binary { request in
+            let (count, ready) = server.lock.withLock { (server.count, server.thumbnailReady) }
+            let path = request.url?.path() ?? ""
+            let query = request.url?.query() ?? ""
+            func json(_ payload: String) -> (Int, Data) {
+                let (status, body) = FakeTransport.ok(payload)
+                return (status, Data(body.utf8))
+            }
+            switch path {
+            case "/v2/api/version": return json(#""2.2.15.3""#)
+            case "/v2/api/version/nina": return json(#""3.2""#)
+            case "/v2/api/equipment/info": return json("{}")
+            case "/v2/api/image-history" where query.contains("count=true"): return json(String(count))
+            case "/v2/api/image-history" where query.contains("index=\(count - 1)"): return json(Self.entry)
+            case "/v2/api/image/thumbnail/\(count - 1)":
+                return ready ? (200, FakeTransport.jpeg)
+                             : (200, Data(#"{"Response":"","Error":"Unknown error","StatusCode":500,"Success":false,"Type":"API"}"#.utf8))
+            default: return (404, Data())
+            }
+        }
+    }
+
+    func connection(_ transport: FakeTransport) -> InstanceConnection {
+        InstanceConnection(instance: DeviceInstance(name: "T", host: "10.0.0.2"), transport: transport)
+    }
+
+    @Test func newImageLoadsMetadataAndRetriesThumbnail() async throws {
+        let server = Server()
+        let transport = transport(server)
+        let conn = connection(transport)
+
+        _ = await conn.pollOnce()
+        #expect(conn.phase == .live)
+        #expect(conn.latestImage == nil && conn.latestImageIndex == nil)
+
+        server.lock.withLock { server.count = 4 }
+        _ = await conn.pollOnce()
+        #expect(conn.latestImageIndex == 3)
+        #expect(conn.latestImage?.targetName == "M 31")
+        #expect(conn.latestImage?.stars == 812)
+        #expect(conn.latestThumbnail == nil, "history entry exists before the thumbnail file")
+        #expect(conn.phase == .live, "a missing thumbnail is not a connection failure")
+
+        server.lock.withLock { server.thumbnailReady = true }
+        _ = await conn.pollOnce()
+        #expect(conn.latestThumbnail == FakeTransport.jpeg)
+
+        let before = transport.paths.count
+        _ = await conn.pollOnce()
+        let after = transport.paths.dropFirst(before)
+        #expect(Array(after) == ["/v2/api/equipment/info", "/v2/api/image-history"], "steady state polls only two cheap endpoints")
+        for request in transport.requests {
+            #expect(throws: Never.self) { try NINAReadOnlyGuard.validate(request) }
+        }
+    }
+
+    @Test func imageHistoryFailureKeepsConnectionLive() async {
+        let transport = FakeTransport { request in
+            switch request.url?.path() {
+            case "/v2/api/version": FakeTransport.ok(#""2.2.15.3""#)
+            case "/v2/api/equipment/info": FakeTransport.ok("{}")
+            default: (500, "")
+            }
+        }
+        let conn = connection(transport)
+        _ = await conn.pollOnce()
+        #expect(conn.phase == .live)
+        #expect(conn.latestImage == nil)
+    }
+
+    @Test func renderServiceCachesAndRejectsNonJPEG() async throws {
+        let transport = FakeTransport.binary { request in
+            request.url?.path() == "/v2/api/image/7" ? (200, FakeTransport.jpeg) : (200, Data("{}".utf8))
+        }
+        let service = ImageRenderService(host: "10.0.0.2", port: 1888, transport: transport)
+        let request = ImageRenderService.Request(index: 7)
+        #expect(try await service.render(request) == FakeTransport.jpeg)
+        #expect(try await service.render(request) == FakeTransport.jpeg)
+        #expect(transport.paths == ["/v2/api/image/7"], "second call served from cache")
+        await #expect(throws: NINAClientError.decoding("not a JPEG image")) {
+            try await service.render(ImageRenderService.Request(index: 8))
+        }
+        let query = try #require(transport.requests.first?.url?.query())
+        #expect(query.contains("size=1920x1080") && query.contains("quality=85") && query.contains("stream=true"))
     }
 }
 

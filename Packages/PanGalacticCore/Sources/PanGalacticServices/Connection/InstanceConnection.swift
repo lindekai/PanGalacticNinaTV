@@ -20,6 +20,16 @@ public final class InstanceConnection {
     public private(set) var equipment: NINAEquipmentSummary?
     /// Set when the server is reachable but not a supported Advanced API.
     public private(set) var incompatibility: String?
+    /// Metadata of the newest image in N.I.N.A.'s history (any type, incl. snapshots).
+    public private(set) var latestImage: NINAImageSaveStatistics?
+    /// History index of `latestImage`, for the full-resolution render.
+    public private(set) var latestImageIndex: Int?
+    /// JPEG thumbnail of `latestImage` as written by N.I.N.A. (about 600 px wide).
+    public private(set) var latestThumbnail: Data?
+
+    public static let maxThumbnailBytes = 4 * 1024 * 1024
+
+    @ObservationIgnored private var images = LatestImageTracker()
 
     @ObservationIgnored private var machine: ConnectionStateMachine
     @ObservationIgnored private let client: NINAClient
@@ -85,6 +95,7 @@ public final class InstanceConnection {
                     .trimmingCharacters(in: .whitespacesAndNewlines)
             }
             equipment = try await client.get(.equipmentInfo, as: NINAEquipmentSummary.self)
+            await pollImages()
             let at = now()
             let delay = machine.recordSuccess(at: at)
             onSuccess?(at)
@@ -95,9 +106,37 @@ public final class InstanceConnection {
             if machine.phase(at: now()) == .offline {
                 // Re-identify after an outage: the server may have been replaced or upgraded.
                 pluginVersion = nil
+                images.reset()
             }
             refreshPhase()
             return delay
+        }
+    }
+
+    /// Fetches metadata and thumbnail only when the newest image changed. Reachability
+    /// is judged by `/equipment/info`; image failures are retried on the next polls.
+    private func pollImages() async {
+        guard let count = try? await client.get(.imageHistoryCount, as: Int.self) else { return }
+        if images.update(count: count) {
+            latestImageIndex = images.latestIndex
+            if images.latestIndex == nil {
+                latestImage = nil
+                latestThumbnail = nil
+            }
+        }
+        guard let index = images.latestIndex else { return }
+        if images.needsMetadata {
+            guard let entries = try? await client.get(.imageHistoryEntry(index: index),
+                                                      as: [NINAImageSaveStatistics].self) else { return }
+            latestImage = entries.first
+            latestThumbnail = nil
+            images.metadataFetched()
+        }
+        if images.needsThumbnail {
+            let data = try? await client.raw(.thumbnail(index: index), maxBytes: Self.maxThumbnailBytes)
+            let jpeg = data.flatMap { ImageFormat.isJPEG($0) ? $0 : nil }
+            images.thumbnailFetched(success: jpeg != nil)
+            if let jpeg { latestThumbnail = jpeg }
         }
     }
 

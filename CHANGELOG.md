@@ -4,6 +4,16 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ## [Unreleased]
 
+### Added (M2)
+- Overview: newest frame with target, type, filter, exposure, HFR and stars; camera with sensor temperature, active setpoint, cooler power, gain and exposure countdown; mount with RA/Dec, altitude, pier side and state; filter and guider.
+- Full-screen image viewer: shows the thumbnail at once, then a 1920×1080 render from N.I.N.A. (one request at a time, cached).
+- "As of" label and dimming when data is not live.
+- Custom telescope-on-mount icon.
+- ADR 0004 (image updates by polling); proposal for a surveillance camera view.
+
+### Changed (M2)
+- Camera setpoint: the driver's `TemperatureSetPoint` is shown only while the cooler is on; `TargetTemp` and `AtTargetTemp` are ignored (#5).
+
 ### Added (M1)
 - tvOS app (`PanGalacticNinaTV.xcodeproj`, tvOS 26.0): setup, add/edit instance with read-only connection test, opt-in local network search, instance picker, dashboard placeholder with live/stale/offline badge and equipment overview, settings.
 - English and German string catalogs, including the local network usage description.

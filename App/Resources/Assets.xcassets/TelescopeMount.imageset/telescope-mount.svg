@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Optical tube, angled towards the sky -->
+  <path d="M10.4 25.0 L49.2 6.6 L54.3 17.4 L15.5 35.8 Z" fill="#000"/>
+  <!-- Dew shield -->
+  <path d="M46.6 3.9 L55.0 0.0 L60.6 11.8 L52.2 15.8 Z" fill="#000"/>
+  <!-- Focuser -->
+  <path d="M5.5 26.8 L11.0 24.2 L13.6 29.6 L8.1 32.2 Z" fill="#000"/>
+  <!-- Mount head -->
+  <circle cx="32" cy="31" r="7" fill="#000"/>
+  <!-- Counterweight shaft and weight -->
+  <path d="M30.2 32.8 L33.8 36.4 L24.6 45.6 L21.0 42.0 Z" fill="#000"/>
+  <path d="M16.6 41.4 L23.6 48.4 L19.4 52.6 L12.4 45.6 Z" fill="#000"/>
+  <!-- Pier and tripod legs -->
+  <path d="M29.5 35 L34.5 35 L34.5 61 L29.5 61 Z" fill="#000"/>
+  <path d="M30.4 37.6 L34.2 40.0 L20.6 63.0 L16.8 60.6 Z" fill="#000"/>
+  <path d="M33.6 37.6 L29.8 40.0 L43.4 63.0 L47.2 60.6 Z" fill="#000"/>
+</svg>

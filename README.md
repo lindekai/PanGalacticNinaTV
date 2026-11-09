@@ -6,7 +6,7 @@
   <a href="https://github.com/lindekai/PanGalacticNinaTV/actions/workflows/ci.yml"><img src="https://github.com/lindekai/PanGalacticNinaTV/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
   <img src="https://img.shields.io/badge/tvOS-26%2B-000000?logo=apple&logoColor=white" alt="tvOS 26+">
   <img src="https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white" alt="Swift 6">
-  <img src="https://img.shields.io/badge/status-M1%20in%20review-yellow" alt="Status: M1 in review">
+  <img src="https://img.shields.io/badge/status-M2%20in%20progress-yellow" alt="Status: M2 in progress">
   <img src="https://img.shields.io/badge/mode-read--only-2ea44f" alt="Read-only">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a>
 </p>
@@ -67,8 +67,8 @@ flowchart LR
 | | Milestone | Status |
 |---|---|---|
 | **M0** | API feasibility – pinned sources, capability matrix, allowlist, live read-only fixtures | ✅ Complete – [report](docs/m0-report.md) |
-| **M1** | Xcode project, instances, discovery, reconnect | 🟡 In review |
-| **M2** | Overview and imaging | ⚪ Planned |
+| **M1** | Xcode project, instances, discovery, reconnect | ✅ Done |
+| **M2** | Overview and imaging | 🟡 In progress |
 | **M3** | Guiding and alerts | ⚪ Planned |
 | **M4** | Astronomy views | ⚪ Planned |
 | **M5** | Conditions, statistics, localization, personality | ⚪ Planned |

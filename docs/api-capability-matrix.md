@@ -143,7 +143,7 @@ Owner's system, 2026-11-09, idle (equipment connected, no sequence running, moun
 | `guider/info.RMSError` | Each of RA/Dec/Total/PeakRA/PeakDec is an object `{"Pixel": n, "Arcseconds": n}` – **differs from spec** | Decoder follows live shape |
 | Guide scale | `guider/info.PixelScale` and `guider/graph.PixelScale` = 0.773 ″/px; `guider/graph.Scale` = `"ARCSECONDS"` | Arcsecond display possible when PixelScale > 0 |
 | Guider state | `guider/info.State` = `"Stopped"` | Map to PHD2-like states |
-| Camera setpoint | `TargetTemp` = −10 and `TemperatureSetPoint` = 10 at the same time | **Ambiguous** – do not display a setpoint until clarified |
+| Camera setpoint | `TargetTemp` = −10 and `TemperatureSetPoint` = 10 at the same time | Resolved in M2, see below |
 | Camera temperature | 53.2 °C with cooler off | Plausibility to be checked with cooler running; show raw value with unit only |
 | Exposure end | `ExposureEndTime` populated while `IsExposing` = false | Use only while exposing |
 | Mount coordinates | `EquatorialSystem` = `JNOW`, `Coordinates.Epoch` = `JNOW` | Precess for catalog (J2000) overlays |
@@ -174,3 +174,16 @@ Manual 10 s snapshots from the Imaging tab with saving enabled; the camera drive
 Later in the session PHD2 also emitted `StarLost` (`ErrorCode` 4, localized `Status` "Stern verloren - geringe HFD") and N.I.N.A. emitted `GUIDER-DISCONNECTED`/`GUIDER-CONNECTED` when the guider was reconnected.
 
 Not verified in M0 (downgraded, see report): PHD2 `GuideStep`/dither/settle, sequence JSON while running, `prepared-image`, filter-change/dither/autofocus WebSocket events.
+
+### M2 observations (2026-11-09, 21:13–21:20)
+
+| Topic | Finding | Consequence |
+|---|---|---|
+| Setpoint source | Plugin source: `TemperatureSetPoint` = `cam.GetInfo().TemperatureSetPoint` (camera driver), `TargetTemp` = `cam.TargetTemp` (camera mediator), `AtTargetTemp` = exact float equality of temperature and driver setpoint | `AtTargetTemp` is unusable |
+| Cooling ramp | While N.I.N.A. cooled with `TargetTemp` = 0, `TemperatureSetPoint` stepped 36 → 34 → 32 → 30 → 27 °C within 50 s (cooler power 0–39 %) | `TemperatureSetPoint` is the current ramp step. The app shows it as setpoint only while `CoolerOn` is `true`. `TargetTemp` looks like the ramp's final target; not shown until a completed ramp confirms it (#5) |
+| Exposure flag | `IsExposing` stayed `true` with `ExposureEndTime` > 60 s in the past and `CameraState` `NoState`, while snapshots continued to arrive | The overdue warning wording stays "may be stuck"; it does not claim a fault |
+| Steady-state polling | `/equipment/info` + `/image-history?count=true` every 5 s; entry and thumbnail only when the count changes | Two cheap requests per cycle |
+| Thumbnail race | Plugin appends to the history before writing the thumbnail file; an early `/image/thumbnail/{n}` fails | Thumbnail retried on the next polls (max. 3) |
+| Full preview | 4.0 s for 1920×1080, q 85 (675 KB); thumbnail 0.1 s (209 KB) | Viewer shows the thumbnail at once and swaps in the render |
+| App memory (tvOS 26.5 simulator) | 35 MB with overview, 42 MB with full-screen viewer open | Device measurement still open (#8) |
+

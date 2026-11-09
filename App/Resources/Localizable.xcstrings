@@ -71,12 +71,32 @@
         }
       }
     },
+    "Altitude": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Höhe"
+          }
+        }
+      }
+    },
     "An instance with this host and port already exists.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Eine Instanz mit diesem Host und Port existiert bereits."
+          }
+        }
+      }
+    },
+    "As of %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stand %@"
           }
         }
       }
@@ -172,6 +192,9 @@
         }
       }
     },
+    "Dec": {
+      "shouldTranslate": false
+    },
     "Default port 1888. The Advanced API plugin must be enabled in N.I.N.A.": {
       "localizations": {
         "de": {
@@ -198,6 +221,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine Panik. Deinem Teleskop geht es vermutlich gut."
+          }
+        }
+      }
+    },
+    "East": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ost"
           }
         }
       }
@@ -232,6 +265,26 @@
         }
       }
     },
+    "Exposing – %lld s left": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belichtet – noch %lld s"
+          }
+        }
+      }
+    },
+    "Exposure": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belichtung"
+          }
+        }
+      }
+    },
     "Exposure overdue – camera may be stuck": {
       "localizations": {
         "de": {
@@ -245,16 +298,6 @@
     "Filter": {
       "shouldTranslate": false
     },
-    "Filter Wheel": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Filterrad"
-          }
-        }
-      }
-    },
     "Found": {
       "localizations": {
         "de": {
@@ -265,7 +308,23 @@
         }
       }
     },
+    "Full image unavailable: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vollbild nicht verfügbar: %@"
+          }
+        }
+      }
+    },
+    "Gain": {
+      "shouldTranslate": false
+    },
     "Guider": {
+      "shouldTranslate": false
+    },
+    "HFR": {
       "shouldTranslate": false
     },
     "Host not found": {
@@ -322,6 +381,16 @@
     "Live": {
       "shouldTranslate": false
     },
+    "Loading preview…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorschau wird geladen …"
+          }
+        }
+      }
+    },
     "Manage Instances": {
       "localizations": {
         "de": {
@@ -375,6 +444,16 @@
     "N.I.N.A. Advanced API": {
       "shouldTranslate": false
     },
+    "N.I.N.A. is rendering the full image… %lld s": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N.I.N.A. rendert das Vollbild … %lld s"
+          }
+        }
+      }
+    },
     "Name (optional)": {
       "shouldTranslate": false
     },
@@ -388,22 +467,22 @@
         }
       }
     },
-    "No": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nein"
-          }
-        }
-      }
-    },
     "No Advanced API found. Check that N.I.N.A. is running, the plugin is enabled and the Windows firewall allows port 1888 – or add the computer manually.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Keine Advanced API gefunden. Prüfe, ob N.I.N.A. läuft, das Plugin aktiv ist und die Windows-Firewall Port 1888 zulässt – oder füge den Rechner manuell hinzu."
+          }
+        }
+      }
+    },
+    "No image in this N.I.N.A. session yet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In dieser N.I.N.A.-Sitzung gibt es noch keine Aufnahme"
           }
         }
       }
@@ -435,6 +514,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nicht erreichbar: %@"
+          }
+        }
+      }
+    },
+    "Not tracking": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Nachführung"
           }
         }
       }
@@ -509,6 +598,16 @@
         }
       }
     },
+    "Pier": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pierseite"
+          }
+        }
+      }
+    },
     "Ports must be between 1 and 65535.": {
       "localizations": {
         "de": {
@@ -518,6 +617,9 @@
           }
         }
       }
+    },
+    "RA": {
+      "shouldTranslate": false
     },
     "Remove": {
       "localizations": {
@@ -624,6 +726,16 @@
         }
       }
     },
+    "Setpoint": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sollwert"
+          }
+        }
+      }
+    },
     "Settings": {
       "localizations": {
         "de": {
@@ -664,22 +776,22 @@
         }
       }
     },
+    "Stars": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sterne"
+          }
+        }
+      }
+    },
     "Start Search": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Suche starten"
-          }
-        }
-      }
-    },
-    "State": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Status"
           }
         }
       }
@@ -776,12 +888,12 @@
         }
       }
     },
-    "Yes": {
+    "West": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ja"
+            "value": "West"
           }
         }
       }
