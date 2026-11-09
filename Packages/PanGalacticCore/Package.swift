@@ -12,6 +12,10 @@ let package = Package(
     ],
     targets: [
         .target(name: "PanGalacticCore"),
-        .testTarget(name: "PanGalacticCoreTests", dependencies: ["PanGalacticCore"]),
+        .testTarget(
+            name: "PanGalacticCoreTests",
+            dependencies: ["PanGalacticCore"],
+            resources: [.copy("Fixtures")]
+        ),
     ]
 )

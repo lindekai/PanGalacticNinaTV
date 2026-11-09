@@ -1,0 +1,83 @@
+{
+  "Response": {
+    "TrackingMode": "Stopped",
+    "SiderealTime": 22.68807899178937,
+    "RightAscension": 4.6880789917893715,
+    "Declination": 89.99999999999999,
+    "SiteLatitude": 0.0,
+    "SiteLongitude": 0.0,
+    "SiteElevation": 0.0,
+    "RightAscensionString": "04:41:17",
+    "DeclinationString": "90° 00' 00\"",
+    "Coordinates": {
+      "RA": 4.6880789917893715,
+      "RAString": "04:41:17",
+      "RADegrees": 70.32118487684058,
+      "Dec": 89.99999999999999,
+      "DecString": "90° 00' 00\"",
+      "Epoch": "JNOW",
+      "DateTime": {
+        "Now": "2026-11-09T19:33:01.3603892+01:00",
+        "UtcNow": "2026-11-09T18:33:01.3604392Z"
+      }
+    },
+    "TimeToMeridianFlip": 24,
+    "SideOfPier": "pierEast",
+    "Altitude": 52.320476000000006,
+    "AltitudeString": "52° 19' 14\"",
+    "Azimuth": 2.6553145992287748e-14,
+    "AzimuthString": "00° 00' 00\"",
+    "SiderealTimeString": "22:41:17",
+    "HoursToMeridianString": "24:00:00",
+    "AtPark": true,
+    "TrackingRate": {},
+    "TrackingEnabled": false,
+    "TrackingModes": [
+      "Sidereal",
+      "King",
+      "Lunar",
+      "Solar",
+      "Custom",
+      "Stopped"
+    ],
+    "AtHome": true,
+    "CanFindHome": true,
+    "CanPark": true,
+    "CanSetPark": true,
+    "CanSetTrackingEnabled": true,
+    "CanSetDeclinationRate": true,
+    "CanSetRightAscensionRate": true,
+    "EquatorialSystem": "JNOW",
+    "HasUnknownEpoch": false,
+    "TimeToMeridianFlipString": "24:00:00",
+    "Slewing": false,
+    "GuideRateRightAscensionArcsecPerSec": 7.520533589349999,
+    "GuideRateDeclinationArcsecPerSec": 7.520533589349999,
+    "CanMovePrimaryAxis": true,
+    "CanMoveSecondaryAxis": true,
+    "PrimaryAxisRates": [
+      {}
+    ],
+    "SecondaryAxisRates": [
+      {}
+    ],
+    "SupportedActions": [
+      "Telescope:SetParkPosition"
+    ],
+    "AlignmentMode": "GermanPolar",
+    "CanPulseGuide": true,
+    "IsPulseGuiding": false,
+    "CanSetPierSide": true,
+    "CanSlew": true,
+    "CanSlewAltAz": true,
+    "UTCDate": "2026-11-09T18:33:01.025",
+    "Connected": true,
+    "Name": "GSServer",
+    "DisplayName": "GSServer (ASCOM)",
+    "DeviceId": "<redacted>"
+  },
+  "Error": "",
+  "StatusCode": 200,
+  "Success": true,
+  "Type": "API"
+}

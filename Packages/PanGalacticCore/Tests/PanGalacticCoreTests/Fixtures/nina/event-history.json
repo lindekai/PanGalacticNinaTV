@@ -1,0 +1,124 @@
+{
+  "Response": [
+    {
+      "Time": "2026-11-09T19:03:57.4896635+01:00",
+      "Event": "CAMERA-DISCONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:03:58.1953781+01:00",
+      "Event": "CAMERA-CONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:03:58.2000217+01:00",
+      "Event": "FILTERWHEEL-DISCONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:03:58.2015706+01:00",
+      "Event": "FILTERWHEEL-CONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:03:58.2177975+01:00",
+      "Event": "MOUNT-DISCONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:04:04.9864324+01:00",
+      "Event": "MOUNT-CONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:04:05.0254914+01:00",
+      "Event": "FOCUSER-DISCONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:04:07.9570001+01:00",
+      "Event": "FOCUSER-CONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:04:07.9642958+01:00",
+      "Event": "ROTATOR-DISCONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:04:07.9659317+01:00",
+      "Event": "ROTATOR-CONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:04:13.8793169+01:00",
+      "Event": "GUIDER-CONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:04:13.8887267+01:00",
+      "Event": "FLAT-DISCONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:04:17.7431207+01:00",
+      "Event": "FLAT-CONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:04:17.7491647+01:00",
+      "Event": "WEATHER-DISCONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:04:17.8531673+01:00",
+      "Event": "WEATHER-CONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:04:17.8614175+01:00",
+      "Event": "SWITCH-DISCONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:04:19.1387295+01:00",
+      "Event": "SWITCH-CONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:04:19.1524936+01:00",
+      "Event": "DOME-DISCONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:04:19.1568343+01:00",
+      "Event": "SAFETY-DISCONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:04:26.0305553+01:00",
+      "Event": "SAFETY-CONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:43:36.4842651+01:00",
+      "Event": "CAMERA-DISCONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:43:39.2210795+01:00",
+      "Event": "CAMERA-DISCONNECTED"
+    },
+    {
+      "Time": "2026-11-09T19:43:39.2244041+01:00",
+      "Event": "CAMERA-DOWNLOAD-TIMEOUT"
+    },
+    {
+      "Time": "2026-11-09T19:43:39.8797621+01:00",
+      "Event": "CAMERA-CONNECTED"
+    },
+    {
+      "Event": "IMAGE-SAVE",
+      "Time": "2026-11-09T19:44:11.5448277+01:00"
+    },
+    {
+      "Event": "IMAGE-SAVE",
+      "Time": "2026-11-09T19:44:25.9532015+01:00"
+    },
+    {
+      "Event": "IMAGE-SAVE",
+      "Time": "2026-11-09T19:44:39.1040699+01:00"
+    },
+    {
+      "Event": "IMAGE-SAVE",
+      "Time": "2026-11-09T19:44:50.0118201+01:00"
+    },
+    {
+      "Event": "IMAGE-SAVE",
+      "Time": "2026-11-09T19:45:01.1801435+01:00"
+    }
+  ],
+  "Error": "",
+  "StatusCode": 200,
+  "Success": true,
+  "Type": "API"
+}

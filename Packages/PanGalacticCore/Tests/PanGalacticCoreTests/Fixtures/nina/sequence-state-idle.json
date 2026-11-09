@@ -1,0 +1,35 @@
+{
+  "Response": [
+    {
+      "GlobalTriggers": []
+    },
+    {
+      "Triggers": [],
+      "Iterations": 0,
+      "Conditions": [],
+      "Name": "Start_Container",
+      "Status": "CREATED",
+      "Items": []
+    },
+    {
+      "Triggers": [],
+      "Iterations": 0,
+      "Conditions": [],
+      "Name": "Ziele_Container",
+      "Status": "CREATED",
+      "Items": []
+    },
+    {
+      "Triggers": [],
+      "Iterations": 0,
+      "Conditions": [],
+      "Name": "Ende_Container",
+      "Status": "CREATED",
+      "Items": []
+    }
+  ],
+  "Error": "",
+  "StatusCode": 200,
+  "Success": true,
+  "Type": "API"
+}

@@ -223,10 +223,11 @@ class PHD2Tests(unittest.TestCase):
 
 class SanitizeTests(unittest.TestCase):
     def test_redacts_site_network_and_paths(self):
-        data = {"Response": {"SiteLatitude": 52.31, "SiteLongitude": 13.11, "SiteElevation": 40,
-                             "AstrometrySettings": {"Latitude": 52.3, "HorizonFilePath": "C:\\x\\h.hrz"},
+        data = {"Response": {"SiteLatitude": 12.5, "SiteLongitude": -45.25, "SiteElevation": 40,
+                             "AstrometrySettings": {"Latitude": 12.5, "HorizonFilePath": "C:\\x\\h.hrz"},
                              "ImageStatistics": {"Filename": "C:\\Astro\\M31\\L_001.fits", "HFR": 2.1, "TargetName": "M31"},
                              "Note": "server at 192.168.1.50 and 127.0.0.1", "Host": "OBS-PC",
+                             "Version": "2.2.15.3", "Other": "10.0.0.7 169.254.1.2 100.64.3.4",
                              "CameraName": "Camera on OBS-PC", "AtPark": False,
                              "AstrometryAPIKey": "abc123", "OpenWeatherMapAPIKey": "def456",
                              "SkyGuardServerUrl": "http://x", "PinPointAllSkyApiKey": ""}}
@@ -238,6 +239,8 @@ class SanitizeTests(unittest.TestCase):
         self.assertEqual(s["ImageStatistics"]["Filename"], "<redacted>")
         self.assertEqual(s["ImageStatistics"]["HFR"], 2.1)
         self.assertEqual(s["Note"], "server at <ip> and 127.0.0.1")
+        self.assertEqual(s["Version"], "2.2.15.3")
+        self.assertEqual(s["Other"], "<ip> <ip> <ip>")
         self.assertEqual(s["Host"], "<redacted>")
         self.assertEqual(s["CameraName"], "Camera on <redacted>")
         self.assertIs(s["AtPark"], False)

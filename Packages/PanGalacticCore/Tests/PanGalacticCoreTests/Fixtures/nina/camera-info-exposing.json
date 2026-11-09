@@ -1,0 +1,100 @@
+{
+  "Response": {
+    "TargetTemp": -10,
+    "AtTargetTemp": false,
+    "CanSetTemperature": true,
+    "HasShutter": false,
+    "Temperature": 46.4,
+    "Gain": 100,
+    "DefaultGain": 100,
+    "ElectronsPerADU": "NaN",
+    "BinX": 1,
+    "BitDepth": 16,
+    "BinY": 1,
+    "CanSetOffset": true,
+    "CanGetGain": true,
+    "OffsetMin": 0,
+    "OffsetMax": 7936,
+    "Offset": 180,
+    "DefaultOffset": 180,
+    "USBLimit": 9,
+    "IsSubSampleEnabled": false,
+    "CameraState": "NoState",
+    "XSize": 6224,
+    "YSize": 4168,
+    "PixelSize": 3.76,
+    "HasBattery": false,
+    "Battery": -1,
+    "GainMin": 100,
+    "GainMax": 10000,
+    "CanSetGain": true,
+    "Gains": [],
+    "CoolerOn": false,
+    "CoolerPower": 0,
+    "HasDewHeater": true,
+    "DewHeaterOn": true,
+    "CanSubSample": true,
+    "SubSampleX": 0,
+    "SubSampleY": 0,
+    "SubSampleWidth": 0,
+    "SubSampleHeight": 0,
+    "TemperatureSetPoint": 10,
+    "ReadoutModes": [
+      "Low Conversion Gain",
+      "High Conversion Gain"
+    ],
+    "ReadoutMode": 0,
+    "ReadoutModeForSnapImages": 0,
+    "ReadoutModeForNormalImages": 0,
+    "IsExposing": true,
+    "ExposureEndTime": "2026-11-09T19:45:05.148052+01:00",
+    "LastDownloadTime": 0.1873419,
+    "SensorType": "RGGB",
+    "BayerOffsetX": 0,
+    "BayerOffsetY": 0,
+    "BinningModes": [
+      {
+        "Name": "1x1",
+        "X": 1,
+        "Y": 1
+      },
+      {
+        "Name": "2x2",
+        "X": 2,
+        "Y": 2
+      },
+      {
+        "Name": "3x3",
+        "X": 3,
+        "Y": 3
+      },
+      {
+        "Name": "4x4",
+        "X": 4,
+        "Y": 4
+      }
+    ],
+    "ExposureMax": 3600,
+    "ExposureMin": 0.0001,
+    "LiveViewEnabled": false,
+    "CanShowLiveView": false,
+    "SupportedActions": [
+      "Bin Average",
+      "Dew Heater Strength",
+      "Ultra Mode",
+      "High Fullwell Mode",
+      "LED Lights"
+    ],
+    "CanSetUSBLimit": true,
+    "USBLimitMin": 0,
+    "USBLimitMax": 9,
+    "Connected": true,
+    "Name": "ATR2600C",
+    "DisplayName": "ATR2600C (fec&0&14)",
+    "DeviceId": "<redacted>"
+  },
+  "Error": "",
+  "StatusCode": 200,
+  "Success": true,
+  "Type": "API"
+}

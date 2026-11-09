@@ -5,8 +5,8 @@ import Foundation
 /// PHD2 sends `AppState` only on connect; afterwards the state must be derived
 /// from events. Only the transitions documented in the EventMonitoring wiki are
 /// applied. Events that clearly end the known state but have no documented
-/// successor (`GuidingStopped`, `Resumed`) set the state to `nil` (unknown) rather
-/// than guessing; the next documented event re-establishes it.
+/// successor (`GuidingStopped`, `Resumed`, `CalibrationFailed`) set the state to
+/// `nil` (unknown) rather than guessing; the next documented event re-establishes it.
 public struct PHD2StateTracker: Hashable, Sendable {
     public private(set) var state: PHD2AppState?
 
@@ -23,7 +23,7 @@ public struct PHD2StateTracker: Hashable, Sendable {
         case .loopingExposures: state = .looping
         case .loopingExposuresStopped: state = .stopped
         case .starLost: state = .lostLock
-        case .guidingStopped, .resumed: state = nil
+        case .guidingStopped, .resumed, .calibrationFailed: state = nil
         default: break
         }
     }
