@@ -36,11 +36,19 @@ PanGalacticNinaTV (SwiftUI tvOS)
 4. Event-driven refresh: WebSocket `IMAGE-SAVE` triggers thumbnail/preview fetch; equipment state is polled at a modest interval; PHD2 `GuideStep` feeds a bounded ring buffer.
 5. Views observe stores; they never call services that could mutate remote state, because none exist.
 
+## Code layout
+
+- `Packages/PanGalacticCore` – platform-independent protocol layer (wire DTOs, request allowlist, decoders, statistics); no UI and no networking I/O; tested with `swift test` on macOS.
+- `App/` – tvOS app target (from M1), depends on the core package.
+
 ## Networking
+
+See [ADR 0002](adr/0002-tvos-local-networking.md).
+
 
 - N.I.N.A. Advanced API: `http://<host>:<port>/v2/api`, default port 1888; event stream `ws://<host>:<port>/v2/socket`. No authentication exists at plugin 2.2.15.3.
 - PHD2: TCP `<host>:4400` (+1 per additional instance), CR LF-terminated JSON events. The decoder handles partial frames, oversized lines (bounded) and reconnects.
-- tvOS local network: `NSLocalNetworkUsageDescription`, `NSBonjourServices` only if Bonjour is used, and App Transport Security exceptions scoped to local networking (`NSAllowsLocalNetworking`) rather than arbitrary loads. To be validated against current Apple documentation in M1.
+- tvOS local network: ATS `NSAllowsLocalNetworking` only; WebSocket and PHD2 via Network.framework; `NSBonjourServices` only if Bonjour is used ([ADR 0002](adr/0002-tvos-local-networking.md)).
 - Server time vs. device time is measured via `/time` and shown when skew is significant.
 
 ## Images

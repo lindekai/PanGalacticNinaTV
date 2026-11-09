@@ -24,6 +24,8 @@ A native tvOS app that turns an Apple TV into a read-only observatory monitor fo
 - [API capability matrix](docs/api-capability-matrix.md)
 - [Milestones](docs/milestones.md)
 - [M0 live test procedure](docs/m0-test-procedure.md)
+- [Decisions (ADRs)](docs/adr/)
+- [Changelog](CHANGELOG.md)
 - [Contributor guidelines](AGENTS.md)
 
 ## Disclaimer

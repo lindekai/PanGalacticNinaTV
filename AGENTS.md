@@ -31,5 +31,7 @@ Rules for anyone – human or automated tooling – changing this repository.
 
 ## Build and test
 
+- Core package: `cd Packages/PanGalacticCore && swift test`
+- Core package for tvOS: `xcodebuild -scheme PanGalacticCore -destination 'generic/platform=tvOS' build` (in `Packages/PanGalacticCore`)
 - M0 tooling: `python3 tools/m0/tests/test_m0probe.py`
 - App build/test commands: added with the Xcode project in M1.

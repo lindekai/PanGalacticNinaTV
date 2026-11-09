@@ -20,6 +20,9 @@ Each milestone ends with a review; the next one starts only after approval.
 - [x] Draft read-only allowlist decision ([ADR 0001](adr/0001-read-only-endpoint-allowlist.md))
 - [x] Read-only probe tooling with self-tests ([tools/m0](../tools/m0/README.md))
 - [x] Owner test procedure ([m0-test-procedure.md](m0-test-procedure.md))
+- [x] tvOS local networking research ([ADR 0002](adr/0002-tvos-local-networking.md))
+- [x] `PanGalacticCore` protocol layer (no UI, no I/O): allowlisted request factory, envelope/event decoding, PHD2 framing/decoding/state, guide statistics – built from documentation, to be re-validated against live fixtures
+- [x] CI for core package and M0 tooling
 - [ ] Record PHD2 version
 - [ ] Live capture: Advanced API REST (idle and during a running sequence)
 - [ ] Live capture: Advanced API WebSocket events incl. `IMAGE-SAVE`
@@ -27,4 +30,6 @@ Each milestone ends with a review; the next one starts only after approval.
 - [ ] Preview image timing and telescope-PC CPU observation
 - [ ] LAN reachability from Mac and Apple TV (same subnet, Windows firewall)
 - [ ] Sanitize and commit fixtures; update matrix to *verified*
+- [ ] Replace synthetic test samples in `PanGalacticCore` with live fixtures; pin `IMAGE-SAVE` date format, sequence JSON schema
+- [ ] Decide which RMS definition (about zero vs. standard deviation) matches N.I.N.A./PHD2 display, using `guider/info` vs. captured `GuideStep`s
 - [ ] Review and approval for M1
