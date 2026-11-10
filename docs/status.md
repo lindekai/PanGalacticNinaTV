@@ -8,7 +8,7 @@ Snapshot for picking up work on another machine. Last updated 2026-11-10.
 |---|---|
 | M0 API feasibility | Done (PR #2, #3) |
 | M1 Skeleton & connections | Done (PR #10); Apple TV hardware check open in #8 |
-| M2 Overview & imaging | Part 1 in PR #11 (`m2/overview`), CI green, **awaiting review and merge** |
+| M2 Overview & imaging | Part 1 merged (PR #11); sequence progress (#4) still open |
 | Tests | 74 (`swift test`: 52 core, 22 services) |
 
 Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
@@ -26,9 +26,8 @@ Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 
 ## Next steps
 
-1. Review and merge PR #11.
-2. Sequence capture (#4) → sequence progress on the Overview; this completes M2.
-3. M3: guiding chart, RMS, read-only WebSocket listener, foreground alerts.
+1. Sequence capture (#4) → sequence progress on the Overview; this completes M2.
+2. M3: guiding chart, RMS, read-only WebSocket listener, foreground alerts.
 
 ## Setting up a new machine
 
