@@ -109,6 +109,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) and the [contributor guidelines](AGENTS.m
 
 ## Documentation
 
+- [Project status](docs/status.md)
 - [Architecture](docs/architecture.md)
 - [API capability matrix](docs/api-capability-matrix.md)
 - [Decisions (ADRs)](docs/adr/)
