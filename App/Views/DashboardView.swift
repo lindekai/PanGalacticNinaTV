@@ -2,29 +2,47 @@ import PanGalacticCore
 import PanGalacticServices
 import SwiftUI
 
-/// M1 placeholder dashboard: connection health and an equipment overview.
-/// The full Overview layout follows in M2.
+/// Overview of one N.I.N.A. instance: newest frame, camera, mount, filter and guider.
+/// Values that are unknown are shown as "—"; data that is not live is labelled with its age.
 struct DashboardView: View {
     @Environment(AppModel.self) private var model
     let connection: InstanceConnection
+    @State private var viewerItem: ViewerItem?
 
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { context in
-            VStack(alignment: .leading, spacing: 40) {
+            VStack(alignment: .leading, spacing: 32) {
                 header(now: context.date)
                 if let version = connection.incompatibility {
                     Label("Advanced API \(version) is not supported yet (supported: 2.x). Monitoring stopped.",
                           systemImage: "xmark.octagon.fill")
                         .foregroundStyle(.orange)
+                    Spacer()
                 } else {
-                    equipmentGrid(now: context.date)
+                    overview(now: context.date)
                 }
-                Spacer()
                 footer
             }
-            .padding(60)
+            .padding(.horizontal, 60)
+            .padding(.vertical, 40)
             .onChange(of: context.date) { connection.refreshPhase() }
         }
+        #if DEBUG
+        // Simulator gate tests have no remote: `-debug.openViewer YES` opens the viewer once an image is known.
+        .onChange(of: connection.latestImageIndex) { _, index in
+            if let index, UserDefaults.standard.bool(forKey: "debug.openViewer"), viewerItem == nil {
+                viewerItem = ViewerItem(index: index)
+            }
+        }
+        #endif
+        .fullScreenCover(item: $viewerItem) { item in
+            ImageViewer(index: item.index, image: connection.latestImage, thumbnail: connection.latestThumbnail,
+                        service: model.renderService)
+        }
+    }
+
+    private var asOf: Date? {
+        connection.phase == .live ? nil : connection.lastSuccess
     }
 
     private func header(now: Date) -> some View {
@@ -36,45 +54,35 @@ struct DashboardView: View {
         }
     }
 
-    private func equipmentGrid(now: Date) -> some View {
+    private func overview(now: Date) -> some View {
         let equipment = connection.equipment
-        let dimmed = connection.phase != .live
-        return Grid(horizontalSpacing: 40, verticalSpacing: 40) {
-            GridRow {
-                EquipmentCard(title: "Camera", systemImage: "camera", device: equipment?.camera?.device) {
-                    if let camera = equipment?.camera, camera.device.connected {
-                        ValueRow("Sensor", camera.temperature.map { $0.formatted(.number.precision(.fractionLength(1))) + " °C" })
-                        ValueRow("Cooler", camera.coolerOn.map { $0 ? String(localized: "On") : String(localized: "Off") })
-                        ValueRow("Exposing", camera.isExposing.map { $0 ? String(localized: "Yes") : String(localized: "No") })
-                        if camera.isOverdue(now: now) {
-                            Label("Exposure overdue – camera may be stuck", systemImage: "exclamationmark.triangle.fill")
-                                .foregroundStyle(.orange)
+        return HStack(alignment: .top, spacing: 40) {
+            LatestImageCard(image: connection.latestImage, thumbnail: connection.latestThumbnail,
+                            asOf: asOf, now: now) {
+                if let index = connection.latestImageIndex { viewerItem = ViewerItem(index: index) }
+            }
+            .frame(maxWidth: .infinity)
+
+            VStack(spacing: 24) {
+                CameraCard(camera: equipment?.camera, now: now)
+                MountCard(mount: equipment?.mount)
+                HStack(spacing: 24) {
+                    EquipmentCard(title: "Filter", icon: Image(systemName: "circle.grid.cross"), device: equipment?.filterWheel?.device) {
+                        if let wheel = equipment?.filterWheel, wheel.device.connected {
+                            Text(verbatim: wheel.selectedFilter ?? "—").font(.title3)
+                        }
+                    }
+                    EquipmentCard(title: "Guider", icon: Image(systemName: "target"), device: equipment?.guider?.device) {
+                        if let guider = equipment?.guider, guider.device.connected {
+                            Text(verbatim: guider.state ?? "—").font(.title3)
                         }
                     }
                 }
-                EquipmentCard(title: "Mount", systemImage: "scope", device: equipment?.mount?.device) {
-                    if let mount = equipment?.mount, mount.device.connected {
-                        ValueRow("Tracking", mount.trackingEnabled.map { $0 ? String(localized: "On") : String(localized: "Off") })
-                        ValueRow("Parked", mount.atPark.map { $0 ? String(localized: "Yes") : String(localized: "No") })
-                        ValueRow("Slewing", mount.slewing.map { $0 ? String(localized: "Yes") : String(localized: "No") })
-                    }
-                }
             }
-            GridRow {
-                EquipmentCard(title: "Filter Wheel", systemImage: "circle.grid.cross", device: equipment?.filterWheel?.device) {
-                    if let wheel = equipment?.filterWheel, wheel.device.connected {
-                        ValueRow("Filter", wheel.selectedFilter)
-                    }
-                }
-                EquipmentCard(title: "Guider", systemImage: "target", device: equipment?.guider?.device) {
-                    if let guider = equipment?.guider, guider.device.connected {
-                        ValueRow("State", guider.state)
-                    }
-                }
-            }
+            .frame(width: 800)
+            .opacity(asOf != nil && equipment != nil ? 0.55 : 1)
         }
-        .fixedSize(horizontal: false, vertical: true)
-        .opacity(dimmed && equipment != nil ? 0.55 : 1)
+        .frame(maxHeight: .infinity, alignment: .top)
     }
 
     private var footer: some View {
@@ -94,6 +102,80 @@ struct DashboardView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+        }
+    }
+}
+
+private struct ViewerItem: Identifiable {
+    let index: Int
+    var id: Int { index }
+}
+
+struct CameraCard: View {
+    let camera: NINAEquipmentSummary.Camera?
+    let now: Date
+
+    var body: some View {
+        EquipmentCard(title: "Camera", icon: Image(systemName: "camera"), device: camera?.device) {
+            if let camera, camera.device.connected {
+                HStack(spacing: 28) {
+                    Stat("Sensor", camera.temperature.map(Self.celsius))
+                    // Setpoint only while the cooler runs (#5: driver value, not the panel value).
+                    Stat("Setpoint", camera.activeSetpoint.map(Self.celsius))
+                    Stat("Cooler", camera.coolerOn.map { on in
+                        on ? camera.coolerPower.map { "\(Int($0.rounded())) %" } ?? String(localized: "On")
+                           : String(localized: "Off")
+                    })
+                    Stat("Gain", camera.gain.map(String.init))
+                }
+                exposure(camera)
+            }
+        }
+    }
+
+    @ViewBuilder private func exposure(_ camera: NINAEquipmentSummary.Camera) -> some View {
+        if camera.isOverdue(now: now) {
+            Label("Exposure overdue – camera may be stuck", systemImage: "exclamationmark.triangle.fill")
+                .foregroundStyle(.orange)
+        } else if camera.isExposing == true, let end = camera.exposureEndTime, end > now {
+            Label("Exposing – \(Int(end.timeIntervalSince(now).rounded(.up))) s left", systemImage: "camera.aperture")
+                .foregroundStyle(.secondary)
+        } else if camera.isExposing == true {
+            Label("Exposing", systemImage: "camera.aperture")
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    static func celsius(_ value: Double) -> String {
+        value.formatted(.number.precision(.fractionLength(1))) + " °C"
+    }
+}
+
+struct MountCard: View {
+    let mount: NINAEquipmentSummary.Mount?
+
+    var body: some View {
+        // No SF Symbol for a telescope on a mount exists on tvOS 26; custom template vector.
+        EquipmentCard(title: "Mount", icon: Image("TelescopeMount"), device: mount?.device) {
+            if let mount, mount.device.connected {
+                HStack(spacing: 28) {
+                    Stat("RA", mount.rightAscension)
+                    Stat("Dec", mount.declination)
+                    Stat("Altitude", mount.altitudeDegrees.map { $0.formatted(.number.precision(.fractionLength(1))) + "°" })
+                    Stat("Pier", mount.sideOfPier.map { $0 == .east ? String(localized: "East") : String(localized: "West") })
+                }
+                Text(verbatim: status(mount)).foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    private func status(_ mount: NINAEquipmentSummary.Mount) -> String {
+        if mount.slewing == true { return String(localized: "Slewing") }
+        if mount.atPark == true { return String(localized: "Parked") }
+        switch mount.trackingEnabled {
+        case true: return String(localized: "Tracking")
+        case false: return String(localized: "Not tracking")
+        case nil: return "—"
         }
     }
 }
@@ -155,25 +237,33 @@ struct ConnectionBadge: View {
 
 struct EquipmentCard<Content: View>: View {
     let title: LocalizedStringKey
-    let systemImage: String
+    let icon: Image
     let device: NINAEquipmentSummary.Device?
     @ViewBuilder let content: Content
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Label(title, systemImage: systemImage).font(.title3.bold())
-                Spacer()
-                Text(status).font(.callout).foregroundStyle(device?.connected == true ? .green : .secondary)
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(spacing: 12) {
+                Label { Text(title) } icon: { icon.resizable().scaledToFit().frame(width: 40, height: 40) }
+                    .font(.headline)
+                    .lineLimit(1)
+                Spacer(minLength: 8)
+                if device?.connected == true {
+                    // A dot instead of text keeps narrow cards readable.
+                    Circle().fill(.green).frame(width: 14, height: 14)
+                        .accessibilityLabel(Text(status))
+                } else {
+                    Text(status).font(.caption).foregroundStyle(.secondary).lineLimit(1)
+                }
             }
             if let name = device?.name, device?.connected == true {
-                Text(verbatim: name).font(.callout).foregroundStyle(.secondary)
+                Text(verbatim: name).font(.caption).foregroundStyle(.secondary).lineLimit(1)
             }
             content
         }
-        .padding(32)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(.regularMaterial, in: .rect(cornerRadius: 24))
+        .padding(24)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .background(.regularMaterial, in: .rect(cornerRadius: 20))
     }
 
     private var status: LocalizedStringKey {
@@ -182,25 +272,5 @@ struct EquipmentCard<Content: View>: View {
         case false: "Not connected"
         case nil: "Unknown"
         }
-    }
-}
-
-/// A labelled value; `nil` is shown as an explicit dash, never as zero.
-struct ValueRow: View {
-    let label: LocalizedStringKey
-    let value: String?
-
-    init(_ label: LocalizedStringKey, _ value: String?) {
-        self.label = label
-        self.value = value
-    }
-
-    var body: some View {
-        HStack {
-            Text(label).foregroundStyle(.secondary)
-            Spacer()
-            Text(verbatim: value ?? "—")
-        }
-        .font(.body)
     }
 }

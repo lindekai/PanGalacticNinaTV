@@ -1,19 +1,49 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "CFBundleDisplayName": {
-      "shouldTranslate": false
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Pan Galactic"
+          }
+        }
+      },
+      "shouldTranslate" : false
     },
-    "NSLocalNetworkUsageDescription": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pan Galactic N.I.N.A. TV liest Statusdaten von N.I.N.A. und PHD2 in deinem lokalen Netzwerk. Die App steuert niemals deine Ausrüstung."
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "PanGalacticNinaTV"
+          }
+        }
+      }
+    },
+    "NSLocalNetworkUsageDescription" : {
+      "comment" : "Privacy - Local Network Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Pan Galactic N.I.N.A. TV liest Statusdaten von N.I.N.A. und PHD2 in deinem lokalen Netzwerk. Die App steuert niemals deine Ausrüstung."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Pan Galactic N.I.N.A. TV reads status data from N.I.N.A. and PHD2 on your local network. It never controls your equipment."
           }
         }
       }
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }

@@ -10,6 +10,8 @@ final class AppModel {
     let store: InstanceStore
     private(set) var activeInstanceID: DeviceInstance.ID?
     private(set) var connection: InstanceConnection?
+    /// Full-resolution renders for the image viewer; one per active instance.
+    private(set) var renderService: ImageRenderService?
 
     init(store: InstanceStore = InstanceStore()) {
         self.store = store
@@ -31,6 +33,7 @@ final class AppModel {
             self?.store.markSeen(id: id, at: date)
         }
         self.connection = connection
+        renderService = ImageRenderService(instance: instance)
         activeInstanceID = id
         connection.start()
     }
@@ -39,6 +42,7 @@ final class AppModel {
     func deactivate() {
         connection?.stop()
         connection = nil
+        renderService = nil
         activeInstanceID = nil
     }
 
