@@ -55,4 +55,44 @@ struct DashboardDerivationTests {
         let idle = try #require(try summary(#"{"Camera":{"Connected":true,"IsExposing":false}}"#).camera)
         #expect(StatusLight.camera(idle, phase: .live, now: now) == .normal)
     }
+
+    func entry(hfr: Double?) throws -> NINAImageSaveStatistics {
+        let value = hfr.map { String($0) } ?? "0"
+        return try JSONDecoder().decode(NINAImageSaveStatistics.self, from: Data(#"{"HFR":\#(value)}"#.utf8))
+    }
+
+    @Test func historyWindowBackfillsNewestFirstAndBoundsMemory() throws {
+        var buffer = ImageHistoryBuffer(capacity: 5)
+        #expect(buffer.missingIndices(limit: 4).isEmpty)
+
+        buffer.update(count: 8)
+        #expect(buffer.missingIndices(limit: 3) == [7, 6, 5])
+        #expect(buffer.missingIndices(limit: 10) == [7, 6, 5, 4, 3], "only the newest `capacity` entries")
+
+        buffer.record(try entry(hfr: 2.0), at: 7)
+        buffer.record(nil, at: 6) // fetch failed: attempted, not retried
+        buffer.record(try entry(hfr: 2.4), at: 5)
+        #expect(buffer.missingIndices(limit: 10) == [4, 3])
+        #expect(buffer.recent.compactMap(\.hfr) == [2.4, 2.0], "oldest first")
+
+        buffer.update(count: 11)
+        #expect(buffer.missingIndices(limit: 10) == [10, 9, 8], "window moved; 5 dropped out")
+        #expect(buffer.recent.compactMap(\.hfr) == [2.0])
+
+        buffer.update(count: 2)
+        #expect(buffer.recent.isEmpty, "shrinking history = N.I.N.A. restarted")
+        #expect(buffer.missingIndices(limit: 10) == [1, 0])
+    }
+
+    @Test func hfrSeriesSkipsPlaceholdersAndLimits() throws {
+        var buffer = ImageHistoryBuffer(capacity: 50)
+        buffer.update(count: 30)
+        for index in 0..<30 {
+            buffer.record(try entry(hfr: index == 10 ? nil : 1.0 + Double(index) / 100), at: index)
+        }
+        let series = buffer.hfrSeries(limit: 24)
+        #expect(series.count == 24)
+        #expect(series.last == 1.29)
+        #expect(!series.contains(1.10), "placeholder HFR 0 is unavailable, not a data point")
+    }
 }
