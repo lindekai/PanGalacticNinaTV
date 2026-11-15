@@ -2,7 +2,7 @@ import PanGalacticCore
 import SwiftUI
 import UIKit
 
-/// The newest frame: focusable image with crosshair and a caption below it.
+/// The newest frame: focusable image with a caption below it.
 /// Old frames are labelled "As of …" so they are never mistaken for new ones.
 struct LatestImageCard: View {
     let image: NINAImageSaveStatistics?
@@ -30,7 +30,6 @@ struct LatestImageCard: View {
             Rectangle().fill(Color.black)
             if let thumbnail, let uiImage = UIImage(data: thumbnail) {
                 Image(uiImage: uiImage).resizable().scaledToFit()
-                Crosshair().stroke(Theme.text.opacity(0.28), lineWidth: 1)
             } else if image != nil {
                 ProgressView()
             } else {
@@ -80,18 +79,5 @@ struct LatestImageCard: View {
         if let stars = image.stars { parts.append(String(localized: "\(stars) stars")) }
         if let date = image.date { parts.append(date.formatted(.relative(presentation: .named, unitsStyle: .abbreviated))) }
         return parts.joined(separator: " · ")
-    }
-}
-
-/// 1 px crosshair with a gap in the centre so the object is never covered.
-private struct Crosshair: Shape {
-    func path(in rect: CGRect) -> Path {
-        let gap: CGFloat = 22
-        var path = Path()
-        path.move(to: CGPoint(x: rect.midX, y: rect.minY)); path.addLine(to: CGPoint(x: rect.midX, y: rect.midY - gap))
-        path.move(to: CGPoint(x: rect.midX, y: rect.midY + gap)); path.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
-        path.move(to: CGPoint(x: rect.minX, y: rect.midY)); path.addLine(to: CGPoint(x: rect.midX - gap, y: rect.midY))
-        path.move(to: CGPoint(x: rect.midX + gap, y: rect.midY)); path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
-        return path
     }
 }

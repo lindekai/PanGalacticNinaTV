@@ -63,7 +63,7 @@ A beautiful and genuinely useful tvOS monitor that meets the expectations of an 
 6. **Honest gaps:** a missing value is "—" in `text3`, never 0. Features without verified data (guiding RMS until M3, altitude chart until M4) show a dashed "Not available yet" frame. Stale values are dimmed to `text2` and labelled "As of 23:39"; the image line always shows the frame's age.
 7. **Minimal charts:** one baseline, one `text2` curve, the newest point in teal; no grid, no legend, a single rubric as title. Only data that exists.
 8. **tvOS focus:** on the overview only the image and the gear are focusable (plus the tab bar). Focus = scale 1.02 (image) / 1.12 (gear), 3 pt `focus` border, soft shadow; the gear inverts. Teal is never used for focus.
-9. **Dark room:** the brightest area is the astrophoto itself. Crosshair 1 px with a gap in the centre, drawn only over an actual frame.
+9. **Dark room:** the brightest area is the astrophoto itself. No crosshair or other overlay on the frame (removed after the owner's live review).
 
 ## Pages
 

@@ -10,7 +10,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 - "As of" label and dimming when data is not live.
 - Custom telescope-on-mount icon.
 - ADR 0004 (image updates by polling); proposal for a surveillance camera view.
-- Redesigned overview ("precision instrument"): slate/teal design system, header with sequence/exposure/live pills and settings button, newest frame with crosshair, caption and HFR trend of recent frames, modules Camera (gain first), Object (altitude only while tracking), Mount, Guiding and Filter with status LEDs.
+- Redesigned overview ("precision instrument"): slate/teal design system, header with sequence/exposure/live pills and settings button, newest frame with caption and HFR trend of recent frames, modules Camera (gain first), Object (altitude only while tracking), Mount, Guiding and Filter with status LEDs.
 - Equatorial mount icon; Top Shelf lettering.
 - Connection keeps the last 50 image-history entries (backfilled four per poll).
 
