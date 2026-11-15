@@ -55,7 +55,7 @@ A beautiful and genuinely useful tvOS monitor that meets the expectations of an 
 
 ### Rules
 
-1. **Grid:** 8 pt base grid; safe area 80 pt left/right, 60 pt top/bottom. Image 1024 pt, gap 40 pt, module column 696 pt, 24 pt between modules. Side values right-aligned on one edge. The overview applies the 80/60 pt margins from the screen edge and ignores the tvOS safe area insets, so the grid is exact. Small tiles have fixed widths: Mount 268 pt, Guiding 190 pt, Filter 190 pt (268 + 190 + 190 + 2 × 24 = 696), equal heights. Module panels use 20 pt horizontal padding; module titles may scale down to 60 % to fit German labels.
+1. **Grid:** 8 pt base grid; safe area 80 pt left/right, 60 pt top/bottom. Image 1024 pt, gap 40 pt, module column 696 pt, 24 pt between modules. Side values right-aligned on one edge. The overview applies the 80/60 pt margins from the screen edge and ignores the tvOS safe area insets, so the grid is exact. Small tiles have fixed widths: Mount 268 pt, Guiding 190 pt, Filter 190 pt (268 + 190 + 190 + 2 × 24 = 696), equal heights. Explicit exceptions to the 8 pt grid: the tile widths 268/190 (fixed by the 696 pt column) and the 20 pt panel padding. Module panels use 20 pt horizontal padding; module titles may scale down to 60 % to fit German labels.
 2. **Glanceability test:** every element on the overview must be readable from three metres within one second; otherwise it goes to a sub-page.
 3. **One signal colour:** teal only means running / OK / progress. Titles and icons stay grey. Amber and red appear only for real warnings and faults.
 4. **Surfaces, not boxes:** flat panels without borders, 1 px hairlines inside, radius 12 pt, no glow, no gradients. Glass only on floating layers.
@@ -71,7 +71,7 @@ A `TabView` with the tvOS top tab bar; it hides while focus is in the content an
 
 | Tab | Purpose | Content | Data |
 |---|---|---|---|
-| Overview | Is everything fine? | Newest frame (focus → full-screen viewer) with caption and HFR sparkline of the HFR values of the last 24 frames; Camera (gain; sensor temperature, setpoint, cooler); Object (target name in the module header, altitude; RA, Dec – both only while tracking); then one row of three tiles: Mount (state; pier side), Guiding (RMS – empty until M3; PHD2 state), Filter (name; position); header pills; segmented progress bar | M2 |
+| Overview | Is everything fine? | Newest frame (focus → full-screen viewer) with caption and HFR sparkline of the HFR values of the last 24 frames; Camera (gain; sensor temperature, setpoint, cooler); Object (target name in the module header, altitude; RA, Dec – both only while tracking); then one row of three tiles: Mount (state; pier side), Guiding (RMS – empty until M3; PHD2 state), Filter (name only; the filter position is not shown because it is not decoded – showing it needs a source review of the endpoint field per AGENTS.md rule 4); header pills; segmented progress bar | M2 |
 | Image | Judge frame quality | Newest frame medium size; HFR and star-count charts with shared time axis (median dashed); table of recent frames | M2 (image history) |
 | Sequence | Where is the night? | Target, exposures n/m per filter, running exposure, current step | #4 |
 | Mount | Where does the telescope point? | RA/Dec, pointing altitude/azimuth, pier side, state; later object altitude curve and azimuth chart | M2; charts M4 |
@@ -80,7 +80,7 @@ A `TabView` with the tvOS top tab bar; it hides while focus is in the content an
 
 ### Overview details
 
-- **Header pills:** "Sequence" (target · n/m) shows "—" until #4 delivers verified data; "Exposure" shows the remaining time of the running exposure (available now) with a thin progress underline; "LIVE · HH:MM" uses the existing live/stale/offline state (stale/offline: amber/red word instead of LIVE).
+- **Header pills:** "Sequence" (target · n/m) shows "—" until #4 delivers verified data; "Exposure" shows the remaining time of the running exposure (available now); no progress underline (it would need the exposure start time, which is not available – same reason as the bottom bar); "LIVE · HH:MM" uses the existing live/stale/offline state (stale/offline: amber/red word instead of LIVE).
 - **Bottom bar:** one segment per exposure of the sequence once #4 is done. Until then no bar: the equipment info has no exposure start or duration, so a fraction would be guessed when the app joins mid-exposure; the "Exposure" pill shows the remaining time instead.
 - **Object altitude:** until M4 the only source is the mount's pointing altitude from N.I.N.A. It is shown as the object's altitude only while the mount is tracking; when parked, slewing or not tracking, the value is "—". From M4 the app computes the object's altitude from its coordinates and the site, independent of the mount.
 - **Guider state** is localized (e.g. "Stopped" → "Gestoppt"); unknown wire values are shown as received.
