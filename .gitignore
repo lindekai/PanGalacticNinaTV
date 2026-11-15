@@ -24,3 +24,6 @@ captures/
 
 # Local signing settings (team ID); see Config/Local.xcconfig.example.
 Config/Local.xcconfig
+
+# Brainstorming mockups (local)
+.superpowers/
