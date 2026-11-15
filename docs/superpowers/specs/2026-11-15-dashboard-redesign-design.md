@@ -55,7 +55,7 @@ A beautiful and genuinely useful tvOS monitor that meets the expectations of an 
 
 ### Rules
 
-1. **Grid:** 8 pt base grid; safe area 80 pt left/right, 60 pt top/bottom. Image 1024 pt, gap 40 pt, module column 696 pt, 24 pt between modules. Side values right-aligned on one edge.
+1. **Grid:** 8 pt base grid; safe area 80 pt left/right, 60 pt top/bottom. Image 1024 pt, gap 40 pt, module column 696 pt, 24 pt between modules. Side values right-aligned on one edge. The overview applies the 80/60 pt margins from the screen edge and ignores the tvOS safe area insets, so the grid is exact. Small tiles have fixed widths: Mount 268 pt, Guiding 190 pt, Filter 190 pt (268 + 190 + 190 + 2 × 24 = 696), equal heights. Module panels use 20 pt horizontal padding; module titles may scale down to 60 % to fit German labels.
 2. **Glanceability test:** every element on the overview must be readable from three metres within one second; otherwise it goes to a sub-page.
 3. **One signal colour:** teal only means running / OK / progress. Titles and icons stay grey. Amber and red appear only for real warnings and faults.
 4. **Surfaces, not boxes:** flat panels without borders, 1 px hairlines inside, radius 12 pt, no glow, no gradients. Glass only on floating layers.
@@ -63,7 +63,7 @@ A beautiful and genuinely useful tvOS monitor that meets the expectations of an 
 6. **Honest gaps:** a missing value is "—" in `text3`, never 0. Features without verified data (guiding RMS until M3, altitude chart until M4) show a dashed "Not available yet" frame. Stale values are dimmed to `text2` and labelled "As of 23:39"; the image line always shows the frame's age.
 7. **Minimal charts:** one baseline, one `text2` curve, the newest point in teal; no grid, no legend, a single rubric as title. Only data that exists.
 8. **tvOS focus:** on the overview only the image and the gear are focusable (plus the tab bar). Focus = scale 1.02 (image) / 1.12 (gear), 3 pt `focus` border, soft shadow; the gear inverts. Teal is never used for focus.
-9. **Dark room:** the brightest area is the astrophoto itself. Crosshair 1 px with a gap in the centre.
+9. **Dark room:** the brightest area is the astrophoto itself. Crosshair 1 px with a gap in the centre, drawn only over an actual frame.
 
 ## Pages
 
@@ -71,7 +71,7 @@ A `TabView` with the tvOS top tab bar; it hides while focus is in the content an
 
 | Tab | Purpose | Content | Data |
 |---|---|---|---|
-| Overview | Is everything fine? | Newest frame (focus → full-screen viewer) with caption and HFR sparkline of the last 24 frames; Camera (gain; sensor temperature, setpoint, cooler); Object (target name in the module header, altitude; RA, Dec); then one row of three tiles: Mount (state; pier side), Guiding (RMS – empty until M3; PHD2 state), Filter (name; position); header pills; segmented progress bar | M2 |
+| Overview | Is everything fine? | Newest frame (focus → full-screen viewer) with caption and HFR sparkline of the HFR values of the last 24 frames; Camera (gain; sensor temperature, setpoint, cooler); Object (target name in the module header, altitude; RA, Dec – both only while tracking); then one row of three tiles: Mount (state; pier side), Guiding (RMS – empty until M3; PHD2 state), Filter (name; position); header pills; segmented progress bar | M2 |
 | Image | Judge frame quality | Newest frame medium size; HFR and star-count charts with shared time axis (median dashed); table of recent frames | M2 (image history) |
 | Sequence | Where is the night? | Target, exposures n/m per filter, running exposure, current step | #4 |
 | Mount | Where does the telescope point? | RA/Dec, pointing altitude/azimuth, pier side, state; later object altitude curve and azimuth chart | M2; charts M4 |
@@ -81,10 +81,11 @@ A `TabView` with the tvOS top tab bar; it hides while focus is in the content an
 ### Overview details
 
 - **Header pills:** "Sequence" (target · n/m) shows "—" until #4 delivers verified data; "Exposure" shows the remaining time of the running exposure (available now) with a thin progress underline; "LIVE · HH:MM" uses the existing live/stale/offline state (stale/offline: amber/red word instead of LIVE).
-- **Bottom bar:** one segment per exposure of the sequence once #4 is done; until then a single bar for the running exposure.
+- **Bottom bar:** one segment per exposure of the sequence once #4 is done. Until then no bar: the equipment info has no exposure start or duration, so a fraction would be guessed when the app joins mid-exposure; the "Exposure" pill shows the remaining time instead.
 - **Object altitude:** until M4 the only source is the mount's pointing altitude from N.I.N.A. It is shown as the object's altitude only while the mount is tracking; when parked, slewing or not tracking, the value is "—". From M4 the app computes the object's altitude from its coordinates and the site, independent of the mount.
 - **Guider state** is localized (e.g. "Stopped" → "Gestoppt"); unknown wire values are shown as received.
 - **Alerts:** a factual banner directly below the header in amber or red, never a modal. Humour never replaces alarm text.
+- **Offline banner:** two lines: "N.I.N.A. not reachable · retry in N s" and the cause below.
 - **Offline fallback:** existing behaviour (last values dimmed, "As of …") mapped onto the new tokens.
 
 ### Ambient mode
