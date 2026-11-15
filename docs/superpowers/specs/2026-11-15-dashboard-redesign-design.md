@@ -17,6 +17,7 @@ A beautiful and genuinely useful tvOS monitor that meets the expectations of an 
 | Navigation | tvOS tab bar for sub-pages; settings as a focusable gear button in the header, right of the pills |
 | Palette | Slate/petrol greys with teal as the only signal colour (tokens below) |
 | Overview density | One key figure per module plus at most two side values; exception: camera shows **gain as key figure** with sensor temperature, setpoint and cooler as side values |
+| Object vs. mount | Altitude belongs to the object, not the mount: own "Object" module (altitude as key figure, RA/Dec); slim "Mount" tile (state, pier side) in a row with Guiding and Filter |
 | Mount icon | Filled silhouette of a German equatorial mount (variant "F") |
 | Night mode | Not wanted |
 | Ambient mode | Wanted (see below) |
@@ -70,10 +71,10 @@ A `TabView` with the tvOS top tab bar; it hides while focus is in the content an
 
 | Tab | Purpose | Content | Data |
 |---|---|---|---|
-| Overview | Is everything fine? | Newest frame (focus → full-screen viewer) with caption and HFR sparkline of the last 24 frames; Camera (gain; sensor temperature, setpoint, cooler); Mount (altitude; state, pier side); Guiding (RMS – empty until M3; PHD2 state as side value); Filter (name; position); header pills; segmented progress bar | M2 |
+| Overview | Is everything fine? | Newest frame (focus → full-screen viewer) with caption and HFR sparkline of the last 24 frames; Camera (gain; sensor temperature, setpoint, cooler); Object (target name in the module header, altitude; RA, Dec); then one row of three tiles: Mount (state; pier side), Guiding (RMS – empty until M3; PHD2 state), Filter (name; position); header pills; segmented progress bar | M2 |
 | Image | Judge frame quality | Newest frame medium size; HFR and star-count charts with shared time axis (median dashed); table of recent frames | M2 (image history) |
 | Sequence | Where is the night? | Target, exposures n/m per filter, running exposure, current step | #4 |
-| Mount | Where does the telescope point? | RA/Dec, altitude, pier side, state; later altitude and azimuth charts | M2; charts M4 |
+| Mount | Where does the telescope point? | RA/Dec, pointing altitude/azimuth, pier side, state; later object altitude curve and azimuth chart | M2; charts M4 |
 | Guiding | Guiding accuracy | RMS total/RA/Dec, RA/Dec error chart | M3 (empty state until then) |
 | System | Technical state | Camera details, filter wheel, connection, N.I.N.A./plugin versions, last update per source | M2 |
 
@@ -81,6 +82,7 @@ A `TabView` with the tvOS top tab bar; it hides while focus is in the content an
 
 - **Header pills:** "Sequence" (target · n/m) shows "—" until #4 delivers verified data; "Exposure" shows the remaining time of the running exposure (available now) with a thin progress underline; "LIVE · HH:MM" uses the existing live/stale/offline state (stale/offline: amber/red word instead of LIVE).
 - **Bottom bar:** one segment per exposure of the sequence once #4 is done; until then a single bar for the running exposure.
+- **Object altitude:** until M4 the only source is the mount's pointing altitude from N.I.N.A. It is shown as the object's altitude only while the mount is tracking; when parked, slewing or not tracking, the value is "—". From M4 the app computes the object's altitude from its coordinates and the site, independent of the mount.
 - **Guider state** is localized (e.g. "Stopped" → "Gestoppt"); unknown wire values are shown as received.
 - **Alerts:** a factual banner directly below the header in amber or red, never a modal. Humour never replaces alarm text.
 - **Offline fallback:** existing behaviour (last values dimmed, "As of …") mapped onto the new tokens.
@@ -114,7 +116,7 @@ A `TabView` with the tvOS top tab bar; it hides while focus is in the content an
 
 ## Testing
 
-- Unit tests for every formatter/derivation: LED state per connection phase and device state, guider-state mapping incl. unknown values, pill texts incl. "—" cases, sparkline series (ordering, gaps, placeholder HFR values from `IMAGE-SAVE` treated as unavailable), ambient eligibility (idle time, alarm, setting off).
+- Unit tests for every formatter/derivation: LED state per connection phase and device state, object altitude only while tracking, guider-state mapping incl. unknown values, pill texts incl. "—" cases, sparkline series (ordering, gaps, placeholder HFR values from `IMAGE-SAVE` treated as unavailable), ambient eligibility (idle time, alarm, setting off).
 - Simulator gate per phase: screenshots of overview live, stale and offline; focus on image and gear; tab navigation; ambient enter/exit. Screenshots used for review are not committed if they show real data.
 - Localization: all new strings in the EN/DE catalogs.
 
