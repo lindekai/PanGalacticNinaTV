@@ -47,7 +47,7 @@ public struct ImageHistoryBuffer: Hashable, Sendable {
     }
 
     public func hfrSeries(limit: Int = 24) -> [Double] {
-        Array(recent.compactMap(\.hfr).suffix(limit))
+        recent.suffix(limit).compactMap(\.hfr)
     }
 
     public mutating func reset() {

@@ -91,8 +91,30 @@ struct DashboardDerivationTests {
             buffer.record(try entry(hfr: index == 10 ? nil : 1.0 + Double(index) / 100), at: index)
         }
         let series = buffer.hfrSeries(limit: 24)
-        #expect(series.count == 24)
+        #expect(series.count == 23, "last 24 entries first, then drop the placeholder")
         #expect(series.last == 1.29)
         #expect(!series.contains(1.10), "placeholder HFR 0 is unavailable, not a data point")
+        #expect(buffer.hfrSeries(limit: 5) == (25..<30).map { 1.0 + Double($0) / 100 })
+    }
+
+    func camera(_ fields: String) throws -> NINAEquipmentSummary.Camera? {
+        try summary(#"{"Camera":{"#+fields+"}}").camera
+    }
+
+    @Test func exposureDisplayRules() throws {
+        let end = Date(timeIntervalSince1970: 1000)
+        let exposing = try camera(#""Connected":true,"IsExposing":true,"ExposureEndTime":"1970-01-01T00:16:40Z""#)
+        let idle = try camera(#""Connected":true,"IsExposing":false"#)
+        let disconnected = try camera(#""Connected":false,"IsExposing":true,"ExposureEndTime":"1970-01-01T00:16:40Z""#)
+
+        #expect(ExposureDisplay.state(camera: exposing, phase: .offline, now: end + 500) == .unknown, "no false overdue while offline")
+        #expect(ExposureDisplay.state(camera: exposing, phase: .stale, now: end + 500) == .unknown)
+        #expect(ExposureDisplay.state(camera: exposing, phase: .connecting, now: end - 10) == .unknown)
+        #expect(ExposureDisplay.state(camera: nil, phase: .live, now: end) == .unknown)
+        #expect(ExposureDisplay.state(camera: disconnected, phase: .live, now: end - 10) == .unknown)
+        #expect(ExposureDisplay.state(camera: exposing, phase: .live, now: end + 61) == .overdue)
+        #expect(ExposureDisplay.state(camera: exposing, phase: .live, now: end - 10.5) == .running(secondsLeft: 11))
+        #expect(ExposureDisplay.state(camera: idle, phase: .live, now: end) == .idle)
+        #expect(ExposureDisplay.state(camera: exposing, phase: .live, now: end + 30) == .unknown, "past end within grace")
     }
 }

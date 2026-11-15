@@ -351,6 +351,34 @@ struct LatestImageTests {
         }
     }
 
+    @Test func backfillStopsAtFirstFailureAndStaysLive() async {
+        let transport = FakeTransport { request in
+            let path = request.url?.path() ?? ""
+            let query = request.url?.query() ?? ""
+            switch path {
+            case "/v2/api/version": return FakeTransport.ok(#""2.2.15.3""#)
+            case "/v2/api/version/nina": return FakeTransport.ok(#""3.2""#)
+            case "/v2/api/equipment/info": return FakeTransport.ok("{}")
+            case "/v2/api/image-history" where query.contains("count=true"): return FakeTransport.ok("10")
+            case "/v2/api/image-history" where query.contains("index=8"): return (500, "")
+            case "/v2/api/image-history": return FakeTransport.ok(#"[{"ImageType":"LIGHT","HFR":2.0}]"#)
+            default: return (404, "")
+            }
+        }
+        let conn = connection(transport)
+
+        _ = await conn.pollOnce()
+        let queries = transport.requests.compactMap { $0.url?.query() }
+        #expect(queries.contains { $0.contains("index=8") })
+        for lower in 0...7 {
+            #expect(!queries.contains { $0.hasSuffix("index=\(lower)") }, "index \(lower) must not be requested after the failure")
+        }
+        #expect(conn.phase == .live)
+        for request in transport.requests {
+            #expect(throws: Never.self) { try NINAReadOnlyGuard.validate(request) }
+        }
+    }
+
     @Test func newImageLoadsMetadataAndRetriesThumbnail() async throws {
         let server = Server()
         let transport = transport(server)

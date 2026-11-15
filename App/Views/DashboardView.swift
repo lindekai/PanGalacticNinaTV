@@ -78,15 +78,14 @@ struct DashboardView: View {
     }
 
     private func exposurePill(now: Date) -> some View {
-        let camera = connection.equipment?.camera
-        if let camera, camera.isOverdue(now: now) {
+        switch ExposureDisplay.state(camera: connection.equipment?.camera, phase: connection.phase, now: now) {
+        case .overdue:
             return StatusPill("Exposure", value: String(localized: "Overdue"), light: .warning)
-        }
-        if camera?.isExposing == true, let end = camera?.exposureEndTime, end > now {
-            let left = Int(end.timeIntervalSince(now).rounded(.up))
+        case .running(let left):
             return StatusPill("Exposure", value: String(localized: "\(Format.countdown(left)) left"))
+        case .idle, .unknown:
+            return StatusPill("Exposure", value: "—")
         }
-        return StatusPill("Exposure", value: "—")
     }
 
     private func livePill(now: Date) -> some View {
@@ -139,7 +138,7 @@ struct DashboardView: View {
         let phase = connection.phase
         return HStack(alignment: .top, spacing: Theme.columnGap) {
             LatestImageCard(image: connection.latestImage, thumbnail: connection.latestThumbnail,
-                            hfrSeries: connection.recentImages.suffix(24).compactMap(\.hfr),
+                            hfrSeries: connection.recentHFR,
                             asOf: asOf, now: now) {
                 if let index = connection.latestImageIndex { viewerItem = ViewerItem(index: index) }
             }
