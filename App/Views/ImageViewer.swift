@@ -31,7 +31,7 @@ struct ImageViewer: View {
                     if let image {
                         VStack(alignment: .leading, spacing: 6) {
                             Text(verbatim: image.targetName ?? "—").font(.title3.bold())
-                            Text(verbatim: [image.filter, image.exposureTime.map(LatestImageCard.seconds), image.imageType]
+                            Text(verbatim: [image.filter, image.exposureTime.map(Format.seconds), image.imageType]
                                 .compactMap { $0 }.joined(separator: " · "))
                                 .font(.callout)
                         }

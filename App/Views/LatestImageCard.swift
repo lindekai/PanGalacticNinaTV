@@ -2,110 +2,96 @@ import PanGalacticCore
 import SwiftUI
 import UIKit
 
-/// The newest frame from N.I.N.A.'s image history with its key statistics.
+/// The newest frame: focusable image with crosshair and a caption below it.
+/// Old frames are labelled "As of …" so they are never mistaken for new ones.
 struct LatestImageCard: View {
     let image: NINAImageSaveStatistics?
     let thumbnail: Data?
-    /// Shown when the data is not live, so an old frame is never mistaken for a new one.
+    let hfrSeries: [Double]
     let asOf: Date?
     let now: Date
     let open: () -> Void
 
     var body: some View {
         Button(action: open) {
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(spacing: 0) {
                 preview
-                if let image {
-                    metadata(image)
-                } else {
-                    Text("No image in this N.I.N.A. session yet")
-                        .foregroundStyle(.secondary)
-                }
+                caption
             }
-            .padding(28)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .background(Theme.surface)
+            .clipShape(.rect(cornerRadius: Theme.radius))
         }
-        .buttonStyle(.card)
+        .buttonStyle(LiftButtonStyle())
         .disabled(image == nil)
     }
 
-    @ViewBuilder private var preview: some View {
+    private var preview: some View {
         ZStack {
-            Rectangle().fill(.black)
+            Rectangle().fill(Color.black)
             if let thumbnail, let uiImage = UIImage(data: thumbnail) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .scaledToFit()
+                Image(uiImage: uiImage).resizable().scaledToFit()
             } else if image != nil {
-                ProgressView("Loading preview…")
+                ProgressView()
             } else {
-                Image(systemName: "photo")
-                    .font(.system(size: 80))
-                    .foregroundStyle(.tertiary)
+                Text("No image in this N.I.N.A. session yet").font(.pgLabel).foregroundStyle(Theme.text3)
             }
+            Crosshair().stroke(Theme.text.opacity(0.28), lineWidth: 1)
         }
-        .aspectRatio(3 / 2, contentMode: .fit)
-        .clipShape(.rect(cornerRadius: 16))
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .overlay(alignment: .topLeading) {
             if let asOf {
-                Label("As of \(asOf.formatted(date: .omitted, time: .shortened))", systemImage: "clock.badge.exclamationmark")
-                    .font(.caption)
-                    .padding(.horizontal, 14).padding(.vertical, 8)
-                    .background(.yellow.opacity(0.85), in: .capsule)
-                    .foregroundStyle(.black)
-                    .padding(16)
+                Text("As of \(asOf.formatted(date: .omitted, time: .shortened))")
+                    .font(.pgLabel).foregroundStyle(Theme.bg)
+                    .padding(.horizontal, 16).padding(.vertical, 6)
+                    .background(Theme.warn, in: .capsule)
+                    .padding(20)
             }
         }
     }
 
-    private func metadata(_ image: NINAImageSaveStatistics) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(alignment: .firstTextBaseline) {
-                Text(verbatim: image.targetName ?? "—").font(.title2.bold()).lineLimit(1)
-                if let type = image.imageType {
-                    Text(verbatim: type)
-                        .font(.caption.bold())
-                        .padding(.horizontal, 10).padding(.vertical, 4)
-                        .background(.quaternary, in: .capsule)
-                }
-                Spacer()
-                if let date = image.date {
-                    Text(date, format: .relative(presentation: .named))
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
-                }
+    private var caption: some View {
+        HStack(alignment: .bottom, spacing: 24) {
+            VStack(alignment: .leading, spacing: 6) {
+                Text(verbatim: image?.targetName ?? "—").font(.system(size: 30, weight: .semibold))
+                    .foregroundStyle(Theme.text).lineLimit(1)
+                Text(verbatim: metadata).font(.pgLabel).monospacedDigit().foregroundStyle(Theme.text2).lineLimit(1)
             }
-            HStack(spacing: 40) {
-                Stat("Filter", image.filter)
-                Stat("Exposure", image.exposureTime.map { Self.seconds($0) })
-                Stat("HFR", image.hfr.map { $0.formatted(.number.precision(.fractionLength(2))) })
-                Stat("Stars", image.stars.map { $0.formatted() })
+            Spacer(minLength: 16)
+            if hfrSeries.count >= 2 {
+                VStack(alignment: .trailing, spacing: 6) {
+                    Text("HFR · last \(hfrSeries.count) frames").font(.pgRubric).tracking(2)
+                        .textCase(.uppercase).foregroundStyle(Theme.text2)
+                    Sparkline(hfrSeries).frame(width: 220, height: 44)
+                }
             }
         }
+        .padding(.horizontal, 24)
+        .padding(.vertical, 18)
     }
 
-    static func seconds(_ value: Double) -> String {
-        value.formatted(.number.precision(.fractionLength(0...2))) + " s"
+    /// "Light · L · 300 s · HFR 2.14 · 1 834 stars · 12 s ago"; unknown parts are left out.
+    private var metadata: String {
+        guard let image else { return "" }
+        var parts: [String] = []
+        if let type = image.imageType { parts.append(type.capitalized) }
+        if let filter = image.filter { parts.append(filter) }
+        if let exposure = image.exposureTime { parts.append(Format.seconds(exposure)) }
+        if let hfr = image.hfr { parts.append("HFR " + Format.hfr(hfr)) }
+        if let stars = image.stars { parts.append(String(localized: "\(stars) stars")) }
+        if let date = image.date { parts.append(date.formatted(.relative(presentation: .named, unitsStyle: .abbreviated))) }
+        return parts.joined(separator: " · ")
     }
 }
 
-/// Compact label/value pair; `nil` renders as a dash, never as zero.
-struct Stat: View {
-    let label: LocalizedStringKey
-    let value: String?
-
-    init(_ label: LocalizedStringKey, _ value: String?) {
-        self.label = label
-        self.value = value
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(label).font(.caption).foregroundStyle(.secondary)
-            Text(verbatim: value ?? "—")
-                .font(.title3.monospacedDigit())
-                .lineLimit(1)
-                .minimumScaleFactor(0.6)
-        }
+/// 1 px crosshair with a gap in the centre so the object is never covered.
+private struct Crosshair: Shape {
+    func path(in rect: CGRect) -> Path {
+        let gap: CGFloat = 22
+        var path = Path()
+        path.move(to: CGPoint(x: rect.midX, y: rect.minY)); path.addLine(to: CGPoint(x: rect.midX, y: rect.midY - gap))
+        path.move(to: CGPoint(x: rect.midX, y: rect.midY + gap)); path.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
+        path.move(to: CGPoint(x: rect.minX, y: rect.midY)); path.addLine(to: CGPoint(x: rect.midX - gap, y: rect.midY))
+        path.move(to: CGPoint(x: rect.midX + gap, y: rect.midY)); path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
+        return path
     }
 }

@@ -1,6 +1,26 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%@ left": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "noch %@"
+          }
+        }
+      }
+    },
+    "%lld stars": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Sterne"
+          }
+        }
+      }
+    },
     "About": {
       "localizations": {
         "de": {
@@ -81,6 +101,16 @@
         }
       }
     },
+    "Altitude above horizon": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Höhe über Horizont"
+          }
+        }
+      }
+    },
     "An instance with this host and port already exists.": {
       "localizations": {
         "de": {
@@ -97,6 +127,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stand %@"
+          }
+        }
+      }
+    },
+    "Calibrating": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalibriert"
           }
         }
       }
@@ -295,6 +335,16 @@
         }
       }
     },
+    "Fault": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehler"
+          }
+        }
+      }
+    },
     "Filter": {
       "shouldTranslate": false
     },
@@ -324,8 +374,28 @@
     "Guider": {
       "shouldTranslate": false
     },
+    "Guiding": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guiding"
+          }
+        }
+      }
+    },
     "HFR": {
       "shouldTranslate": false
+    },
+    "HFR · last %lld frames": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HFR · letzte %lld Bilder"
+          }
+        }
+      }
     },
     "Host not found": {
       "extractionState": "manual",
@@ -381,12 +451,32 @@
     "Live": {
       "shouldTranslate": false
     },
+    "LIVE · %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LIVE · %@"
+          }
+        }
+      }
+    },
     "Loading preview…": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Vorschau wird geladen …"
+          }
+        }
+      }
+    },
+    "Looping": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schleife"
           }
         }
       }
@@ -454,6 +544,16 @@
         }
       }
     },
+    "N.I.N.A. not reachable · retry in %lld s · %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N.I.N.A. nicht erreichbar · neuer Versuch in %lld s · %@"
+          }
+        }
+      }
+    },
     "Name (optional)": {
       "shouldTranslate": false
     },
@@ -498,6 +598,16 @@
         }
       }
     },
+    "Normal": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Normal"
+          }
+        }
+      }
+    },
     "Not connected": {
       "localizations": {
         "de": {
@@ -524,6 +634,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine Nachführung"
+          }
+        }
+      }
+    },
+    "Object": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objekt"
           }
         }
       }
@@ -562,6 +682,16 @@
         }
       }
     },
+    "Overdue": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Überfällig"
+          }
+        }
+      }
+    },
     "Pan Galactic N.I.N.A. TV": {
       "shouldTranslate": false
     },
@@ -585,6 +715,16 @@
         }
       }
     },
+    "Paused": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausiert"
+          }
+        }
+      }
+    },
     "PHD2": {
       "shouldTranslate": false
     },
@@ -604,6 +744,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Pierseite"
+          }
+        }
+      }
+    },
+    "Pier side east": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seite Ost"
+          }
+        }
+      }
+    },
+    "Pier side west": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seite West"
           }
         }
       }
@@ -672,6 +832,16 @@
         }
       }
     },
+    "RMS not available yet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RMS noch nicht verfügbar"
+          }
+        }
+      }
+    },
     "Save Changes": {
       "localizations": {
         "de": {
@@ -714,6 +884,16 @@
     },
     "Sensor": {
       "shouldTranslate": false
+    },
+    "Sequence": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sequenz"
+          }
+        }
+      }
     },
     "Server error": {
       "extractionState": "manual",
@@ -776,6 +956,36 @@
         }
       }
     },
+    "Stale · as of %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veraltet · Stand %@"
+          }
+        }
+      }
+    },
+    "Star lost": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stern verloren"
+          }
+        }
+      }
+    },
+    "Star selected": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stern gewählt"
+          }
+        }
+      }
+    },
     "Stars": {
       "localizations": {
         "de": {
@@ -802,6 +1012,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Suche stoppen"
+          }
+        }
+      }
+    },
+    "Stopped": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gestoppt"
           }
         }
       }
@@ -884,6 +1104,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Unbekannt"
+          }
+        }
+      }
+    },
+    "Warning": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warnung"
           }
         }
       }

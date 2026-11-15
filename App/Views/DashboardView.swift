@@ -2,8 +2,9 @@ import PanGalacticCore
 import PanGalacticServices
 import SwiftUI
 
-/// Overview of one N.I.N.A. instance: newest frame, camera, mount, filter and guider.
-/// Values that are unknown are shown as "—"; data that is not live is labelled with its age.
+/// Overview of one N.I.N.A. instance (spec: "Overview details"). Answers at a glance:
+/// is everything running, how good is the newest frame, how is the camera set, where
+/// is the object. Unknown values are "—"; data that is not live is labelled with its age.
 struct DashboardView: View {
     @Environment(AppModel.self) private var model
     let connection: InstanceConnection
@@ -16,15 +17,17 @@ struct DashboardView: View {
                 if let version = connection.incompatibility {
                     Label("Advanced API \(version) is not supported yet (supported: 2.x). Monitoring stopped.",
                           systemImage: "xmark.octagon.fill")
-                        .foregroundStyle(.orange)
+                        .font(.pgValue).foregroundStyle(Theme.fault)
                     Spacer()
                 } else {
+                    if connection.phase == .offline { offlineBanner(now: context.date) }
                     overview(now: context.date)
                 }
-                footer
             }
-            .padding(.horizontal, 60)
-            .padding(.vertical, 40)
+            .padding(.horizontal, Theme.margin)
+            .padding(.vertical, Theme.marginVertical)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .background(Theme.bg)
             .onChange(of: context.date) { connection.refreshPhase() }
         }
         #if DEBUG
@@ -45,64 +48,109 @@ struct DashboardView: View {
         connection.phase == .live ? nil : connection.lastSuccess
     }
 
+    // MARK: Header
+
     private func header(now: Date) -> some View {
-        HStack(alignment: .firstTextBaseline) {
-            Text(verbatim: connection.instance.displayName)
-                .font(.largeTitle.bold())
-            Spacer()
-            ConnectionBadge(connection: connection, now: now)
+        HStack(alignment: .center, spacing: 16) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(verbatim: connection.instance.displayName).font(.pgDisplay).foregroundStyle(Theme.text)
+                    .lineLimit(1)
+                if let plugin = connection.pluginVersion {
+                    Text("N.I.N.A. \(connection.ninaVersion ?? "?") · Advanced API \(plugin)")
+                        .font(.pgLabel).foregroundStyle(Theme.text2)
+                }
+            }
+            Spacer(minLength: 24)
+            // Sequence progress needs the running-sequence schema (#4); until then honestly "—".
+            StatusPill("Sequence", value: "—")
+            exposurePill(now: now)
+            livePill(now: now)
+            if model.store.instances.count > 1 {
+                Button { model.deactivate() } label: { Image(systemName: "rectangle.2.swap") }
+                    .buttonStyle(GearButtonStyle())
+                    .accessibilityLabel(Text("Switch Observatory"))
+            }
+            NavigationLink(value: Destination.settings) { Image(systemName: "gearshape") }
+                .buttonStyle(GearButtonStyle())
+                .accessibilityLabel(Text("Settings"))
         }
     }
+
+    private func exposurePill(now: Date) -> some View {
+        let camera = connection.equipment?.camera
+        if let camera, camera.isOverdue(now: now) {
+            return StatusPill("Exposure", value: String(localized: "Overdue"), light: .warning)
+        }
+        if camera?.isExposing == true, let end = camera?.exposureEndTime, end > now {
+            let left = Int(end.timeIntervalSince(now).rounded(.up))
+            return StatusPill("Exposure", value: String(localized: "\(Format.countdown(left)) left"))
+        }
+        return StatusPill("Exposure", value: "—")
+    }
+
+    private func livePill(now: Date) -> some View {
+        let time = now.formatted(date: .omitted, time: .shortened)
+        switch connection.phase {
+        case .live:
+            return StatusPill(nil, value: String(localized: "LIVE · \(time)"), light: .normal)
+        case .stale:
+            let since = connection.lastSuccess?.formatted(date: .omitted, time: .shortened) ?? "—"
+            return StatusPill(nil, value: String(localized: "Stale · as of \(since)"), light: .warning)
+        case .offline:
+            return StatusPill(nil, value: String(localized: "Offline"), light: .fault)
+        case .connecting:
+            return StatusPill(nil, value: String(localized: "Connecting…"), light: .unknown)
+        }
+    }
+
+    /// Factual banner below the header – never a modal.
+    private func offlineBanner(now: Date) -> some View {
+        HStack(spacing: 24) {
+            Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Theme.fault)
+            Text(verbatim: offlineText(now: now)).font(.pgValue).foregroundStyle(Theme.text).lineLimit(1)
+            Spacer()
+            Button("Retry Now", systemImage: "arrow.clockwise") { connection.retryNow() }
+        }
+        .padding(.horizontal, 24).padding(.vertical, 12)
+        .background(Theme.fault.opacity(0.16), in: .rect(cornerRadius: Theme.radius))
+    }
+
+    private func offlineText(now: Date) -> String {
+        // Service messages are stable English sentences used as catalog keys.
+        let error = connection.lastError.map { String(localized: String.LocalizationValue($0)) } ?? ""
+        guard let next = connection.nextAttempt else { return error }
+        let seconds = max(0, Int(next.timeIntervalSince(now).rounded(.up)))
+        return String(localized: "N.I.N.A. not reachable · retry in \(seconds) s · \(error)")
+    }
+
+    // MARK: Body
 
     private func overview(now: Date) -> some View {
         let equipment = connection.equipment
-        return HStack(alignment: .top, spacing: 40) {
+        let phase = connection.phase
+        return HStack(alignment: .top, spacing: Theme.columnGap) {
             LatestImageCard(image: connection.latestImage, thumbnail: connection.latestThumbnail,
+                            hfrSeries: Array(connection.recentImages.compactMap(\.hfr).suffix(24)),
                             asOf: asOf, now: now) {
                 if let index = connection.latestImageIndex { viewerItem = ViewerItem(index: index) }
             }
-            .frame(maxWidth: .infinity)
+            .frame(width: Theme.imageWidth)
 
-            VStack(spacing: 24) {
-                CameraCard(camera: equipment?.camera, now: now)
-                MountCard(mount: equipment?.mount)
-                HStack(spacing: 24) {
-                    EquipmentCard(title: "Filter", icon: Image(systemName: "circle.grid.cross"), device: equipment?.filterWheel?.device) {
-                        if let wheel = equipment?.filterWheel, wheel.device.connected {
-                            Text(verbatim: wheel.selectedFilter ?? "—").font(.title3)
-                        }
-                    }
-                    EquipmentCard(title: "Guider", icon: Image(systemName: "target"), device: equipment?.guider?.device) {
-                        if let guider = equipment?.guider, guider.device.connected {
-                            Text(verbatim: guider.state ?? "—").font(.title3)
-                        }
-                    }
+            VStack(spacing: Theme.moduleGap) {
+                CameraModule(camera: equipment?.camera, light: StatusLight.camera(equipment?.camera, phase: phase, now: now))
+                ObjectModule(target: connection.latestImage?.targetName, mount: equipment?.mount)
+                HStack(alignment: .top, spacing: Theme.moduleGap) {
+                    MountTile(mount: equipment?.mount, light: StatusLight.device(equipment?.mount?.device, phase: phase))
+                        .layoutPriority(1)
+                    GuidingTile(guider: equipment?.guider, light: StatusLight.device(equipment?.guider?.device, phase: phase))
+                    FilterTile(wheel: equipment?.filterWheel, light: StatusLight.device(equipment?.filterWheel?.device, phase: phase))
                 }
+                .frame(maxHeight: .infinity, alignment: .top)
             }
-            .frame(width: 800)
+            .frame(maxWidth: .infinity)
             .opacity(asOf != nil && equipment != nil ? 0.55 : 1)
         }
         .frame(maxHeight: .infinity, alignment: .top)
-    }
-
-    private var footer: some View {
-        HStack(spacing: 40) {
-            if connection.phase == .offline {
-                Button("Retry Now", systemImage: "arrow.clockwise") { connection.retryNow() }
-            }
-            if model.store.instances.count > 1 {
-                Button("Switch Observatory", systemImage: "rectangle.2.swap") { model.deactivate() }
-            }
-            NavigationLink(value: Destination.settings) {
-                Label("Settings", systemImage: "gearshape")
-            }
-            Spacer()
-            if let plugin = connection.pluginVersion {
-                Text("N.I.N.A. \(connection.ninaVersion ?? "?") · Advanced API \(plugin)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-        }
     }
 }
 
@@ -111,166 +159,94 @@ private struct ViewerItem: Identifiable {
     var id: Int { index }
 }
 
-struct CameraCard: View {
+// MARK: Modules
+
+struct CameraModule: View {
     let camera: NINAEquipmentSummary.Camera?
-    let now: Date
+    let light: StatusLight
 
     var body: some View {
-        EquipmentCard(title: "Camera", icon: Image(systemName: "camera"), device: camera?.device) {
-            if let camera, camera.device.connected {
-                HStack(spacing: 28) {
-                    Stat("Sensor", camera.temperature.map(Self.celsius))
+        ModulePanel("Camera", icon: Image(systemName: "camera"), light: light) {
+            let on = camera?.device.connected == true
+            HStack(alignment: .bottom) {
+                KeyFigure(on ? camera?.gain.map(String.init) : nil, label: "Gain")
+                Spacer(minLength: 24)
+                SideValues([
+                    ("Sensor", on ? camera?.temperature.map(Format.celsius) : nil),
                     // Setpoint only while the cooler runs (#5: driver value, not the panel value).
-                    Stat("Setpoint", camera.activeSetpoint.map(Self.celsius))
-                    Stat("Cooler", camera.coolerOn.map { on in
-                        on ? camera.coolerPower.map { "\(Int($0.rounded())) %" } ?? String(localized: "On")
-                           : String(localized: "Off")
-                    })
-                    Stat("Gain", camera.gain.map(String.init))
-                }
-                exposure(camera)
+                    ("Setpoint", on ? camera?.activeSetpoint.map(Format.celsius) : nil),
+                    ("Cooler", on ? coolerText : nil),
+                ])
             }
         }
     }
 
-    @ViewBuilder private func exposure(_ camera: NINAEquipmentSummary.Camera) -> some View {
-        if camera.isOverdue(now: now) {
-            Label("Exposure overdue – camera may be stuck", systemImage: "exclamationmark.triangle.fill")
-                .foregroundStyle(.orange)
-        } else if camera.isExposing == true, let end = camera.exposureEndTime, end > now {
-            Label("Exposing – \(Int(end.timeIntervalSince(now).rounded(.up))) s left", systemImage: "camera.aperture")
-                .foregroundStyle(.secondary)
-        } else if camera.isExposing == true {
-            Label("Exposing", systemImage: "camera.aperture")
-                .foregroundStyle(.secondary)
-        }
-    }
-
-    static func celsius(_ value: Double) -> String {
-        value.formatted(.number.precision(.fractionLength(1))) + " °C"
+    private var coolerText: String? {
+        guard let camera, let coolerOn = camera.coolerOn else { return nil }
+        guard coolerOn else { return String(localized: "Off") }
+        return camera.coolerPower.map(Format.percent) ?? String(localized: "On")
     }
 }
 
-struct MountCard: View {
+struct ObjectModule: View {
+    let target: String?
     let mount: NINAEquipmentSummary.Mount?
 
     var body: some View {
-        // No SF Symbol for a telescope on a mount exists on tvOS 26; custom template vector.
-        EquipmentCard(title: "Mount", icon: Image("TelescopeMount"), device: mount?.device) {
-            if let mount, mount.device.connected {
-                HStack(spacing: 28) {
-                    Stat("RA", mount.rightAscension)
-                    Stat("Dec", mount.declination)
-                    Stat("Altitude", mount.altitudeDegrees.map { $0.formatted(.number.precision(.fractionLength(1))) + "°" })
-                    Stat("Pier", mount.sideOfPier.map { $0 == .east ? String(localized: "East") : String(localized: "West") })
-                }
-                Text(verbatim: status(mount)).foregroundStyle(.secondary)
+        ModulePanel("Object", icon: Image(systemName: "scope"), light: nil, accessory: target) {
+            HStack(alignment: .bottom) {
+                KeyFigure(mount?.trackedObjectAltitude.map(Format.degrees), unit: "°", label: "Altitude above horizon")
+                Spacer(minLength: 24)
+                SideValues([
+                    ("RA", mount?.trackedRightAscension),
+                    ("Dec", mount?.trackedDeclination),
+                ])
             }
-        }
-    }
-
-    private func status(_ mount: NINAEquipmentSummary.Mount) -> String {
-        if mount.slewing == true { return String(localized: "Slewing") }
-        if mount.atPark == true { return String(localized: "Parked") }
-        switch mount.trackingEnabled {
-        case true: return String(localized: "Tracking")
-        case false: return String(localized: "Not tracking")
-        case nil: return "—"
         }
     }
 }
 
-struct ConnectionBadge: View {
-    let connection: InstanceConnection
-    let now: Date
+struct MountTile: View {
+    let mount: NINAEquipmentSummary.Mount?
+    let light: StatusLight
 
     var body: some View {
-        VStack(alignment: .trailing, spacing: 4) {
-            HStack(spacing: 12) {
-                Circle().fill(color).frame(width: 18, height: 18)
-                Text(title).font(.headline)
-            }
-            if let detail {
-                Text(detail)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-            }
+        // No SF Symbol for an equatorial mount exists on tvOS 26; custom template vector.
+        ModulePanel("Mount", icon: Image("TelescopeMount"), light: light) {
+            TileValue(mount.flatMap { Format.mountActivity($0.activity) }, detail: pierText)
         }
-        .accessibilityElement(children: .combine)
+        .frame(minWidth: 280)
     }
 
-    private var color: Color {
-        switch connection.phase {
-        case .live: .green
-        case .stale: .yellow
-        case .offline: .red
-        case .connecting: .gray
-        }
-    }
-
-    private var title: LocalizedStringKey {
-        switch connection.phase {
-        case .live: "Live"
-        case .stale: "Stale"
-        case .offline: "Offline"
-        case .connecting: "Connecting…"
-        }
-    }
-
-    private var detail: String? {
-        switch connection.phase {
-        case .live, .connecting:
-            return nil
-        case .stale:
-            return connection.lastSuccess.map {
-                String(localized: "Last update \($0.formatted(date: .omitted, time: .standard))")
-            }
-        case .offline:
-            let retry = connection.nextAttempt.map { max(0, Int($0.timeIntervalSince(now).rounded(.up))) }
-            // Service messages are stable English sentences used as catalog keys.
-            let error = connection.lastError.map { String(localized: String.LocalizationValue($0)) } ?? ""
-            return retry.map { String(localized: "Retry in \($0) s · \(error)") } ?? error
+    private var pierText: String? {
+        switch mount?.sideOfPier {
+        case .east: String(localized: "Pier side east")
+        case .west: String(localized: "Pier side west")
+        case nil: nil
         }
     }
 }
 
-struct EquipmentCard<Content: View>: View {
-    let title: LocalizedStringKey
-    let icon: Image
-    let device: NINAEquipmentSummary.Device?
-    @ViewBuilder let content: Content
+struct GuidingTile: View {
+    let guider: NINAEquipmentSummary.Guider?
+    let light: StatusLight
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            HStack(spacing: 12) {
-                Label { Text(title) } icon: { icon.resizable().scaledToFit().frame(width: 40, height: 40) }
-                    .font(.headline)
-                    .lineLimit(1)
-                Spacer(minLength: 8)
-                if device?.connected == true {
-                    // A dot instead of text keeps narrow cards readable.
-                    Circle().fill(.green).frame(width: 14, height: 14)
-                        .accessibilityLabel(Text(status))
-                } else {
-                    Text(status).font(.caption).foregroundStyle(.secondary).lineLimit(1)
-                }
-            }
-            if let name = device?.name, device?.connected == true {
-                Text(verbatim: name).font(.caption).foregroundStyle(.secondary).lineLimit(1)
-            }
-            content
+        ModulePanel("Guiding", icon: Image(systemName: "target"), light: light) {
+            // RMS needs the validated definition from M3 (#6); until then "—".
+            TileValue(nil, detail: Format.guiderState(guider?.device.connected == true ? guider?.state : nil)
+                      ?? String(localized: "RMS not available yet"))
         }
-        .padding(24)
-        .frame(maxWidth: .infinity, alignment: .topLeading)
-        .background(.regularMaterial, in: .rect(cornerRadius: 20))
     }
+}
 
-    private var status: LocalizedStringKey {
-        switch device?.connected {
-        case true: "Connected"
-        case false: "Not connected"
-        case nil: "Unknown"
+struct FilterTile: View {
+    let wheel: NINAEquipmentSummary.FilterWheel?
+    let light: StatusLight
+
+    var body: some View {
+        ModulePanel("Filter", icon: Image(systemName: "circle.grid.cross"), light: light) {
+            TileValue(wheel?.device.connected == true ? wheel?.selectedFilter : nil, detail: nil)
         }
     }
 }
