@@ -46,6 +46,19 @@ xcodebuild -project PanGalacticNinaTV.xcodeproj -scheme PanGalacticNinaTV \
   -destination 'generic/platform=tvOS' CODE_SIGNING_ALLOWED=NO build
 ```
 
+### Signing, archive and TestFlight
+
+The team ID is not in the repository. For device builds and archives:
+
+```sh
+cp Config/Local.xcconfig.example Config/Local.xcconfig   # git-ignored; set DEVELOPMENT_TEAM
+xcodebuild -project PanGalacticNinaTV.xcodeproj -scheme PanGalacticNinaTV \
+  -destination 'generic/platform=tvOS' -configuration Release \
+  -archivePath build/PanGalactic.xcarchive -allowProvisioningUpdates archive
+```
+
+Upload the archive from Xcode's Organizer (Distribute App → TestFlight & App Store). Raise `CURRENT_PROJECT_VERSION` for every upload. The placeholder icon is regenerated with `python3 tools/icons/make_placeholder_icons.py`.
+
 A tvOS 26.x simulator runtime is needed to run the app (Xcode → Settings → Components).
 
 ### Running in the simulator against a real N.I.N.A.

@@ -21,3 +21,6 @@ __pycache__/
 # M0 raw captures may contain real network values, site coordinates and paths.
 # Only sanitized, reviewed copies go to Tests/Fixtures/.
 captures/
+
+# Local signing settings (team ID); see Config/Local.xcconfig.example.
+Config/Local.xcconfig
