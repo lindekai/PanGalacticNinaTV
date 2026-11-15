@@ -28,6 +28,7 @@ struct DashboardView: View {
             .padding(.vertical, Theme.marginVertical)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .background(Theme.bg)
+            .ignoresSafeArea()
             .onChange(of: context.date) { connection.refreshPhase() }
         }
         #if DEBUG
@@ -107,7 +108,12 @@ struct DashboardView: View {
     private func offlineBanner(now: Date) -> some View {
         HStack(spacing: 24) {
             Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Theme.fault)
-            Text(verbatim: offlineText(now: now)).font(.pgValue).foregroundStyle(Theme.text).lineLimit(1)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(verbatim: offlineTitle(now: now)).font(.pgValue).foregroundStyle(Theme.text).lineLimit(1)
+                if let error = offlineCause {
+                    Text(verbatim: error).font(.pgLabel).foregroundStyle(Theme.text2).lineLimit(2)
+                }
+            }
             Spacer()
             Button("Retry Now", systemImage: "arrow.clockwise") { connection.retryNow() }
         }
@@ -115,12 +121,15 @@ struct DashboardView: View {
         .background(Theme.fault.opacity(0.16), in: .rect(cornerRadius: Theme.radius))
     }
 
-    private func offlineText(now: Date) -> String {
-        // Service messages are stable English sentences used as catalog keys.
-        let error = connection.lastError.map { String(localized: String.LocalizationValue($0)) } ?? ""
-        guard let next = connection.nextAttempt else { return error }
+    private func offlineTitle(now: Date) -> String {
+        guard let next = connection.nextAttempt else { return String(localized: "N.I.N.A. not reachable") }
         let seconds = max(0, Int(next.timeIntervalSince(now).rounded(.up)))
-        return String(localized: "N.I.N.A. not reachable · retry in \(seconds) s · \(error)")
+        return String(localized: "N.I.N.A. not reachable · retry in \(seconds) s")
+    }
+
+    /// Service messages are stable English sentences used as catalog keys.
+    private var offlineCause: String? {
+        connection.lastError.map { String(localized: String.LocalizationValue($0)) }
     }
 
     // MARK: Body
@@ -130,7 +139,7 @@ struct DashboardView: View {
         let phase = connection.phase
         return HStack(alignment: .top, spacing: Theme.columnGap) {
             LatestImageCard(image: connection.latestImage, thumbnail: connection.latestThumbnail,
-                            hfrSeries: Array(connection.recentImages.compactMap(\.hfr).suffix(24)),
+                            hfrSeries: connection.recentImages.suffix(24).compactMap(\.hfr),
                             asOf: asOf, now: now) {
                 if let index = connection.latestImageIndex { viewerItem = ViewerItem(index: index) }
             }
@@ -141,11 +150,13 @@ struct DashboardView: View {
                 ObjectModule(target: connection.latestImage?.targetName, mount: equipment?.mount)
                 HStack(alignment: .top, spacing: Theme.moduleGap) {
                     MountTile(mount: equipment?.mount, light: StatusLight.device(equipment?.mount?.device, phase: phase))
-                        .layoutPriority(1)
+                        .frame(width: Theme.mountTileWidth).frame(maxHeight: .infinity, alignment: .top)
                     GuidingTile(guider: equipment?.guider, light: StatusLight.device(equipment?.guider?.device, phase: phase))
+                        .frame(width: Theme.guidingTileWidth).frame(maxHeight: .infinity, alignment: .top)
                     FilterTile(wheel: equipment?.filterWheel, light: StatusLight.device(equipment?.filterWheel?.device, phase: phase))
+                        .frame(width: Theme.filterTileWidth).frame(maxHeight: .infinity, alignment: .top)
                 }
-                .frame(maxHeight: .infinity, alignment: .top)
+                .fixedSize(horizontal: false, vertical: true)
             }
             .frame(maxWidth: .infinity)
             .opacity(asOf != nil && equipment != nil ? 0.55 : 1)
@@ -215,7 +226,6 @@ struct MountTile: View {
         ModulePanel("Mount", icon: Image("TelescopeMount"), light: light) {
             TileValue(mount.flatMap { Format.mountActivity($0.activity) }, detail: pierText)
         }
-        .frame(minWidth: 280)
     }
 
     private var pierText: String? {

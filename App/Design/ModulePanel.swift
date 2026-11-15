@@ -20,11 +20,11 @@ struct ModulePanel<Content: View>: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 12) {
+            HStack(spacing: 8) {
                 icon.resizable().scaledToFit().frame(width: 26, height: 26).foregroundStyle(Theme.text2)
                 Text(title).font(.pgRubric).tracking(2.5).textCase(.uppercase).foregroundStyle(Theme.text2)
-                    .lineLimit(1)
-                Spacer(minLength: 8)
+                    .lineLimit(1).minimumScaleFactor(0.6)
+                Spacer(minLength: 4)
                 if let accessory {
                     Text(verbatim: accessory).font(.pgLabel).foregroundStyle(Theme.text).lineLimit(1)
                 }
@@ -34,7 +34,7 @@ struct ModulePanel<Content: View>: View {
             Rectangle().fill(Theme.line).frame(height: 1)
             content.padding(.top, 14)
         }
-        .padding(.horizontal, 24)
+        .padding(.horizontal, 20)
         .padding(.top, 18)
         .padding(.bottom, 16)
         .frame(maxWidth: .infinity, alignment: .topLeading)

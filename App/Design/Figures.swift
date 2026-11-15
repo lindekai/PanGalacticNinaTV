@@ -68,7 +68,7 @@ struct TileValue: View {
                 .foregroundStyle(value == nil ? Theme.text3 : Theme.text)
                 .lineLimit(1).minimumScaleFactor(0.6)
             if let detail {
-                Text(verbatim: detail).font(.pgLabel).foregroundStyle(Theme.text2).lineLimit(2)
+                Text(verbatim: detail).font(.pgLabel).foregroundStyle(Theme.text2).lineLimit(2).minimumScaleFactor(0.75)
             }
         }
     }

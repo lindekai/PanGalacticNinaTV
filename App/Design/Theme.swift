@@ -29,6 +29,9 @@ enum Theme {
     static let imageWidth: CGFloat = 1024
     static let columnGap: CGFloat = 40
     static let moduleGap: CGFloat = 24
+    static let mountTileWidth: CGFloat = 268
+    static let guidingTileWidth: CGFloat = 190
+    static let filterTileWidth: CGFloat = 190
     static let radius: CGFloat = 12
 
     static func color(for light: StatusLight) -> Color {

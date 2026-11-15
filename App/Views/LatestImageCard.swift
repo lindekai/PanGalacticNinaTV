@@ -30,12 +30,12 @@ struct LatestImageCard: View {
             Rectangle().fill(Color.black)
             if let thumbnail, let uiImage = UIImage(data: thumbnail) {
                 Image(uiImage: uiImage).resizable().scaledToFit()
+                Crosshair().stroke(Theme.text.opacity(0.28), lineWidth: 1)
             } else if image != nil {
                 ProgressView()
             } else {
                 Text("No image in this N.I.N.A. session yet").font(.pgLabel).foregroundStyle(Theme.text3)
             }
-            Crosshair().stroke(Theme.text.opacity(0.28), lineWidth: 1)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .overlay(alignment: .topLeading) {
@@ -53,7 +53,7 @@ struct LatestImageCard: View {
         HStack(alignment: .bottom, spacing: 24) {
             VStack(alignment: .leading, spacing: 6) {
                 Text(verbatim: image?.targetName ?? "—").font(.system(size: 30, weight: .semibold))
-                    .foregroundStyle(Theme.text).lineLimit(1)
+                    .foregroundStyle(image?.targetName == nil ? Theme.text3 : Theme.text).lineLimit(1)
                 Text(verbatim: metadata).font(.pgLabel).monospacedDigit().foregroundStyle(Theme.text2).lineLimit(1)
             }
             Spacer(minLength: 16)

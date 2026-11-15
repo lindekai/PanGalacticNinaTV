@@ -136,7 +136,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kalibriert"
+            "value": "Kalibrierung"
           }
         }
       }
@@ -196,7 +196,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verbinde …"
+            "value": "Verbinde…"
           }
         }
       }
@@ -544,12 +544,22 @@
         }
       }
     },
-    "N.I.N.A. not reachable · retry in %lld s · %@": {
+    "N.I.N.A. not reachable": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "N.I.N.A. nicht erreichbar · neuer Versuch in %lld s · %@"
+            "value": "N.I.N.A. nicht erreichbar"
+          }
+        }
+      }
+    },
+    "N.I.N.A. not reachable · retry in %lld s": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N.I.N.A. nicht erreichbar · neuer Versuch in %lld s"
           }
         }
       }
