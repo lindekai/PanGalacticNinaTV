@@ -318,6 +318,39 @@ struct LatestImageTests {
         InstanceConnection(instance: DeviceInstance(name: "T", host: "10.0.0.2"), transport: transport)
     }
 
+    @Test func backfillsRecentHistoryInSmallSteps() async {
+        let transport = FakeTransport { request in
+            let path = request.url?.path() ?? ""
+            let query = request.url?.query() ?? ""
+            switch path {
+            case "/v2/api/version": return FakeTransport.ok(#""2.2.15.3""#)
+            case "/v2/api/version/nina": return FakeTransport.ok(#""3.2""#)
+            case "/v2/api/equipment/info": return FakeTransport.ok("{}")
+            case "/v2/api/image-history" where query.contains("count=true"): return FakeTransport.ok("10")
+            case "/v2/api/image-history":
+                let index = Int(query.split(separator: "=").last ?? "") ?? 0
+                return FakeTransport.ok(#"[{"ImageType":"LIGHT","HFR":\#(2.0 + Double(index) / 10)}]"#)
+            default: return (404, "")
+            }
+        }
+        let conn = connection(transport)
+
+        _ = await conn.pollOnce()
+        #expect(conn.recentImages.count == 1 + InstanceConnection.backfillPerPoll)
+        _ = await conn.pollOnce()
+        _ = await conn.pollOnce()
+        #expect(conn.recentImages.count == 10)
+        #expect(conn.recentImages.compactMap(\.hfr) == (0..<10).map { 2.0 + Double($0) / 10 })
+
+        let before = transport.requests.count
+        _ = await conn.pollOnce()
+        let steady = transport.requests.dropFirst(before).compactMap { $0.url?.query() }
+        #expect(!steady.contains { $0.contains("index=") }, "no history refetch in steady state")
+        for request in transport.requests {
+            #expect(throws: Never.self) { try NINAReadOnlyGuard.validate(request) }
+        }
+    }
+
     @Test func newImageLoadsMetadataAndRetriesThumbnail() async throws {
         let server = Server()
         let transport = transport(server)
