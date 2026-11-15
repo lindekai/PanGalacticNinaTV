@@ -223,7 +223,7 @@ struct MountTile: View {
 
     var body: some View {
         // No SF Symbol for an equatorial mount exists on tvOS 26; custom template vector.
-        ModulePanel("Mount", icon: Image("TelescopeMount"), light: light) {
+        ModulePanel("Mount", icon: Image("TelescopeMount"), light: light, fillHeight: true) {
             TileValue(mount.flatMap { Format.mountActivity($0.activity) }, detail: pierText)
         }
     }
@@ -242,7 +242,7 @@ struct GuidingTile: View {
     let light: StatusLight
 
     var body: some View {
-        ModulePanel("Guiding", icon: Image(systemName: "target"), light: light) {
+        ModulePanel("Guiding", icon: Image(systemName: "target"), light: light, fillHeight: true) {
             // RMS needs the validated definition from M3 (#6); until then "—".
             TileValue(nil, detail: Format.guiderState(guider?.device.connected == true ? guider?.state : nil)
                       ?? String(localized: "RMS not available yet"))
@@ -255,7 +255,7 @@ struct FilterTile: View {
     let light: StatusLight
 
     var body: some View {
-        ModulePanel("Filter", icon: Image(systemName: "circle.grid.cross"), light: light) {
+        ModulePanel("Filter", icon: Image(systemName: "circle.grid.cross"), light: light, fillHeight: true) {
             TileValue(wheel?.device.connected == true ? wheel?.selectedFilter : nil, detail: nil)
         }
     }

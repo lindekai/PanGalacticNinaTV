@@ -7,14 +7,16 @@ struct ModulePanel<Content: View>: View {
     let icon: Image
     let light: StatusLight?
     let accessory: String?
+    let fillHeight: Bool
     let content: Content
 
-    init(_ title: LocalizedStringKey, icon: Image, light: StatusLight?, accessory: String? = nil,
+    init(_ title: LocalizedStringKey, icon: Image, light: StatusLight?, accessory: String? = nil, fillHeight: Bool = false,
          @ViewBuilder content: () -> Content) {
         self.title = title
         self.icon = icon
         self.light = light
         self.accessory = accessory
+        self.fillHeight = fillHeight
         self.content = content()
     }
 
@@ -37,7 +39,7 @@ struct ModulePanel<Content: View>: View {
         .padding(.horizontal, 20)
         .padding(.top, 18)
         .padding(.bottom, 16)
-        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .frame(maxWidth: .infinity, maxHeight: fillHeight ? .infinity : nil, alignment: .topLeading)
         .background(Theme.surface, in: .rect(cornerRadius: Theme.radius))
     }
 }
