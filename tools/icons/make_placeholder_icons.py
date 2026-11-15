@@ -257,10 +257,16 @@ def font(size: int, weight: str) -> ImageFont.FreeTypeFont:
 
 
 def letter(image: Image.Image) -> Image.Image:
-    """Name and subtitle on the star field, left of the nebula, inside the safe area."""
+    """Name and subtitle on the star field, left of the nebula, inside the safe area.
+
+    tvOS 26 shows the Top Shelf full screen behind the dock, scaled up and centre-cropped:
+    of a 720 pt high image only the middle 1760 pt are visible (measured in the tvOS 26.5
+    simulator), so the text starts at the 80 pt screen margin of that crop.
+    """
     w, h = image.size
     draw = ImageDraw.Draw(image)
-    x = round(w * 0.06)
+    visible = h * 1760 / 720
+    x = round((w - visible) / 2 + visible * 80 / 1920)
     title = font(round(h * 0.15), "Semibold")
     subtitle = font(round(h * 0.055), "Regular")
     title_box = draw.textbbox((0, 0), TITLE, font=title)
