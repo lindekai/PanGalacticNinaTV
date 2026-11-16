@@ -15,6 +15,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 - Connection keeps the last 50 image-history entries (backfilled four per poll).
 - Sequence pill: target, frames of this run or loop "n/m", and time left of a time-bound loop, from `/sequence/state` and `/sequence/json` (at most every 15 s); "Not running" when idle, "—" while unknown (#4).
 
+- Ambient mode: after 5 minutes without remote input (1–30 min or off in Settings) the newest frame fills the screen with a glass strip (target · sequence · LIVE and time) that moves every 3 minutes against burn-in; new frames cross-fade. Any input or an alarm (offline, overdue exposure) returns to the overview. While it is enabled, the screensaver does not start on the overview.
 - TestFlight preparation: layered app icon and Top Shelf images with a procedural nebula (`tools/icons/make_placeholder_icons.py`), `ITSAppUsesNonExemptEncryption = NO`, signing team from a git-ignored `Config/Local.xcconfig`.
 
 ### Changed (M2)
