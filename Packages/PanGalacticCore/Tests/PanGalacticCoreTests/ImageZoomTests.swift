@@ -66,8 +66,11 @@ struct ImageZoomTests {
         var zoom = ImageZoom()
         for _ in 0..<3 { zoom.zoomIn(image: image, screen: screen) } // 150 %
         zoom.drag(by: CGSize(width: 300, height: -150), image: image, screen: screen)
-        #expect(abs(zoom.centerX - (0.5 + 300 / 1.5 / 6248)) < 1e-9)
-        #expect(abs(zoom.centerY - (0.5 - 150 / 1.5 / 4176)) < 1e-9)
+        // Expected centres computed outside #expect: CI's compiler times out on the literal arithmetic.
+        let expectedX: Double = 0.5 + 300 / 1.5 / 6248
+        let expectedY: Double = 0.5 - 150 / 1.5 / 4176
+        #expect(abs(zoom.centerX - expectedX) < 1e-9)
+        #expect(abs(zoom.centerY - expectedY) < 1e-9)
     }
 
     @Test func zoomingOutKeepsTheViewInsideTheImage() {
