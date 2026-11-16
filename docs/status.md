@@ -57,6 +57,8 @@ xcodebuild -project PanGalacticNinaTV.xcodeproj -scheme PanGalacticNinaTV \
   -archivePath build/PanGalactic.xcarchive -allowProvisioningUpdates archive
 ```
 
+Without a registered Apple TV in the team, automatic signing cannot archive (it first wants a development profile). Create a "tvOS App Store Connect" profile in the developer portal and enable the optional Release lines in `Local.xcconfig` (see the example file); Debug builds keep automatic signing.
+
 Upload the archive from Xcode's Organizer (Distribute App → TestFlight & App Store). Raise `CURRENT_PROJECT_VERSION` for every upload. The placeholder icon is regenerated with `python3 tools/icons/make_placeholder_icons.py`.
 
 A tvOS 26.x simulator runtime is needed to run the app (Xcode → Settings → Components).

@@ -2,3 +2,9 @@
 // from developer.apple.com → Membership details.
 
 DEVELOPMENT_TEAM = XXXXXXXXXX
+
+// Optional: sign Release device builds with an App Store profile, so archives need
+// no registered device (automatic signing would first create a development profile).
+// CODE_SIGN_STYLE[config=Release][sdk=appletvos*] = Manual
+// CODE_SIGN_IDENTITY[config=Release][sdk=appletvos*] = Apple Distribution
+// PROVISIONING_PROFILE_SPECIFIER[config=Release][sdk=appletvos*] = PanGalactic tvOS App Store
