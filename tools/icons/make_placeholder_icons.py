@@ -23,7 +23,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
 CATALOG = ROOT / "App/Resources/Assets.xcassets/App Icon & Top Shelf Image.brandassets"
@@ -240,10 +240,46 @@ def write_stack(name: str, layers: dict[str, Image.Image], sizes: dict[int, tupl
         write_json(content, {"images": images, "info": INFO})
 
 
+TITLE = "Pan Galactic"
+SUBTITLE = "N.I.N.A. Observatory Monitor"
+TEXT = (220, 227, 230)      # Theme.text
+TEXT2 = (140, 154, 162)     # Theme.text2
+
+
+def font(size: int, weight: str) -> ImageFont.FreeTypeFont:
+    """SF Pro from the system (variable font); Helvetica Neue as fallback."""
+    try:
+        f = ImageFont.truetype("/System/Library/Fonts/SFNS.ttf", size)
+        f.set_variation_by_name(weight)
+        return f
+    except (OSError, ValueError):
+        return ImageFont.truetype("/System/Library/Fonts/HelveticaNeue.ttc", size)
+
+
+def letter(image: Image.Image) -> Image.Image:
+    """Name and subtitle on the star field, left of the nebula, inside the safe area.
+
+    tvOS 26 shows the Top Shelf full screen behind the dock, scaled up and centre-cropped:
+    of a 720 pt high image only the middle 1760 pt are visible (measured in the tvOS 26.5
+    simulator), so the text starts at the 80 pt screen margin of that crop.
+    """
+    w, h = image.size
+    draw = ImageDraw.Draw(image)
+    visible = h * 1760 / 720
+    x = round((w - visible) / 2 + visible * 80 / 1920)
+    title = font(round(h * 0.15), "Semibold")
+    subtitle = font(round(h * 0.055), "Regular")
+    title_box = draw.textbbox((0, 0), TITLE, font=title)
+    y = round(h * 0.40) - (title_box[3] - title_box[1])
+    draw.text((x, y), TITLE, font=title, fill=TEXT)
+    draw.text((x + round(h * 0.006), y + (title_box[3] - title_box[1]) + round(h * 0.07)), SUBTITLE, font=subtitle, fill=TEXT2)
+    return image
+
+
 def write_top_shelf(name: str, base_size: tuple[int, int]) -> None:
     imageset = CATALOG / f"{name}.imageset"
     imageset.mkdir(parents=True, exist_ok=True)
-    full = flatten(render(base_size[0] * 2, base_size[1] * 2, TOP_SHELF))
+    full = letter(flatten(render(base_size[0] * 2, base_size[1] * 2, TOP_SHELF)))
     images = []
     for scale in (1, 2):
         filename = f"top-shelf@{scale}x.png"

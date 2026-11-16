@@ -58,6 +58,9 @@ Each milestone ends with a review; the next one starts only after approval.
 - [ ] Sequence progress (target, exposure n/m) from a running-sequence capture (#4)
 - [ ] Confirm `TargetTemp` as the ramp's final target after a completed cooldown (#5)
 - [ ] Device measurement of latency and memory on Apple TV (#8)
+- [ ] Dashboard redesign phase 1: design system, overview, mount icon, Top Shelf lettering (implemented; owner review pending) ([spec](superpowers/specs/2026-11-15-dashboard-redesign-design.md))
+- [ ] Dashboard redesign phase 2: tab bar with Image, Mount, System pages
+- [ ] Dashboard redesign phase 3: ambient mode
 - [ ] Review and approval for M3
 
 ## Proposed features (not yet scheduled)

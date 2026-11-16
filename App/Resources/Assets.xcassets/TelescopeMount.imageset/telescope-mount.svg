@@ -1,17 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
-  <!-- Optical tube, angled towards the sky -->
-  <path d="M10.4 25.0 L49.2 6.6 L54.3 17.4 L15.5 35.8 Z" fill="#000"/>
-  <!-- Dew shield -->
-  <path d="M46.6 3.9 L55.0 0.0 L60.6 11.8 L52.2 15.8 Z" fill="#000"/>
-  <!-- Focuser -->
-  <path d="M5.5 26.8 L11.0 24.2 L13.6 29.6 L8.1 32.2 Z" fill="#000"/>
-  <!-- Mount head -->
-  <circle cx="32" cy="31" r="7" fill="#000"/>
-  <!-- Counterweight shaft and weight -->
-  <path d="M30.2 32.8 L33.8 36.4 L24.6 45.6 L21.0 42.0 Z" fill="#000"/>
-  <path d="M16.6 41.4 L23.6 48.4 L19.4 52.6 L12.4 45.6 Z" fill="#000"/>
-  <!-- Pier and tripod legs -->
-  <path d="M29.5 35 L34.5 35 L34.5 61 L29.5 61 Z" fill="#000"/>
-  <path d="M30.4 37.6 L34.2 40.0 L20.6 63.0 L16.8 60.6 Z" fill="#000"/>
-  <path d="M33.6 37.6 L29.8 40.0 L43.4 63.0 L47.2 60.6 Z" fill="#000"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <!-- German equatorial mount: tripod, pier, tilted polar axis, counterweight, tube with dew shield -->
+  <path fill="#000" fill-rule="nonzero" d="M10.43 16.59 L6.23 22.39 L7.37 23.21 L11.57 17.41 Z M10.43 17.41 L14.63 23.21 L15.77 22.39 L11.57 16.59 Z M10.30 17.00 L10.30 22.80 L11.70 22.80 L11.70 17.00 Z M12.20 17.60 L12.20 15.60 L9.80 15.60 L9.80 17.60 Z M11.86 16.68 L14.46 12.78 L12.14 11.22 L9.54 15.12 Z M9.84 10.94 L17.84 16.24 L18.56 15.16 L10.56 9.86 Z M10.53 12.00 L13.53 14.00 L14.87 12.00 L11.87 10.00 Z M17.51 13.49 L15.81 16.09 L17.99 17.51 L19.69 14.91 Z M6.65 15.23 L13.05 5.63 L10.55 3.97 L4.15 13.57 Z M12.68 6.95 L14.48 4.25 L11.32 2.15 L9.52 4.85 Z M4.37 14.60 L3.67 15.70 L4.93 16.50 L5.63 15.40 Z"/>
 </svg>

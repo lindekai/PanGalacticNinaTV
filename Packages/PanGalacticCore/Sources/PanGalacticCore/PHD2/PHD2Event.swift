@@ -5,7 +5,7 @@ public enum PHD2AppState: Hashable, Sendable {
     case stopped, selected, calibrating, guiding, lostLock, paused, looping
     case other(String)
 
-    init(wire: String) {
+    public init(wire: String) {
         switch wire {
         case "Stopped": self = .stopped
         case "Selected": self = .selected

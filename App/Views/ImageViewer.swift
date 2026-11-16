@@ -17,33 +17,34 @@ struct ImageViewer: View {
     @State private var started = Date()
 
     var body: some View {
-        ZStack {
-            Color.black.ignoresSafeArea()
+        // The whole cover ignores the safe area so the frame is centred on the screen,
+        // not on the asymmetric safe-area rectangle; the caption uses the grid margins.
+        ZStack(alignment: .bottom) {
+            Color.black
             if let shown = rendered ?? thumbnail.flatMap(UIImage.init(data:)) {
                 Image(uiImage: shown)
                     .resizable()
                     .scaledToFit()
-                    .ignoresSafeArea()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            VStack {
-                Spacer()
-                HStack(alignment: .bottom) {
-                    if let image {
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text(verbatim: image.targetName ?? "—").font(.title3.bold())
-                            Text(verbatim: [image.filter, image.exposureTime.map(LatestImageCard.seconds), image.imageType]
-                                .compactMap { $0 }.joined(separator: " · "))
-                                .font(.callout)
-                        }
+            HStack(alignment: .bottom) {
+                if let image {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(verbatim: image.targetName ?? "—").font(.title3.bold())
+                        Text(verbatim: [image.filter, image.exposureTime.map(Format.seconds), image.imageType]
+                            .compactMap { $0 }.joined(separator: " · "))
+                            .font(.callout)
                     }
-                    Spacer()
-                    status
                 }
-                .padding(28)
-                .background(.regularMaterial, in: .rect(cornerRadius: 20))
-                .padding(40)
+                Spacer()
+                status
             }
+            .padding(28)
+            .background(.ultraThinMaterial.opacity(0.6), in: .rect(cornerRadius: 20))
+            .padding(.horizontal, Theme.margin)
+            .padding(.bottom, Theme.marginVertical)
         }
+        .ignoresSafeArea()
         .task(id: index) { await load() }
     }
 

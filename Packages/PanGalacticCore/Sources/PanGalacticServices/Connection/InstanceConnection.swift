@@ -27,9 +27,20 @@ public final class InstanceConnection {
     /// JPEG thumbnail of `latestImage` as written by N.I.N.A. (about 600 px wide).
     public private(set) var latestThumbnail: Data?
 
+    /// Recent history entries, oldest first, for trends (HFR sparkline, Image page).
+    /// Kept while stale; never invented.
+    public private(set) var recentImages: [NINAImageSaveStatistics] = []
+
+    /// HFR values of the newest 24 history entries, oldest first; entries without HFR are skipped.
+    public var recentHFR: [Double] { recentImages.suffix(24).compactMap(\.hfr) }
+
+    /// History entries fetched per poll while backfilling, to keep each cycle cheap.
+    public static let backfillPerPoll = 4
+
     public static let maxThumbnailBytes = 4 * 1024 * 1024
 
     @ObservationIgnored private var images = LatestImageTracker()
+    @ObservationIgnored private var history = ImageHistoryBuffer()
 
     @ObservationIgnored private var machine: ConnectionStateMachine
     @ObservationIgnored private let client: NINAClient
@@ -95,11 +106,13 @@ public final class InstanceConnection {
                     .trimmingCharacters(in: .whitespacesAndNewlines)
             }
             equipment = try await client.get(.equipmentInfo, as: NINAEquipmentSummary.self)
-            await pollImages()
+            // `/equipment/info` is the reachability signal: record it before the
+            // optional image work so slow or failing image requests cannot age it.
             let at = now()
             let delay = machine.recordSuccess(at: at)
             onSuccess?(at)
             refreshPhase()
+            await pollImages()
             return delay
         } catch {
             let delay = machine.recordFailure(at: now(), error: Self.describe(error), unitRandom: random())
@@ -107,6 +120,7 @@ public final class InstanceConnection {
                 // Re-identify after an outage: the server may have been replaced or upgraded.
                 pluginVersion = nil
                 images.reset()
+                history.reset()
             }
             refreshPhase()
             return delay
@@ -117,6 +131,8 @@ public final class InstanceConnection {
     /// is judged by `/equipment/info`; image failures are retried on the next polls.
     private func pollImages() async {
         guard let count = try? await client.get(.imageHistoryCount, as: Int.self) else { return }
+        history.update(count: count)
+        recentImages = history.recent // a shrunk history (restart) must not show the old session
         if images.update(count: count) {
             latestImageIndex = images.latestIndex
             if images.latestIndex == nil {
@@ -124,13 +140,17 @@ public final class InstanceConnection {
                 latestThumbnail = nil
             }
         }
-        guard let index = images.latestIndex else { return }
+        guard let index = images.latestIndex else {
+            recentImages = history.recent
+            return
+        }
         if images.needsMetadata {
             guard let entries = try? await client.get(.imageHistoryEntry(index: index),
                                                       as: [NINAImageSaveStatistics].self) else { return }
             latestImage = entries.first
             latestThumbnail = nil
             images.metadataFetched()
+            history.record(entries.first, at: index)
         }
         if images.needsThumbnail {
             let data = try? await client.raw(.thumbnail(index: index), maxBytes: Self.maxThumbnailBytes)
@@ -138,6 +158,17 @@ public final class InstanceConnection {
             images.thumbnailFetched(success: jpeg != nil)
             if let jpeg { latestThumbnail = jpeg }
         }
+        for older in history.missingIndices(limit: Self.backfillPerPoll) {
+            let entries = try? await client.get(.imageHistoryEntry(index: older), as: [NINAImageSaveStatistics].self)
+            history.record(entries?.first, at: older)
+            if entries == nil {
+                // Server struggling: stop requesting for this history state. The rest of
+                // the window is given up (marked attempted) so the poll cadence stays cheap.
+                for rest in history.missingIndices(limit: history.capacity) { history.record(nil, at: rest) }
+                break
+            }
+        }
+        recentImages = history.recent
     }
 
     /// Re-evaluates time-based staleness; call periodically from the UI.
