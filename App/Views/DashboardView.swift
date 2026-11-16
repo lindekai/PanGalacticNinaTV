@@ -62,8 +62,7 @@ struct DashboardView: View {
                 }
             }
             Spacer(minLength: 24)
-            // Sequence progress needs the running-sequence schema (#4); until then honestly "—".
-            StatusPill("Sequence", value: "—")
+            sequencePill(now: now)
             exposurePill(now: now)
             livePill(now: now)
             if model.store.instances.count > 1 {
@@ -74,6 +73,26 @@ struct DashboardView: View {
             NavigationLink(value: Destination.settings) { Image(systemName: "gearshape") }
                 .buttonStyle(GearButtonStyle())
                 .accessibilityLabel(Text("Settings"))
+        }
+    }
+
+    /// "Coma Cluster · 5 frames · 5:32 h left"; unknown parts are left out.
+    private func sequencePill(now: Date) -> some View {
+        switch SequenceDisplay.state(connection.sequence, phase: connection.phase, now: now) {
+        case .running(let target, let progress, let secondsLeft):
+            var parts: [String] = []
+            if let target { parts.append(target) }
+            switch progress {
+            case .frames(let n): parts.append(String(localized: "\(n) frames"))
+            case .count(let n, let total): parts.append("\(n)/\(total)")
+            case nil: break
+            }
+            if let secondsLeft { parts.append(String(localized: "\(Format.timeLeft(secondsLeft)) left")) }
+            return StatusPill("Sequence", value: parts.isEmpty ? String(localized: "Running") : parts.joined(separator: " · "))
+        case .idle:
+            return StatusPill("Sequence", value: String(localized: "Not running"))
+        case .unknown:
+            return StatusPill("Sequence", value: "—")
         }
     }
 
