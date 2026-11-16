@@ -1,0 +1,635 @@
+{
+  "Response": [
+    {
+      "GlobalTriggers": [
+        {
+          "MaxMinutesAfterMeridian": 10.0,
+          "Issues": [],
+          "PauseTimeBeforeMeridian": 0.0,
+          "MinutesAfterMeridian": 5.0,
+          "Name": "Meridianflip_Trigger",
+          "TimeToMeridianFlip": 10.249997395833333,
+          "UseSideOfPier": true,
+          "Status": "CREATED"
+        },
+        {
+          "NotificationSound": 14,
+          "Issues": [],
+          "Priority": 2,
+          "Name": "Failures to Pushover_Trigger",
+          "Status": "CREATED"
+        },
+        {
+          "PriorityTypes": [
+            "Normal",
+            "High",
+            "Low"
+          ],
+          "Conditions": [
+            {
+              "IsOrTextVisible": false,
+              "ConsecutiveCountStatusLevel": 0,
+              "SelectedOperatorForCondition": ">",
+              "SelectedPropertyForCondition": {
+                "PropertyName": "RMSTotal",
+                "PropertyUserFriendlyName": "<redacted>",
+                "IsEnabled": true,
+                "DataType": "System.Double, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+                "ConditionFulfilled": {}
+              },
+              "ValueForCondition": "0.99",
+              "AimedConsecutiveCount": "1",
+              "CurrentConsecutiveCount": 0,
+              "Issues": []
+            }
+          ],
+          "NotificationSound": "Default",
+          "Issues": [],
+          "Priority": "High",
+          "Name": "StarMessage via Pushover by Condition_Trigger",
+          "SoundTypes": [
+            "Default",
+            "Pushover",
+            "Bike",
+            "Bugle",
+            "CashRegister",
+            "Classical",
+            "Cosmic",
+            "Falling",
+            "Gamelan",
+            "Incoming",
+            "Intermission",
+            "Magic",
+            "Mechanical",
+            "Pianobar",
+            "Siren",
+            "SpaceAlarm",
+            "Tugboat",
+            "Alien",
+            "Climb",
+            "Persistent",
+            "Echo",
+            "Updown",
+            "Vibrate",
+            "None"
+          ],
+          "AddConditionCommand": {},
+          "RemoveConditionCommand": {},
+          "Status": "FINISHED"
+        },
+        {
+          "DeltaT": 0.01,
+          "Issues": [],
+          "Name": "AF nach Temperaturänderung_Trigger",
+          "Status": "CREATED",
+          "Amount": 1.0
+        },
+        {
+          "Name": "Reconnect Camera On Download Failure_Trigger",
+          "Status": "CREATED"
+        }
+      ]
+    },
+    {
+      "Conditions": [],
+      "Iterations": 0,
+      "Name": "Start_Container",
+      "Triggers": [],
+      "Items": [
+        {
+          "Seconds": 20,
+          "Minutes": 44,
+          "Issues": [],
+          "Hours": 17,
+          "RolloverTime": "07:30:21.2145065",
+          "Name": "Zeit abwarten",
+          "SelectedProvider": {},
+          "Status": "FINISHED",
+          "MinutesOffset": -30
+        },
+        {
+          "Conditions": [],
+          "Iterations": 1,
+          "Name": "Startup_Container",
+          "Triggers": [],
+          "Items": [
+            {
+              "Issues": [],
+              "Name": "Connect All Equipment",
+              "Status": "FINISHED"
+            },
+            {
+              "Issues": [],
+              "OnOff": true,
+              "Name": "Kameratauheizung",
+              "Status": "FINISHED"
+            },
+            {
+              "Issues": [],
+              "Name": "Teleskop ausparken",
+              "Status": "FINISHED"
+            },
+            {
+              "TrackingMode": 0,
+              "Issues": [],
+              "Name": "Nachführung setzen",
+              "Status": "FINISHED"
+            }
+          ],
+          "Status": "FINISHED"
+        }
+      ],
+      "Status": "FINISHED"
+    },
+    {
+      "Conditions": [],
+      "Iterations": 0,
+      "Name": "Ziele_Container",
+      "Triggers": [],
+      "Items": [
+        {
+          "Conditions": [],
+          "Target": {
+            "TargetName": "Coma Cluster",
+            "PositionAngle": 268.19,
+            "InputCoordinates": {
+              "RAHours": 12,
+              "RAMinutes": 59,
+              "RASeconds": 48.7,
+              "NegativeDec": false,
+              "DecDegrees": 27,
+              "DecMinutes": 58,
+              "DecSeconds": 50.00002
+            }
+          },
+          "Iterations": 0,
+          "Name": "Coma Cluster_Container",
+          "Triggers": [],
+          "Items": [
+            {
+              "Conditions": [],
+              "Iterations": 0,
+              "Name": "Zentrieren, Kamera kühlen, Guiding Start und Fokussieren_Container",
+              "Triggers": [],
+              "Items": [
+                {
+                  "Conditions": [],
+                  "Iterations": 1,
+                  "Name": "Zentrieren, Guiding Start und Autofokus_Container",
+                  "Triggers": [],
+                  "Items": [
+                    {
+                      "Issues": [],
+                      "Coordinates": {
+                        "RAHours": 12,
+                        "RAMinutes": 59,
+                        "RASeconds": 48.7,
+                        "NegativeDec": false,
+                        "DecDegrees": 27,
+                        "DecMinutes": 58,
+                        "DecSeconds": 50.00002
+                      },
+                      "Inherited": true,
+                      "Name": "Schwenken und Zentrieren",
+                      "Status": "SKIPPED"
+                    },
+                    {
+                      "Issues": [],
+                      "Name": "Autofokus ausführen",
+                      "Status": "SKIPPED",
+                      "WindowServiceFactory": {}
+                    },
+                    {
+                      "Conditions": [],
+                      "Iterations": 0,
+                      "Name": "Guiding Start_Container",
+                      "Triggers": [],
+                      "Items": [
+                        {
+                          "Issues": [],
+                          "Temperature": -10.0,
+                          "Duration": 2.0,
+                          "Name": "Kamera kühlen",
+                          "Status": "SKIPPED"
+                        },
+                        {
+                          "ForceCalibration": true,
+                          "Issues": [],
+                          "Name": "Guiding starten",
+                          "Status": "FINISHED"
+                        }
+                      ],
+                      "Status": "FINISHED"
+                    },
+                    {
+                      "PriorityTypes": [
+                        "Normal",
+                        "High",
+                        "Low"
+                      ],
+                      "NotificationSound": "pushover",
+                      "Issues": [],
+                      "WaitForDelivery": false,
+                      "Name": "Sends a StarMessage via Pushover",
+                      "Priority": "Normal",
+                      "SoundTypesItems": [
+                        "Default",
+                        "Pushover",
+                        "Bike",
+                        "Bugle",
+                        "CashRegister",
+                        "Classical",
+                        "Cosmic",
+                        "Falling",
+                        "Gamelan",
+                        "Incoming",
+                        "Intermission",
+                        "Magic",
+                        "Mechanical",
+                        "Pianobar",
+                        "Siren",
+                        "SpaceAlarm",
+                        "Tugboat",
+                        "Alien",
+                        "Climb",
+                        "Persistent",
+                        "Echo",
+                        "Updown",
+                        "Vibrate",
+                        "None"
+                      ],
+                      "Status": "FINISHED"
+                    }
+                  ],
+                  "Status": "FINISHED"
+                },
+                {
+                  "WindowService": {},
+                  "NotificationSound": 1,
+                  "Issues": [],
+                  "Title": "$$TARGET_NAME$$",
+                  "Message": "$$TIME$$ Start",
+                  "Name": "Send to Pushover",
+                  "Priority": 0,
+                  "Status": "FINISHED"
+                }
+              ],
+              "Status": "FINISHED"
+            },
+            {
+              "Conditions": [
+                {
+                  "Seconds": 37,
+                  "Minutes": 0,
+                  "Issues": [],
+                  "Hours": 5,
+                  "RolloverTime": "16:15:02.1424143",
+                  "Name": "Bis Zeitpunkt wiederholen_Condition",
+                  "SelectedProvider": {},
+                  "Status": "CREATED",
+                  "MinutesOffset": -30
+                }
+              ],
+              "Iterations": 4,
+              "Name": "Light 120 UV/IR_Container",
+              "Triggers": [
+                {
+                  "AfterExposures": 3,
+                  "Issues": [],
+                  "Name": "Dither nach Belichtungen_Trigger",
+                  "Status": "FINISHED"
+                },
+                {
+                  "Coordinates": {
+                    "RAHours": 12,
+                    "RAMinutes": 59,
+                    "RASeconds": 48.7,
+                    "NegativeDec": false,
+                    "DecDegrees": 27,
+                    "DecMinutes": 58,
+                    "DecSeconds": 50.00002
+                  },
+                  "Inherited": true,
+                  "Issues": [],
+                  "DistanceArcMinutes": 3.0,
+                  "Name": "Nach Drift zentrieren_Trigger",
+                  "AfterExposures": 5,
+                  "Status": "CREATED"
+                },
+                {
+                  "Issues": [],
+                  "Name": "Guiding wiederherstellen_Trigger",
+                  "Status": "FINISHED"
+                },
+                {
+                  "PriorityTypes": [
+                    "Normal",
+                    "High",
+                    "Low"
+                  ],
+                  "Issues": [],
+                  "NotificationSound": null,
+                  "AfterExposures": 10,
+                  "Priority": null,
+                  "Name": "StarMessage via Pushover after Exposures_Trigger",
+                  "SoundTypes": [
+                    "Default",
+                    "Pushover",
+                    "Bike",
+                    "Bugle",
+                    "CashRegister",
+                    "Classical",
+                    "Cosmic",
+                    "Falling",
+                    "Gamelan",
+                    "Incoming",
+                    "Intermission",
+                    "Magic",
+                    "Mechanical",
+                    "Pianobar",
+                    "Siren",
+                    "SpaceAlarm",
+                    "Tugboat",
+                    "Alien",
+                    "Climb",
+                    "Persistent",
+                    "Echo",
+                    "Updown",
+                    "Vibrate",
+                    "None"
+                  ],
+                  "Status": "CREATED"
+                },
+                {
+                  "SampleSize": 5,
+                  "Issues": [],
+                  "Name": "AF nach HFR Erhöhung_Trigger",
+                  "Status": "CREATED",
+                  "Amount": 5.0
+                }
+              ],
+              "Items": [
+                {
+                  "Offset": -1,
+                  "Issues": [],
+                  "Gain": 100,
+                  "ExposureCount": 381,
+                  "ExposureTime": 120.0,
+                  "Name": "Belichtung ausführen",
+                  "Status": "RUNNING",
+                  "ImageType": "LIGHT",
+                  "Binning": {
+                    "X": 1,
+                    "Y": 1
+                  }
+                }
+              ],
+              "Status": "RUNNING"
+            },
+            {
+              "Conditions": [],
+              "Iterations": 0,
+              "Name": "Lights Ende_Container",
+              "Triggers": [],
+              "Items": [
+                {
+                  "Issues": [],
+                  "Name": "Stoppe Guiding",
+                  "Status": "CREATED"
+                },
+                {
+                  "WindowService": {},
+                  "NotificationSound": 1,
+                  "Issues": [],
+                  "Title": "$$TARGET_NAME$$",
+                  "Message": "$$TIME$$ Ende",
+                  "Name": "Send to Pushover",
+                  "Priority": 0,
+                  "Status": "CREATED"
+                }
+              ],
+              "Status": "CREATED"
+            },
+            {
+              "Conditions": [],
+              "Iterations": 0,
+              "Name": "Making Flats_Container",
+              "Triggers": [],
+              "Items": [
+                {
+                  "WindowService": {},
+                  "NotificationSound": 1,
+                  "Issues": [],
+                  "Title": "Making Flats",
+                  "Message": "Making Flats",
+                  "Name": "Send to Pushover",
+                  "Priority": 0,
+                  "Status": "CREATED"
+                },
+                {
+                  "Coordinates": {
+                    "AzDegrees": 304,
+                    "AzMinutes": 20,
+                    "AzSeconds": 0.0,
+                    "AltDegrees": 60,
+                    "AltMinutes": 30,
+                    "AltSeconds": 0.0
+                  },
+                  "Issues": [],
+                  "Name": "Zu Alt/Az schwenken",
+                  "Status": "CREATED"
+                },
+                {
+                  "Issues": [],
+                  "Temperature": -10.0,
+                  "Duration": 2.0,
+                  "Name": "Kamera kühlen",
+                  "Status": "CREATED"
+                },
+                {
+                  "Issues": [],
+                  "OnOff": true,
+                  "Name": "Kameratauheizung",
+                  "Status": "CREATED"
+                },
+                {
+                  "Issues": [],
+                  "Name": "Abdeckung des Flat-Panels schließen",
+                  "Status": "CREATED"
+                },
+                {
+                  "HistogramTolerancePercentage": 0.1,
+                  "Conditions": [],
+                  "MaxExposure": 3.0,
+                  "Iterations": 0,
+                  "KeepPanelClosed": false,
+                  "Name": "Auto Exposure Flat_Container",
+                  "Triggers": [],
+                  "DeterminedHistogramADU": 0.0,
+                  "Items": [
+                    {
+                      "Issues": [],
+                      "Name": "Abdeckung des Flat-Panels schließen",
+                      "Status": "CREATED"
+                    },
+                    {
+                      "Issues": [],
+                      "OnOff": true,
+                      "Name": "Licht umschalten",
+                      "Status": "CREATED"
+                    },
+                    {
+                      "Issues": [],
+                      "Filter": null,
+                      "Name": "Filter wechseln",
+                      "Status": "CREATED"
+                    },
+                    {
+                      "Brightness": 50,
+                      "Issues": [],
+                      "Name": "Helligkeit setzen",
+                      "Status": "CREATED"
+                    },
+                    {
+                      "Conditions": [
+                        {
+                          "Iterations": 50,
+                          "CompletedIterations": 50,
+                          "Name": "Schleife für Iterationen_Condition",
+                          "Status": "CREATED"
+                        }
+                      ],
+                      "Iterations": 0,
+                      "Name": "_Container",
+                      "Triggers": [],
+                      "Items": [
+                        {
+                          "Offset": -1,
+                          "Issues": [],
+                          "Gain": 100,
+                          "ExposureCount": 48,
+                          "ExposureTime": 1.06356,
+                          "Name": "Belichtung ausführen",
+                          "Status": "CREATED",
+                          "ImageType": "FLAT",
+                          "Binning": {
+                            "X": 1,
+                            "Y": 1
+                          }
+                        }
+                      ],
+                      "Status": "CREATED"
+                    },
+                    {
+                      "Issues": [],
+                      "OnOff": false,
+                      "Name": "Licht umschalten",
+                      "Status": "CREATED"
+                    },
+                    {
+                      "Issues": [],
+                      "Name": "Flat Panel Abdeckung öffnen",
+                      "Status": "CREATED"
+                    }
+                  ],
+                  "Status": "CREATED",
+                  "HistogramTargetPercentage": 0.5,
+                  "MinExposure": 1.0
+                }
+              ],
+              "Status": "CREATED"
+            }
+          ],
+          "Status": "RUNNING"
+        }
+      ],
+      "Status": "RUNNING"
+    },
+    {
+      "Conditions": [],
+      "Iterations": 0,
+      "Name": "Ende_Container",
+      "Triggers": [],
+      "Items": [
+        {
+          "Conditions": [],
+          "Iterations": 0,
+          "Name": "End_Container",
+          "Triggers": [],
+          "Items": [
+            {
+              "Issues": [],
+              "Name": "Stoppe Guiding",
+              "Status": "CREATED"
+            },
+            {
+              "Issues": [],
+              "Name": "Teleskop parken",
+              "Status": "CREATED"
+            },
+            {
+              "Issues": [],
+              "OnOff": false,
+              "Name": "Kameratauheizung",
+              "Status": "CREATED"
+            },
+            {
+              "Issues": [],
+              "OnOff": false,
+              "Name": "Licht umschalten",
+              "Status": "CREATED"
+            },
+            {
+              "Issues": [],
+              "Name": "Abdeckung des Flat-Panels schließen",
+              "Status": "CREATED"
+            },
+            {
+              "Issues": [],
+              "Duration": 10.0,
+              "Name": "Kamera aufwärmen",
+              "Status": "CREATED"
+            },
+            {
+              "Issues": [],
+              "Name": "Shutdown PHD2",
+              "Status": "CREATED"
+            },
+            {
+              "Issues": [],
+              "Name": "Disconnect All Equipment",
+              "Status": "CREATED"
+            },
+            {
+              "FilePath": "<redacted>",
+              "Issues": [],
+              "Name": "Sequenz speichern",
+              "Status": "CREATED"
+            },
+            {
+              "WindowService": {},
+              "NotificationSound": 1,
+              "Issues": [],
+              "Title": "Ende Sequenz",
+              "Message": "$$TIME$$",
+              "Name": "Send to Pushover",
+              "Priority": 0,
+              "Status": "CREATED"
+            },
+            {
+              "Time": 20.0,
+              "Name": "Zeitspanne abwarten",
+              "Status": "CREATED"
+            }
+          ],
+          "Status": "CREATED"
+        }
+      ],
+      "Status": "CREATED"
+    }
+  ],
+  "Error": "",
+  "StatusCode": 200,
+  "Success": true,
+  "Type": "API"
+}
