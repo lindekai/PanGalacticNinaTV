@@ -11,6 +11,8 @@ All notable changes to this project are documented here. Format based on [Keep a
 - Custom telescope-on-mount icon.
 - ADR 0004 (image updates by polling); proposal for a surveillance camera view.
 
+- TestFlight preparation: layered app icon and Top Shelf images with a procedural nebula (`tools/icons/make_placeholder_icons.py`), `ITSAppUsesNonExemptEncryption = NO`, signing team from a git-ignored `Config/Local.xcconfig`.
+
 ### Changed (M2)
 - Camera setpoint: the driver's `TemperatureSetPoint` is shown only while the cooler is on; `TargetTemp` and `AtTargetTemp` are ignored (#5).
 

@@ -63,3 +63,4 @@ Each milestone ends with a review; the next one starts only after approval.
 ## Proposed features (not yet scheduled)
 
 - Surveillance camera view (RTSP / snapshot) – [proposal](features/surveillance-camera.md)
+- Dynamic Top Shelf (newest frame, progress, alarms) – accepted, after M3 – [proposal](features/top-shelf-extension.md)

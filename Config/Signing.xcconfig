@@ -1,0 +1,7 @@
+// Signing for device builds, archives and TestFlight.
+//
+// The team ID is not committed. Copy Local.xcconfig.example to Local.xcconfig
+// (git-ignored) and set DEVELOPMENT_TEAM there. Without it, builds stay
+// unsigned-capable (CI passes CODE_SIGNING_ALLOWED=NO).
+
+#include? "Local.xcconfig"
