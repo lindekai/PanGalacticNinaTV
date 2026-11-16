@@ -31,6 +31,14 @@ enum Format {
             : String(format: "%d:%02d", s / 60, s % 60)
     }
 
+    /// Long remaining times for the sequence: `h:mm h` from one hour, else whole minutes.
+    static func timeLeft(_ seconds: Int) -> String {
+        let s = max(0, seconds)
+        return s >= 3600
+            ? String(format: "%d:%02d h", s / 3600, s / 60 % 60)
+            : "\((s + 59) / 60) min"
+    }
+
     /// PHD2 application state as reported through N.I.N.A.; unknown values verbatim.
     static func guiderState(_ wire: String?) -> String? {
         guard let wire else { return nil }

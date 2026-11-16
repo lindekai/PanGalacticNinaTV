@@ -37,10 +37,18 @@ public final class InstanceConnection {
     /// History entries fetched per poll while backfilling, to keep each cycle cheap.
     public static let backfillPerPoll = 4
 
+    /// Progress of the running sequence; `nil` while unknown (not fetched yet,
+    /// request failed, or offline). Kept while stale, never invented.
+    public private(set) var sequence: SequenceProgress?
+
+    /// The sequence tree is larger than the other polls (6–20 KB); fetch it at most this often.
+    public static let sequenceInterval: TimeInterval = 15
+
     public static let maxThumbnailBytes = 4 * 1024 * 1024
 
     @ObservationIgnored private var images = LatestImageTracker()
     @ObservationIgnored private var history = ImageHistoryBuffer()
+    @ObservationIgnored private var lastSequencePoll: Date?
 
     @ObservationIgnored private var machine: ConnectionStateMachine
     @ObservationIgnored private let client: NINAClient
@@ -112,6 +120,7 @@ public final class InstanceConnection {
             let delay = machine.recordSuccess(at: at)
             onSuccess?(at)
             refreshPhase()
+            await pollSequence(at: at)
             await pollImages()
             return delay
         } catch {
@@ -121,10 +130,25 @@ public final class InstanceConnection {
                 pluginVersion = nil
                 images.reset()
                 history.reset()
+                sequence = nil
+                lastSequencePoll = nil
             }
             refreshPhase()
             return delay
         }
+    }
+
+    /// `/sequence/state` carries pass counts and loop conditions, `/sequence/json` the
+    /// live end time of time-bound loops; without the state tree the progress is unknown.
+    private func pollSequence(at now: Date) async {
+        if let last = lastSequencePoll, now.timeIntervalSince(last) < Self.sequenceInterval { return }
+        lastSequencePoll = now
+        guard let state = try? await client.get(.sequenceState, as: JSONValue.self) else {
+            sequence = nil
+            return
+        }
+        let json = try? await client.get(.sequenceJSON, as: JSONValue.self)
+        sequence = SequenceProgress(state: state, json: json)
     }
 
     /// Fetches metadata and thumbnail only when the newest image changed. Reachability

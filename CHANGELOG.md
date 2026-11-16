@@ -13,6 +13,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 - Redesigned overview ("precision instrument"): slate/teal design system, header with sequence/exposure/live pills and settings button, newest frame with caption and HFR trend of recent frames, modules Camera (gain first), Object (altitude only while tracking), Mount, Guiding and Filter with status LEDs.
 - Equatorial mount icon; Top Shelf lettering.
 - Connection keeps the last 50 image-history entries (backfilled four per poll).
+- Sequence pill: target, frames of this run or loop "n/m", and time left of a time-bound loop, from `/sequence/state` and `/sequence/json` (at most every 15 s); "Not running" when idle, "—" while unknown (#4).
 
 - TestFlight preparation: layered app icon and Top Shelf images with a procedural nebula (`tools/icons/make_placeholder_icons.py`), `ITSAppUsesNonExemptEncryption = NO`, signing team from a git-ignored `Config/Local.xcconfig`.
 

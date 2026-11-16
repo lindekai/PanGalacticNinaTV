@@ -49,7 +49,7 @@ struct StatusPill: View {
             if let key {
                 Text(key).font(.pgRubric).tracking(2.5).textCase(.uppercase).foregroundStyle(Theme.text2)
             }
-            Text(verbatim: value).font(.pgValue).foregroundStyle(Theme.text)
+            Text(verbatim: value).font(.pgValue).foregroundStyle(Theme.text).lineLimit(1)
         }
         .padding(.horizontal, 24)
         .frame(height: 56)

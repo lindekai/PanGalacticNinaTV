@@ -121,7 +121,7 @@ Superseded by the live verdicts in the [M0 report](m0-report.md).
 | Capability | Desk verdict | Live gate |
 |---|---|---|
 | Identify server read-only | **Go** | `/version` fixture |
-| Sequence/exposure state | **Go, schema TBD** | `/sequence/json` fixture during a running sequence |
+| Sequence/exposure state | **Go, schema TBD** | `/sequence/json` fixture during a running sequence – done 2026-11-15, see §7 |
 | Preview image | **Go** | thumbnail + resized image fetch, timing + CPU note |
 | Camera/mount/filter/focuser | **Go** | `/equipment/info` fixture |
 | Event delivery | **Go** | ≥ 1 `IMAGE-SAVE`, `FILTERWHEEL-CHANGED`, `GUIDER-DITHER` captured |
@@ -148,7 +148,7 @@ Owner's system, 2026-11-09, idle (equipment connected, no sequence running, moun
 | Exposure end | `ExposureEndTime` populated while `IsExposing` = false | Use only while exposing |
 | Mount coordinates | `EquatorialSystem` = `JNOW`, `Coordinates.Epoch` = `JNOW` | Precess for catalog (J2000) overlays |
 | Weather | `SkyQuality` = `"NaN"` (string) | Lenient numeric decoding; NaN → unavailable |
-| Sequence | `/sequence/json` and `/sequence/state`: array; first element `{"GlobalTriggers": []}`, then containers with `Name`, `Status` (`CREATED`), `Items`, `Triggers`, `Conditions` (`state` adds `Iterations`) | Decoder for running sequence still needs a fixture |
+| Sequence | `/sequence/json` and `/sequence/state`: array; first element `{"GlobalTriggers": []}`, then containers with `Name`, `Status` (`CREATED`), `Items`, `Triggers`, `Conditions` (`state` adds `Iterations`) | Running sequence captured in M2, see below |
 | Event history | Array of `{"Event": …, "Time": …}` | Usable for initial state after connect |
 | `/profile/show` | Contains third-party API keys in plain text | Removed from allowlist (R11) |
 | WebSocket | Connects; no messages while idle | – |
@@ -186,4 +186,19 @@ Not verified in M0 (downgraded, see report): PHD2 `GuideStep`/dither/settle, seq
 | Thumbnail race | Plugin appends to the history before writing the thumbnail file; an early `/image/thumbnail/{n}` fails | Thumbnail retried on the next polls (max. 3) |
 | Full preview | 4.0 s for 1920×1080, q 85 (675 KB); thumbnail 0.1 s (209 KB) | Viewer shows the thumbnail at once and swaps in the render |
 | App memory (tvOS 26.5 simulator) | 35 MB with overview, 42 MB with full-screen viewer open | Device measurement still open (#8) |
+
+### Running sequence (2026-11-15, 23:23 and 23:28)
+
+Two captures 4.5 min apart while a time-bound loop of 120 s lights ran ("loop until 05:00"). Semantics checked in source: plugin `WebService/V2/Application/Sequence.cs` at the pinned commit; N.I.N.A. tag `Version-3.2` (`2393eae`), `NINA.Sequencer`.
+
+| Topic | Finding | Consequence |
+|---|---|---|
+| Two serializers | `/sequence/json`: hand-written field list per class (System.Text.Json). `/sequence/state`: reflection over properties with public getter **and** setter (Newtonsoft); get-only properties such as `RemainingTime` are absent | Both endpoints are needed: counts from `state`, end times from `json` |
+| Status | `enum.ToString()`: `CREATED`, `RUNNING`, `FINISHED`, `FAILED`, `SKIPPED`, `DISABLED` | The running chain is followed by `RUNNING` containers |
+| Container `Iterations` (`state` only) | Completed passes of the current run; reset when the container starts and by `ResetProgress`; not saved in the sequence file. Live: 4 → 5 | Frames of this run, when a pass is exactly one exposure |
+| `TakeExposure.ExposureCount` | Saved with the sequence, never reset at start. Live: 381 → 382 for a session with 5 frames | **Never used** |
+| Time conditions (`json`) | `TimeCondition.RemainingTime` = next occurrence of the configured time minus the PC's local now, computed on read; `TargetTime` = now + remaining. Live: 05:37:04 → 05:32:28 | End time from `TargetTime` (absolute, with offset) |
+| `LoopCondition` | `Iterations` (target) and `CompletedIterations`, in both endpoints | "n/m" from the condition's own pair |
+| Unlocked reads | The plugin walks the live tree from an HTTP thread; an item that throws while serializing is silently dropped | A missing item is unknown; `json` is matched to `state` by index **and** name, else ignored |
+| Privacy | `json` contains the site's latitude, longitude and elevation (Alt/Az instructions) and file paths with the Windows user name | Sanitizer redacts them; fixtures reviewed |
 

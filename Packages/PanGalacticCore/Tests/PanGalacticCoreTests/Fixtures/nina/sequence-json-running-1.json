@@ -1,0 +1,430 @@
+{
+  "Response": [
+    {
+      "GlobalTriggers": [
+        {
+          "TimeToFlip": 10.249997395833333,
+          "Name": "Meridianflip_Trigger",
+          "Status": "CREATED"
+        },
+        {
+          "Name": "Failures to Pushover_Trigger",
+          "Status": "CREATED"
+        },
+        {
+          "Name": "StarMessage via Pushover by Condition_Trigger",
+          "Status": "FINISHED"
+        },
+        {
+          "DeltaTemperature": 0.01,
+          "Name": "AF nach Temperaturänderung_Trigger",
+          "Status": "CREATED",
+          "TargetTemperature": 1
+        },
+        {
+          "Name": "Reconnect Camera On Download Failure_Trigger",
+          "Status": "CREATED"
+        }
+      ]
+    },
+    {
+      "Conditions": [],
+      "Items": [
+        {
+          "CalculatedWaitDuration": "00:00:00",
+          "TargetTime": "2026-11-15T23:23:32.5287437+01:00",
+          "Name": "Zeit abwarten",
+          "Status": "FINISHED"
+        },
+        {
+          "Conditions": [],
+          "Items": [
+            {
+              "Name": "Connect All Equipment",
+              "Status": "FINISHED"
+            },
+            {
+              "DewHeaterOn": true,
+              "Name": "Kameratauheizung",
+              "Status": "FINISHED"
+            },
+            {
+              "Name": "Teleskop ausparken",
+              "Status": "FINISHED"
+            },
+            {
+              "TrackingMode": "Sidereal",
+              "Name": "Nachführung setzen",
+              "Status": "FINISHED"
+            }
+          ],
+          "Name": "Startup_Container",
+          "Status": "FINISHED",
+          "Triggers": []
+        }
+      ],
+      "Name": "Start_Container",
+      "Status": "FINISHED",
+      "Triggers": []
+    },
+    {
+      "Conditions": [],
+      "Items": [
+        {
+          "Conditions": [],
+          "Items": [
+            {
+              "Conditions": [],
+              "Items": [
+                {
+                  "Conditions": [],
+                  "Items": [
+                    {
+                      "Coordinates": {
+                        "RA": 12.99686111111111,
+                        "RAString": "12:59:49",
+                        "RADegrees": 194.95291666666665,
+                        "Dec": 27.98055556111111,
+                        "DecString": "27° 58' 50\"",
+                        "Epoch": "J2000",
+                        "DateTime": {
+                          "Now": "2026-11-15T23:23:32.5368552+01:00",
+                          "UtcNow": "2026-11-15T22:23:32.5368585Z"
+                        }
+                      },
+                      "Name": "Schwenken und Zentrieren",
+                      "Status": "SKIPPED"
+                    },
+                    {
+                      "Name": "Autofokus ausführen",
+                      "Status": "SKIPPED"
+                    },
+                    {
+                      "Conditions": [],
+                      "Items": [
+                        {
+                          "MinCoolingTime": 2,
+                          "Temperature": -10,
+                          "Name": "Kamera kühlen",
+                          "Status": "SKIPPED"
+                        },
+                        {
+                          "ForceCalibration": true,
+                          "Name": "Guiding starten",
+                          "Status": "FINISHED"
+                        }
+                      ],
+                      "Name": "Guiding Start_Container",
+                      "Status": "FINISHED",
+                      "Triggers": []
+                    },
+                    {
+                      "Name": "Sends a StarMessage via Pushover",
+                      "Status": "FINISHED"
+                    }
+                  ],
+                  "Name": "Zentrieren, Guiding Start und Autofokus_Container",
+                  "Status": "FINISHED",
+                  "Triggers": []
+                },
+                {
+                  "Name": "Send to Pushover",
+                  "Status": "FINISHED"
+                }
+              ],
+              "Name": "Zentrieren, Kamera kühlen, Guiding Start und Fokussieren_Container",
+              "Status": "FINISHED",
+              "Triggers": []
+            },
+            {
+              "Conditions": [
+                {
+                  "TargetTime": "2026-11-16T05:00:36.9999968+01:00",
+                  "RemainingTime": "05:37:04.4701586",
+                  "Name": "Bis Zeitpunkt wiederholen_Condition",
+                  "Status": "CREATED"
+                }
+              ],
+              "Items": [
+                {
+                  "Offset": -1,
+                  "Gain": 100,
+                  "ExposureCount": 381,
+                  "Type": "LIGHT",
+                  "ExposureTime": 120,
+                  "Name": "Belichtung ausführen",
+                  "Status": "RUNNING",
+                  "Binning": {
+                    "Name": "1x1",
+                    "X": 1,
+                    "Y": 1
+                  }
+                }
+              ],
+              "Name": "Light 120 UV/IR_Container",
+              "Status": "RUNNING",
+              "Triggers": [
+                {
+                  "Exposures": 2,
+                  "Name": "Dither nach Belichtungen_Trigger",
+                  "Status": "FINISHED",
+                  "TargetExposures": 3
+                },
+                {
+                  "Coordinates": {
+                    "Coordinates": {
+                      "RA": 12.99686111111111,
+                      "RAString": "12:59:49",
+                      "RADegrees": 194.95291666666665,
+                      "Dec": 27.98055556111111,
+                      "DecString": "27° 58' 50\"",
+                      "Epoch": "J2000",
+                      "DateTime": {
+                        "Now": "2026-11-15T23:23:32.5400412+01:00",
+                        "UtcNow": "2026-11-15T22:23:32.5400465Z"
+                      }
+                    },
+                    "RAHours": 12,
+                    "RAMinutes": 59,
+                    "RASeconds": 48.7,
+                    "NegativeDec": false,
+                    "DecDegrees": 27,
+                    "DecMinutes": 58,
+                    "DecSeconds": 50.00002
+                  },
+                  "Drift": 0,
+                  "Name": "Nach Drift zentrieren_Trigger",
+                  "Status": "CREATED",
+                  "TargetDrift": 3
+                },
+                {
+                  "Name": "Guiding wiederherstellen_Trigger",
+                  "Status": "FINISHED"
+                },
+                {
+                  "Name": "StarMessage via Pushover after Exposures_Trigger",
+                  "Status": "CREATED"
+                },
+                {
+                  "SampleSize": 5,
+                  "DeltaHFR": 5,
+                  "OriginalHFR": 0,
+                  "HFRTrendPercentage": 0,
+                  "Name": "AF nach HFR Erhöhung_Trigger",
+                  "Status": "CREATED"
+                }
+              ]
+            },
+            {
+              "Conditions": [],
+              "Items": [
+                {
+                  "Name": "Stoppe Guiding",
+                  "Status": "CREATED"
+                },
+                {
+                  "Name": "Send to Pushover",
+                  "Status": "CREATED"
+                }
+              ],
+              "Name": "Lights Ende_Container",
+              "Status": "CREATED",
+              "Triggers": []
+            },
+            {
+              "Conditions": [],
+              "Items": [
+                {
+                  "Name": "Send to Pushover",
+                  "Status": "CREATED"
+                },
+                {
+                  "Coordinates": {
+                    "DateTime": {
+                      "Now": "2026-11-15T23:23:32.5469157+01:00",
+                      "UtcNow": "2026-11-15T22:23:32.5469204Z"
+                    },
+                    "Azimuth": {
+                      "Degree": 304.3333333333333,
+                      "ArcMinutes": 18260,
+                      "ArcSeconds": 1095600,
+                      "Radians": 5.311618690236076,
+                      "Hours": 20.288888888888888
+                    },
+                    "Altitude": {
+                      "Degree": 60.5,
+                      "ArcMinutes": 3630,
+                      "ArcSeconds": 217800,
+                      "Radians": 1.0559241974565694,
+                      "Hours": 4.033333333333333
+                    },
+                    "Latitude": {},
+                    "Longitude": {},
+                    "Elevation": 0.0,
+                    "AltitudeSite": "WEST"
+                  },
+                  "Name": "Zu Alt/Az schwenken",
+                  "Status": "CREATED"
+                },
+                {
+                  "MinCoolingTime": 2,
+                  "Temperature": -10,
+                  "Name": "Kamera kühlen",
+                  "Status": "CREATED"
+                },
+                {
+                  "DewHeaterOn": true,
+                  "Name": "Kameratauheizung",
+                  "Status": "CREATED"
+                },
+                {
+                  "Name": "Abdeckung des Flat-Panels schließen",
+                  "Status": "CREATED"
+                },
+                {
+                  "Conditions": [],
+                  "Items": [
+                    {
+                      "Name": "Abdeckung des Flat-Panels schließen",
+                      "Status": "CREATED"
+                    },
+                    {
+                      "Name": "Licht umschalten",
+                      "Status": "CREATED"
+                    },
+                    {
+                      "Filter": "Current",
+                      "Name": "Filter wechseln",
+                      "Status": "CREATED"
+                    },
+                    {
+                      "Name": "Helligkeit setzen",
+                      "Status": "CREATED"
+                    },
+                    {
+                      "Conditions": [
+                        {
+                          "Iterations": 50,
+                          "CompletedIterations": 50,
+                          "Name": "Schleife für Iterationen_Condition",
+                          "Status": "CREATED"
+                        }
+                      ],
+                      "Items": [
+                        {
+                          "Offset": -1,
+                          "Gain": 100,
+                          "ExposureCount": 48,
+                          "Type": "FLAT",
+                          "ExposureTime": 1.06356,
+                          "Name": "Belichtung ausführen",
+                          "Status": "CREATED",
+                          "Binning": {
+                            "Name": "1x1",
+                            "X": 1,
+                            "Y": 1
+                          }
+                        }
+                      ],
+                      "Name": "_Container",
+                      "Status": "CREATED",
+                      "Triggers": []
+                    },
+                    {
+                      "Name": "Licht umschalten",
+                      "Status": "CREATED"
+                    },
+                    {
+                      "Name": "Flat Panel Abdeckung öffnen",
+                      "Status": "CREATED"
+                    }
+                  ],
+                  "Name": "Auto Exposure Flat_Container",
+                  "Status": "CREATED",
+                  "Triggers": []
+                }
+              ],
+              "Name": "Making Flats_Container",
+              "Status": "CREATED",
+              "Triggers": []
+            }
+          ],
+          "Name": "Coma Cluster_Container",
+          "Status": "RUNNING",
+          "Triggers": []
+        }
+      ],
+      "Name": "Ziele_Container",
+      "Status": "RUNNING",
+      "Triggers": []
+    },
+    {
+      "Conditions": [],
+      "Items": [
+        {
+          "Conditions": [],
+          "Items": [
+            {
+              "Name": "Stoppe Guiding",
+              "Status": "CREATED"
+            },
+            {
+              "Name": "Teleskop parken",
+              "Status": "CREATED"
+            },
+            {
+              "DewHeaterOn": false,
+              "Name": "Kameratauheizung",
+              "Status": "CREATED"
+            },
+            {
+              "Name": "Licht umschalten",
+              "Status": "CREATED"
+            },
+            {
+              "Name": "Abdeckung des Flat-Panels schließen",
+              "Status": "CREATED"
+            },
+            {
+              "MinWarmingTime": 10,
+              "Name": "Kamera aufwärmen",
+              "Status": "CREATED"
+            },
+            {
+              "Name": "Shutdown PHD2",
+              "Status": "CREATED"
+            },
+            {
+              "Name": "Disconnect All Equipment",
+              "Status": "CREATED"
+            },
+            {
+              "FilePath": "<redacted>",
+              "Name": "Sequenz speichern",
+              "Status": "CREATED"
+            },
+            {
+              "Name": "Send to Pushover",
+              "Status": "CREATED"
+            },
+            {
+              "Delay": 20,
+              "Name": "Zeitspanne abwarten",
+              "Status": "CREATED"
+            }
+          ],
+          "Name": "End_Container",
+          "Status": "CREATED",
+          "Triggers": []
+        }
+      ],
+      "Name": "Ende_Container",
+      "Status": "CREATED",
+      "Triggers": []
+    }
+  ],
+  "Error": "",
+  "StatusCode": 200,
+  "Success": true,
+  "Type": "API"
+}

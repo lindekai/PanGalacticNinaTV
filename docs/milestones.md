@@ -6,7 +6,7 @@ Each milestone ends with a review; the next one starts only after approval.
 |---|---|---|---|
 | **M0** API feasibility | Pin plugin/PHD2 sources, capability matrix, read-only allowlist, probe tooling, live read-only fixtures from the owner's system, go/no-go | Data availability proven or explicitly downgraded; no UI work before | **Complete** – [report](m0-report.md) |
 | M1 Skeleton & connections | Xcode project (tvOS 26), instance store, manual add/test, saved-host discovery, bounded subnet scan, routing 0/1/many, reconnect + stale state | Fresh app connects to real Advanced API; routing rules hold | **Complete** – Apple TV hardware check carried over in #8 |
-| M2 Overview & imaging | Live session metrics, preview on completed image, full-screen viewer, offline fallback | No fake-live metrics; latency and memory measured | **In progress** – sequence progress waits for a running-sequence capture (#4) |
+| M2 Overview & imaging | Live session metrics, preview on completed image, full-screen viewer, offline fallback | No fake-live metrics; latency and memory measured | **In progress** |
 | M3 Guiding & alerts | Streaming chart, RMS with validated units, history, full screen, foreground-only alerts | Replays incl. pause, star lost, reconnect, dither, empty stream | Not started |
 | M4 Astronomy | Compass, altitude plot, Sun/Moon/planets, time travel, star map, FOV overlay | Reference comparisons across sites/dates; usable on Apple TV HD | Not started |
 | M5 Conditions, statistics, i18n, personality | Source-labelled conditions, verified metrics only, EN/DE, message engine | Freshness distinguishable; humor never replaces alarms | Not started |
@@ -55,7 +55,7 @@ Each milestone ends with a review; the next one starts only after approval.
 - [x] Offline fallback: last known values dimmed and labelled "As of …"
 - [x] Exposure countdown and overdue warning
 - [x] Measured: thumbnail 0.1 s, full render 4.0 s, memory 35/42 MB (simulator)
-- [ ] Sequence progress (target, exposure n/m) from a running-sequence capture (#4)
+- [ ] Sequence progress (target, frames or n/m, time left) from a running-sequence capture (#4) – implemented; live check in the app pending
 - [ ] Confirm `TargetTemp` as the ramp's final target after a completed cooldown (#5)
 - [ ] Device measurement of latency and memory on Apple TV (#8)
 - [ ] Dashboard redesign phase 1: design system, overview, mount icon, Top Shelf lettering (implemented; owner review pending) ([spec](superpowers/specs/2026-11-15-dashboard-redesign-design.md))

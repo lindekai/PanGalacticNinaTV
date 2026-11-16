@@ -276,7 +276,48 @@ struct InstanceConnectionTests {
             #expect(throws: Never.self) { try NINAReadOnlyGuard.validate(request) }
         }
         #expect(Set(transport.paths) == ["/v2/api/version", "/v2/api/version/nina", "/v2/api/equipment/info",
-                                         "/v2/api/image-history"])
+                                         "/v2/api/sequence/state", "/v2/api/image-history"])
+    }
+
+    @Test func sequenceIsPolledAtMostEveryFifteenSeconds() async {
+        let clock = Clock()
+        let transport = FakeTransport { request in
+            switch request.url?.path() {
+            case "/v2/api/version": FakeTransport.ok(#""2.2.15.3""#)
+            case "/v2/api/version/nina": FakeTransport.ok(#""3.2""#)
+            case "/v2/api/equipment/info": FakeTransport.ok("{}")
+            case "/v2/api/sequence/state":
+                FakeTransport.ok(#"[{"GlobalTriggers":[]},{"Name":"Lights","Status":"RUNNING","Iterations":3,"Items":[{"Name":"Take Exposure","Status":"RUNNING","ExposureTime":60.0}]}]"#)
+            case "/v2/api/sequence/json":
+                FakeTransport.ok(#"[{"GlobalTriggers":[]},{"Name":"Lights","Status":"RUNNING","Items":[],"Conditions":[{"Name":"Until","TargetTime":"1970-01-01T05:00:00Z"}]}]"#)
+            default: (404, "")
+            }
+        }
+        let conn = connection(transport, clock: clock)
+        func sequenceRequests() -> Int { transport.paths.filter { $0.hasPrefix("/v2/api/sequence/") }.count }
+
+        _ = await conn.pollOnce()
+        #expect(conn.sequence?.completedPasses == 3)
+        #expect(conn.sequence?.loop == .until(Date(timeIntervalSince1970: 5 * 3600)))
+        #expect(sequenceRequests() == 2)
+
+        clock.now += 5
+        _ = await conn.pollOnce()
+        clock.now += 5
+        _ = await conn.pollOnce()
+        #expect(sequenceRequests() == 2, "not again within 15 s")
+
+        clock.now += 5
+        _ = await conn.pollOnce()
+        #expect(sequenceRequests() == 4)
+
+        transport.setHandler { request in
+            request.url?.path() == "/v2/api/sequence/state" ? (500, "") : FakeTransport.ok("{}")
+        }
+        clock.now += 15
+        _ = await conn.pollOnce()
+        #expect(conn.phase == .live, "a failing sequence request is not a connection failure")
+        #expect(conn.sequence == nil, "unknown, not the old value")
     }
 }
 
