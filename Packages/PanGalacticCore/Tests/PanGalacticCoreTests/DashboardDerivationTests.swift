@@ -94,7 +94,9 @@ struct DashboardDerivationTests {
         #expect(series.count == 23, "last 24 entries first, then drop the placeholder")
         #expect(series.last == 1.29)
         #expect(!series.contains(1.10), "placeholder HFR 0 is unavailable, not a data point")
-        #expect(buffer.hfrSeries(limit: 5) == (25..<30).map { 1.0 + Double($0) / 100 })
+        // Split up: CI's compiler cannot type-check the one-line comparison in time.
+        let expected: [Double] = (25..<30).map { 1.0 + Double($0) / 100 }
+        #expect(buffer.hfrSeries(limit: 5) == expected)
     }
 
     func camera(_ fields: String) throws -> NINAEquipmentSummary.Camera? {
