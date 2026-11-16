@@ -20,6 +20,9 @@ All notable changes to this project are documented here. Format based on [Keep a
 ### Changed (M2)
 - Camera setpoint: the driver's `TemperatureSetPoint` is shown only while the cooler is on; `TargetTemp` and `AtTargetTemp` are ignored (#5).
 - Guider state is localized (e.g. "Stopped" → "Gestoppt"); unknown states are shown as received.
+- Header pills use one font and size on one baseline ("Sequence · Not running", like "LIVE · 17:21"); the exposure pill keeps its width while counting down.
+- The newest frame takes the image's aspect ratio (no black bars).
+- Focus: swiping down from the settings button reaches the image, and up returns.
 
 ### Added (M1)
 - tvOS app (`PanGalacticNinaTV.xcodeproj`, tvOS 26.0): setup, add/edit instance with read-only connection test, opt-in local network search, instance picker, dashboard placeholder with live/stale/offline badge and equipment overview, settings.

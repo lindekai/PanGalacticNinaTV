@@ -74,6 +74,9 @@ struct DashboardView: View {
                 .buttonStyle(GearButtonStyle())
                 .accessibilityLabel(Text("Settings"))
         }
+        // The gear sits far right, the image far left: as full-width focus sections,
+        // a swipe down from the gear reaches the image and a swipe up returns.
+        .focusSection()
     }
 
     /// "Coma Cluster · 5 frames · 5:32 h left"; unknown parts are left out.
@@ -96,14 +99,17 @@ struct DashboardView: View {
         }
     }
 
+    /// Widest usual countdown, so the pill keeps its width while the exposure ticks down.
+    private static var exposureReserve: String { String(localized: "\(Format.countdown(5999)) left") }
+
     private func exposurePill(now: Date) -> some View {
         switch ExposureDisplay.state(camera: connection.equipment?.camera, phase: connection.phase, now: now) {
         case .overdue:
-            return StatusPill("Exposure", value: String(localized: "Overdue"), light: .warning)
+            return StatusPill("Exposure", value: String(localized: "Overdue"), light: .warning, reserve: Self.exposureReserve)
         case .running(let left):
-            return StatusPill("Exposure", value: String(localized: "\(Format.countdown(left)) left"))
+            return StatusPill("Exposure", value: String(localized: "\(Format.countdown(left)) left"), reserve: Self.exposureReserve)
         case .idle, .unknown:
-            return StatusPill("Exposure", value: "—")
+            return StatusPill("Exposure", value: "—", reserve: Self.exposureReserve)
         }
     }
 
@@ -180,6 +186,7 @@ struct DashboardView: View {
             .opacity(asOf != nil && equipment != nil ? 0.55 : 1)
         }
         .frame(maxHeight: .infinity, alignment: .top)
+        .focusSection()
     }
 }
 

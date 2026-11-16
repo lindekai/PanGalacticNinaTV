@@ -62,7 +62,7 @@ A beautiful and genuinely useful tvOS monitor that meets the expectations of an 
 5. **Status LEDs:** filled teal = connected and normal; amber = warning; red = fault; hollow ring in `text3` = unknown or unavailable. Where the meaning is not obvious, the state is also written as a word, so colour never carries meaning alone.
 6. **Honest gaps:** a missing value is "—" in `text3`, never 0. Features without verified data (guiding RMS until M3, altitude chart until M4) show a dashed "Not available yet" frame. Stale values are dimmed to `text2` and labelled "As of 23:39"; the image line always shows the frame's age.
 7. **Minimal charts:** one baseline, one `text2` curve, the newest point in teal; no grid, no legend, a single rubric as title. Only data that exists.
-8. **tvOS focus:** on the overview only the image and the gear are focusable (plus the tab bar). Focus = scale 1.02 (image) / 1.12 (gear), 3 pt `focus` border, soft shadow; the gear inverts. Teal is never used for focus.
+8. **tvOS focus:** on the overview only the image and the gear are focusable (plus the tab bar); header and body are full-width focus sections so a swipe down from the gear reaches the image. Focus = scale 1.02 (image) / 1.12 (gear), 3 pt `focus` border, soft shadow; the gear inverts. Teal is never used for focus.
 9. **Dark room:** the brightest area is the astrophoto itself. No crosshair or other overlay on the frame (removed after the owner's live review).
 
 ## Pages
@@ -80,7 +80,7 @@ A `TabView` with the tvOS top tab bar; it hides while focus is in the content an
 
 ### Overview details
 
-- **Header pills:** "Sequence" (target · n/m) shows "—" until #4 delivers verified data; "Exposure" shows the remaining time of the running exposure (available now); no progress underline (it would need the exposure start time, which is not available – same reason as the bottom bar); "LIVE · HH:MM" uses the existing live/stale/offline state (stale/offline: amber/red word instead of LIVE).
+- **Header pills:** one font and size on one baseline, key in `text2` and value in `text` ("Sequence · Not running", like "LIVE · 17:21"; changed after the owner's TestFlight review, no uppercase rubric). "Sequence" (target · n/m) shows "—" until #4 delivers verified data; "Exposure" shows the remaining time of the running exposure (available now); no progress underline (it would need the exposure start time, which is not available – same reason as the bottom bar); "LIVE · HH:MM" uses the existing live/stale/offline state (stale/offline: amber/red word instead of LIVE).
 - **Bottom bar:** one segment per exposure of the sequence once #4 is done. Until then no bar: the equipment info has no exposure start or duration, so a fraction would be guessed when the app joins mid-exposure; the "Exposure" pill shows the remaining time instead.
 - **Object altitude:** until M4 the only source is the mount's pointing altitude from N.I.N.A. It is shown as the object's altitude only while the mount is tracking; when parked, slewing or not tracking, the value is "—". From M4 the app computes the object's altitude from its coordinates and the site, independent of the mount.
 - **Guider state** is localized (e.g. "Stopped" → "Gestoppt"); unknown wire values are shown as received.

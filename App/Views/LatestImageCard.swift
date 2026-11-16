@@ -25,18 +25,23 @@ struct LatestImageCard: View {
         .disabled(image == nil)
     }
 
+    /// The frame takes the image's aspect ratio, so there are no black bars; without an
+    /// image the placeholder uses 3:2, the most common sensor shape.
     private var preview: some View {
-        ZStack {
+        let uiImage = thumbnail.flatMap(UIImage.init(data:))
+        let aspect = uiImage.map { $0.size.width / max($0.size.height, 1) } ?? 3 / 2
+        return ZStack {
             Rectangle().fill(Color.black)
-            if let thumbnail, let uiImage = UIImage(data: thumbnail) {
-                Image(uiImage: uiImage).resizable().scaledToFit()
+            if let uiImage {
+                Image(uiImage: uiImage).resizable().scaledToFill()
             } else if image != nil {
                 ProgressView()
             } else {
                 Text("No image in this N.I.N.A. session yet").font(.pgLabel).foregroundStyle(Theme.text3)
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .aspectRatio(aspect, contentMode: .fit)
+        .clipped()
         .overlay(alignment: .topLeading) {
             if let asOf {
                 Text("As of \(asOf.formatted(date: .omitted, time: .shortened))")
