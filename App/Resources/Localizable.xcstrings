@@ -1,6 +1,16 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%@ %% · 1:1": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ % · 1:1"
+          }
+        }
+      }
+    },
     "%@ left": {
       "localizations": {
         "de": {
@@ -51,6 +61,16 @@
         }
       }
     },
+    "%lld min": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld min"
+          }
+        }
+      }
+    },
     "%lld stars": {
       "localizations": {
         "de": {
@@ -67,6 +87,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Über"
+          }
+        }
+      }
+    },
+    "Active filter": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiver Filter"
           }
         }
       }
@@ -121,12 +151,32 @@
         }
       }
     },
+    "Alignment": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufstellung"
+          }
+        }
+      }
+    },
     "Already added": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Bereits hinzugefügt"
+          }
+        }
+      }
+    },
+    "Alt-azimuth": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Azimutal"
           }
         }
       }
@@ -151,6 +201,16 @@
         }
       }
     },
+    "Ambient Mode": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ambient-Modus"
+          }
+        }
+      }
+    },
     "An instance with this host and port already exists.": {
       "localizations": {
         "de": {
@@ -167,6 +227,76 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stand %@"
+          }
+        }
+      }
+    },
+    "At home": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Home-Position"
+          }
+        }
+      }
+    },
+    "Averaging period": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mittelungszeitraum"
+          }
+        }
+      }
+    },
+    "Azimuth": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Azimut"
+          }
+        }
+      }
+    },
+    "Battery": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akku"
+          }
+        }
+      }
+    },
+    "Binning": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Binning"
+          }
+        }
+      }
+    },
+    "Bit depth": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bittiefe"
+          }
+        }
+      }
+    },
+    "Brightness": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Helligkeit"
           }
         }
       }
@@ -207,6 +337,76 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sternwarte wählen"
+          }
+        }
+      }
+    },
+    "Click to zoom": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klicken zum Zoomen"
+          }
+        }
+      }
+    },
+    "Click: closer · Menu: wider · Play/Pause: whole frame": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klick: näher · Menü: weiter weg · Play/Pause: ganzes Bild"
+          }
+        }
+      }
+    },
+    "Closed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geschlossen"
+          }
+        }
+      }
+    },
+    "Closing": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schließt"
+          }
+        }
+      }
+    },
+    "Cloud cover": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bewölkung"
+          }
+        }
+      }
+    },
+    "Color": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Farbe"
+          }
+        }
+      }
+    },
+    "Conditions": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bedingungen"
           }
         }
       }
@@ -262,6 +462,26 @@
         }
       }
     },
+    "Cooler power": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kühlleistung"
+          }
+        }
+      }
+    },
+    "Cooling": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kühlung"
+          }
+        }
+      }
+    },
     "Could not save settings: %@": {
       "localizations": {
         "de": {
@@ -272,8 +492,38 @@
         }
       }
     },
+    "Cover": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klappe"
+          }
+        }
+      }
+    },
+    "Custom": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benutzerdefiniert"
+          }
+        }
+      }
+    },
     "Dec": {
       "shouldTranslate": false
+    },
+    "Declination": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deklination"
+          }
+        }
+      }
     },
     "Default port 1888. The Advanced API plugin must be enabled in N.I.N.A.": {
       "localizations": {
@@ -295,12 +545,92 @@
         }
       }
     },
+    "Description": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beschreibung"
+          }
+        }
+      }
+    },
+    "Device": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerät"
+          }
+        }
+      }
+    },
+    "Devices": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geräte"
+          }
+        }
+      }
+    },
+    "Dew heater": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taukappenheizung"
+          }
+        }
+      }
+    },
+    "Dew point": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taupunkt"
+          }
+        }
+      }
+    },
+    "Dome": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kuppel"
+          }
+        }
+      }
+    },
     "Don't Panic. Your Telescope Is Probably Fine.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Keine Panik. Deinem Teleskop geht es vermutlich gut."
+          }
+        }
+      }
+    },
+    "Downloading": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lädt herunter"
+          }
+        }
+      }
+    },
+    "Driver": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Treiber"
           }
         }
       }
@@ -325,12 +655,52 @@
         }
       }
     },
+    "Elevation": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Höhe über NN"
+          }
+        }
+      }
+    },
     "Enter a host name or IP address.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Gib einen Hostnamen oder eine IP-Adresse ein."
+          }
+        }
+      }
+    },
+    "Epoch": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Epoche"
+          }
+        }
+      }
+    },
+    "Equatorial": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Äquatorial"
+          }
+        }
+      }
+    },
+    "Error": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehler"
           }
         }
       }
@@ -365,6 +735,16 @@
         }
       }
     },
+    "Exposure ends": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belichtung endet"
+          }
+        }
+      }
+    },
     "Exposure overdue – camera may be stuck": {
       "localizations": {
         "de": {
@@ -388,6 +768,56 @@
     "Filter": {
       "shouldTranslate": false
     },
+    "Filter Wheel": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filterrad"
+          }
+        }
+      }
+    },
+    "Filters": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filter"
+          }
+        }
+      }
+    },
+    "Flat Panel": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flat-Panel"
+          }
+        }
+      }
+    },
+    "Focuser": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fokussierer"
+          }
+        }
+      }
+    },
+    "Following": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folgt"
+          }
+        }
+      }
+    },
     "Found": {
       "localizations": {
         "de": {
@@ -408,8 +838,58 @@
         }
       }
     },
+    "Full resolution unavailable: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volle Auflösung nicht verfügbar: %@"
+          }
+        }
+      }
+    },
     "Gain": {
       "shouldTranslate": false
+    },
+    "Gain range": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gain-Bereich"
+          }
+        }
+      }
+    },
+    "German equatorial": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deutsche Montierung"
+          }
+        }
+      }
+    },
+    "Guide rate Dec": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guiding-Rate Dec"
+          }
+        }
+      }
+    },
+    "Guide rate RA": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guiding-Rate RA"
+          }
+        }
+      }
     },
     "Guider": {
       "shouldTranslate": false
@@ -420,6 +900,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Guiding"
+          }
+        }
+      }
+    },
+    "Guiding error": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guiding-Fehler"
           }
         }
       }
@@ -458,12 +948,52 @@
         }
       }
     },
+    "Humidity": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Luftfeuchte"
+          }
+        }
+      }
+    },
+    "Idle": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bereit"
+          }
+        }
+      }
+    },
     "Instances": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Instanzen"
+          }
+        }
+      }
+    },
+    "King": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "King"
+          }
+        }
+      }
+    },
+    "Last download": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzter Download"
           }
         }
       }
@@ -488,8 +1018,38 @@
         }
       }
     },
+    "Latitude": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breite"
+          }
+        }
+      }
+    },
+    "Light": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Licht"
+          }
+        }
+      }
+    },
     "Live": {
       "shouldTranslate": false
+    },
+    "Live view": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live-Ansicht"
+          }
+        }
+      }
     },
     "LIVE · %@": {
       "localizations": {
@@ -497,6 +1057,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "LIVE · %@"
+          }
+        }
+      }
+    },
+    "Loading file": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lädt Datei"
           }
         }
       }
@@ -511,12 +1081,42 @@
         }
       }
     },
+    "Longest exposure": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Längste Belichtung"
+          }
+        }
+      }
+    },
+    "Longitude": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Länge"
+          }
+        }
+      }
+    },
     "Looping": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Schleife"
+          }
+        }
+      }
+    },
+    "Lunar": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mond"
           }
         }
       }
@@ -531,6 +1131,26 @@
         }
       }
     },
+    "Mechanical angle": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mechanischer Winkel"
+          }
+        }
+      }
+    },
+    "Meridian": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meridian"
+          }
+        }
+      }
+    },
     "Monitor PHD2": {
       "localizations": {
         "de": {
@@ -541,12 +1161,42 @@
         }
       }
     },
+    "Monochrome": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monochrom"
+          }
+        }
+      }
+    },
+    "Motion": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bewegung"
+          }
+        }
+      }
+    },
     "Mount": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Montierung"
+          }
+        }
+      }
+    },
+    "Moving": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bewegt sich"
           }
         }
       }
@@ -574,12 +1224,22 @@
     "N.I.N.A. Advanced API": {
       "shouldTranslate": false
     },
-    "N.I.N.A. is rendering the full image… %lld s": {
+    "N.I.N.A. is rendering the full image…": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "N.I.N.A. rendert das Vollbild … %lld s"
+            "value": "N.I.N.A. rendert das Vollbild …"
+          }
+        }
+      }
+    },
+    "N.I.N.A. is rendering the full resolution…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N.I.N.A. rendert die volle Auflösung …"
           }
         }
       }
@@ -604,8 +1264,38 @@
         }
       }
     },
+    "N.I.N.A. reports no further values for this device.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N.I.N.A. meldet für dieses Gerät keine weiteren Werte."
+          }
+        }
+      }
+    },
+    "N.I.N.A. reports this device as not connected, or no device of this type is chosen.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N.I.N.A. meldet dieses Gerät als nicht verbunden, oder es ist kein Gerät dieses Typs ausgewählt."
+          }
+        }
+      }
+    },
     "Name (optional)": {
       "shouldTranslate": false
+    },
+    "Neither open nor closed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weder offen noch geschlossen"
+          }
+        }
+      }
     },
     "Never connected": {
       "localizations": {
@@ -617,12 +1307,32 @@
         }
       }
     },
+    "No": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nein"
+          }
+        }
+      }
+    },
     "No Advanced API found. Check that N.I.N.A. is running, the plugin is enabled and the Windows firewall allows port 1888 – or add the computer manually.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Keine Advanced API gefunden. Prüfe, ob N.I.N.A. läuft, das Plugin aktiv ist und die Windows-Firewall Port 1888 zulässt – oder füge den Rechner manuell hinzu."
+          }
+        }
+      }
+    },
+    "No data from N.I.N.A. yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Daten von N.I.N.A."
           }
         }
       }
@@ -664,6 +1374,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nicht verbunden"
+          }
+        }
+      }
+    },
+    "Not present": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht vorhanden"
           }
         }
       }
@@ -721,6 +1441,16 @@
     "Offline": {
       "shouldTranslate": false
     },
+    "Offset": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offset"
+          }
+        }
+      }
+    },
     "On": {
       "localizations": {
         "de": {
@@ -738,6 +1468,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nur Adressen im lokalen Netzwerk sind erlaubt"
+          }
+        }
+      }
+    },
+    "Open": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offen"
+          }
+        }
+      }
+    },
+    "Opening": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffnet"
+          }
+        }
+      }
+    },
+    "Outputs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgänge"
           }
         }
       }
@@ -785,6 +1545,26 @@
         }
       }
     },
+    "Peak Dec": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spitze Dec"
+          }
+        }
+      }
+    },
+    "Peak RA": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spitze RA"
+          }
+        }
+      }
+    },
     "PHD2": {
       "shouldTranslate": false
     },
@@ -828,6 +1608,26 @@
         }
       }
     },
+    "Pixel scale": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pixelmaßstab"
+          }
+        }
+      }
+    },
+    "Pixel size": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pixelgröße"
+          }
+        }
+      }
+    },
     "Ports must be between 1 and 65535.": {
       "localizations": {
         "de": {
@@ -838,8 +1638,88 @@
         }
       }
     },
+    "Position": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Position"
+          }
+        }
+      }
+    },
+    "Position (steps)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Position (Schritte)"
+          }
+        }
+      }
+    },
+    "Pressure": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Luftdruck"
+          }
+        }
+      }
+    },
+    "Pulse guiding": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulse-Guiding"
+          }
+        }
+      }
+    },
     "RA": {
       "shouldTranslate": false
+    },
+    "Rain rate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regenrate"
+          }
+        }
+      }
+    },
+    "Reading out": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liest aus"
+          }
+        }
+      }
+    },
+    "Readings": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Messwerte"
+          }
+        }
+      }
+    },
+    "Readout mode": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auslesemodus"
+          }
+        }
+      }
     },
     "Remove": {
       "localizations": {
@@ -857,6 +1737,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ entfernen?"
+          }
+        }
+      }
+    },
+    "Resolution": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auflösung"
           }
         }
       }
@@ -892,6 +1782,36 @@
         }
       }
     },
+    "Reversed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umgekehrt"
+          }
+        }
+      }
+    },
+    "Right ascension": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rektaszension"
+          }
+        }
+      }
+    },
+    "RMS Dec": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RMS Dec"
+          }
+        }
+      }
+    },
     "RMS not available yet": {
       "localizations": {
         "de": {
@@ -902,12 +1822,62 @@
         }
       }
     },
+    "RMS RA": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RMS RA"
+          }
+        }
+      }
+    },
+    "RMS total": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RMS gesamt"
+          }
+        }
+      }
+    },
+    "Rotator": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rotator"
+          }
+        }
+      }
+    },
     "Running": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Läuft"
+          }
+        }
+      }
+    },
+    "Safe": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicher"
+          }
+        }
+      }
+    },
+    "Safety Monitor": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicherheitsmonitor"
           }
         }
       }
@@ -955,6 +1925,26 @@
     "Sensor": {
       "shouldTranslate": false
     },
+    "Sensor temperature": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensortemperatur"
+          }
+        }
+      }
+    },
+    "Sensor type": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensortyp"
+          }
+        }
+      }
+    },
     "Sequence": {
       "localizations": {
         "de": {
@@ -996,12 +1986,132 @@
         }
       }
     },
+    "Settling": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beruhigt sich"
+          }
+        }
+      }
+    },
+    "Shutter": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spalt"
+          }
+        }
+      }
+    },
+    "Side of pier": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pierseite"
+          }
+        }
+      }
+    },
+    "Sidereal": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siderisch"
+          }
+        }
+      }
+    },
+    "Sidereal time": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sternzeit"
+          }
+        }
+      }
+    },
+    "Site": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standort"
+          }
+        }
+      }
+    },
+    "Sky": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Himmel"
+          }
+        }
+      }
+    },
+    "Sky angle": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Himmelswinkel"
+          }
+        }
+      }
+    },
+    "Sky brightness": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Himmelshelligkeit"
+          }
+        }
+      }
+    },
+    "Sky quality": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Himmelsqualität"
+          }
+        }
+      }
+    },
+    "Sky temperature": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Himmelstemperatur"
+          }
+        }
+      }
+    },
     "Slewing": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Schwenkt"
+          }
+        }
+      }
+    },
+    "Solar": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonne"
           }
         }
       }
@@ -1036,6 +2146,16 @@
         }
       }
     },
+    "Star FWHM": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stern-FWHM"
+          }
+        }
+      }
+    },
     "Star lost": {
       "localizations": {
         "de": {
@@ -1066,12 +2186,52 @@
         }
       }
     },
+    "Start After": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starten nach"
+          }
+        }
+      }
+    },
     "Start Search": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Suche starten"
+          }
+        }
+      }
+    },
+    "State": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zustand"
+          }
+        }
+      }
+    },
+    "Status": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Status"
+          }
+        }
+      }
+    },
+    "Step size": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schrittweite"
           }
         }
       }
@@ -1096,12 +2256,72 @@
         }
       }
     },
+    "Subframe": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teilbild"
+          }
+        }
+      }
+    },
+    "Switch": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schalter"
+          }
+        }
+      }
+    },
     "Switch Observatory": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Sternwarte wechseln"
+          }
+        }
+      }
+    },
+    "Synced": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisiert"
+          }
+        }
+      }
+    },
+    "Synchronized": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisiert"
+          }
+        }
+      }
+    },
+    "Temperature": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temperatur"
+          }
+        }
+      }
+    },
+    "Temperature compensation": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temperaturkompensation"
           }
         }
       }
@@ -1136,6 +2356,26 @@
         }
       }
     },
+    "Time to flip": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeit bis Flip"
+          }
+        }
+      }
+    },
+    "Time to meridian": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeit bis Meridian"
+          }
+        }
+      }
+    },
     "Timed out": {
       "extractionState": "manual",
       "localizations": {
@@ -1153,6 +2393,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nachführung"
+          }
+        }
+      }
+    },
+    "Tracking rate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nachführrate"
           }
         }
       }
@@ -1178,12 +2428,62 @@
         }
       }
     },
+    "Unsafe": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht sicher"
+          }
+        }
+      }
+    },
+    "USB limit": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "USB-Limit"
+          }
+        }
+      }
+    },
+    "Version": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version"
+          }
+        }
+      }
+    },
+    "Waiting": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wartet"
+          }
+        }
+      }
+    },
     "Warning": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Warnung"
+          }
+        }
+      }
+    },
+    "Weather": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wetter"
           }
         }
       }
@@ -1198,12 +2498,82 @@
         }
       }
     },
+    "Whole frame": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ganzes Bild"
+          }
+        }
+      }
+    },
+    "Wind direction": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windrichtung"
+          }
+        }
+      }
+    },
+    "Wind gusts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Böen"
+          }
+        }
+      }
+    },
+    "Wind speed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windgeschwindigkeit"
+          }
+        }
+      }
+    },
+    "Without remote input, the newest frame fills the screen with a slim status strip. Any button returns to the overview; an alarm returns at once. While it is on, the screensaver does not start on the overview.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ohne Eingabe auf der Fernbedienung füllt das neueste Bild den Bildschirm, mit einer schmalen Statusleiste. Jede Taste führt zurück zur Übersicht, ein Alarm sofort. Solange der Modus an ist, startet auf der Übersicht kein Bildschirmschoner."
+          }
+        }
+      }
+    },
+    "Yes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ja"
+          }
+        }
+      }
+    },
     "You can save an instance that is currently offline; the app keeps retrying.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Du kannst auch eine Instanz sichern, die gerade offline ist; die App versucht es weiter."
+          }
+        }
+      }
+    },
+    "Zooming…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zoomt …"
           }
         }
       }

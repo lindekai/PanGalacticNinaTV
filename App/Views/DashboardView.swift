@@ -7,8 +7,12 @@ import SwiftUI
 /// is the object. Unknown values are "—"; data that is not live is labelled with its age.
 struct DashboardView: View {
     @Environment(AppModel.self) private var model
+    @Environment(AmbientController.self) private var ambient
     let connection: InstanceConnection
     @State private var viewerItem: ViewerItem?
+    @State private var visible = false
+    @FocusState private var imageFocused: Bool
+    @State private var focusedFirstImage = false
 
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { context in
@@ -29,7 +33,29 @@ struct DashboardView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .background(Theme.bg)
             .ignoresSafeArea()
-            .onChange(of: context.date) { connection.refreshPhase() }
+            .defaultFocus($imageFocused, true)
+            .onChange(of: context.date) {
+                connection.refreshPhase()
+                evaluateAmbient(now: context.date)
+            }
+            .fullScreenCover(isPresented: Binding(get: { ambient.isShowing }, set: { if !$0 { ambient.registerInput() } })) {
+                AmbientView(connection: connection, service: model.renderService) { ambient.registerInput() }
+            }
+        }
+        // The image card is disabled until the first frame is known, so focus starts in the
+        // header; move it to the image once, when the frame arrives.
+        .onChange(of: connection.latestImage == nil, initial: true) { _, noImage in
+            guard !noImage, !focusedFirstImage else { return }
+            focusedFirstImage = true
+            imageFocused = true
+        }
+        .onAppear {
+            visible = true
+            ambient.overviewVisible(true)
+        }
+        .onDisappear {
+            visible = false
+            ambient.overviewVisible(false)
         }
         #if DEBUG
         // Simulator gate tests have no remote: `-debug.openViewer YES` opens the viewer once an image is known.
@@ -43,6 +69,13 @@ struct DashboardView: View {
             ImageViewer(index: item.index, image: connection.latestImage, thumbnail: connection.latestThumbnail,
                         service: model.renderService)
         }
+    }
+
+    /// Only the overview itself gives way to the ambient view: not the image viewer, not Settings.
+    private func evaluateAmbient(now: Date) {
+        let exposure = ExposureDisplay.state(camera: connection.equipment?.camera, phase: connection.phase, now: now)
+        ambient.evaluate(now: now, alarm: AmbientPolicy.isAlarm(phase: connection.phase, exposure: exposure),
+                         eligible: visible && viewerItem == nil)
     }
 
     private var asOf: Date? {
@@ -70,40 +103,33 @@ struct DashboardView: View {
                     .buttonStyle(GearButtonStyle())
                     .accessibilityLabel(Text("Switch Observatory"))
             }
+            NavigationLink(value: Destination.devices) { Image(systemName: "cable.connector") }
+                .buttonStyle(GearButtonStyle())
+                .accessibilityLabel(Text("Devices"))
             NavigationLink(value: Destination.settings) { Image(systemName: "gearshape") }
                 .buttonStyle(GearButtonStyle())
                 .accessibilityLabel(Text("Settings"))
         }
+        // The gear sits far right, the image far left: as full-width focus sections,
+        // a swipe down from the gear reaches the image and a swipe up returns.
+        .focusSection()
     }
 
-    /// "Coma Cluster · 5 frames · 5:32 h left"; unknown parts are left out.
     private func sequencePill(now: Date) -> some View {
-        switch SequenceDisplay.state(connection.sequence, phase: connection.phase, now: now) {
-        case .running(let target, let progress, let secondsLeft):
-            var parts: [String] = []
-            if let target { parts.append(target) }
-            switch progress {
-            case .frames(let n): parts.append(String(localized: "\(n) frames"))
-            case .count(let n, let total): parts.append("\(n)/\(total)")
-            case nil: break
-            }
-            if let secondsLeft { parts.append(String(localized: "\(Format.timeLeft(secondsLeft)) left")) }
-            return StatusPill("Sequence", value: parts.isEmpty ? String(localized: "Running") : parts.joined(separator: " · "))
-        case .idle:
-            return StatusPill("Sequence", value: String(localized: "Not running"))
-        case .unknown:
-            return StatusPill("Sequence", value: "—")
-        }
+        StatusPill("Sequence", value: Format.sequence(SequenceDisplay.state(connection.sequence, phase: connection.phase, now: now)))
     }
+
+    /// Widest usual countdown, so the pill keeps its width while the exposure ticks down.
+    private static var exposureReserve: String { String(localized: "\(Format.countdown(5999)) left") }
 
     private func exposurePill(now: Date) -> some View {
         switch ExposureDisplay.state(camera: connection.equipment?.camera, phase: connection.phase, now: now) {
         case .overdue:
-            return StatusPill("Exposure", value: String(localized: "Overdue"), light: .warning)
+            return StatusPill("Exposure", value: String(localized: "Overdue"), light: .warning, reserve: Self.exposureReserve)
         case .running(let left):
-            return StatusPill("Exposure", value: String(localized: "\(Format.countdown(left)) left"))
+            return StatusPill("Exposure", value: String(localized: "\(Format.countdown(left)) left"), reserve: Self.exposureReserve)
         case .idle, .unknown:
-            return StatusPill("Exposure", value: "—")
+            return StatusPill("Exposure", value: "—", reserve: Self.exposureReserve)
         }
     }
 
@@ -162,6 +188,7 @@ struct DashboardView: View {
                 if let index = connection.latestImageIndex { viewerItem = ViewerItem(index: index) }
             }
             .frame(width: Theme.imageWidth)
+            .focused($imageFocused)
 
             VStack(spacing: Theme.moduleGap) {
                 CameraModule(camera: equipment?.camera, light: StatusLight.camera(equipment?.camera, phase: phase, now: now))
@@ -180,6 +207,7 @@ struct DashboardView: View {
             .opacity(asOf != nil && equipment != nil ? 0.55 : 1)
         }
         .frame(maxHeight: .infinity, alignment: .top)
+        .focusSection()
     }
 }
 

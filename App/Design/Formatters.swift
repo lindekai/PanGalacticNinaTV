@@ -31,6 +31,26 @@ enum Format {
             : String(format: "%d:%02d", s / 60, s % 60)
     }
 
+    /// "Coma Cluster · 5 frames · 5:32 h left"; unknown parts are left out.
+    static func sequence(_ display: SequenceDisplay) -> String {
+        switch display {
+        case .running(let target, let progress, let secondsLeft):
+            var parts: [String] = []
+            if let target { parts.append(target) }
+            switch progress {
+            case .frames(let n): parts.append(String(localized: "\(n) frames"))
+            case .count(let n, let total): parts.append("\(n)/\(total)")
+            case nil: break
+            }
+            if let secondsLeft { parts.append(String(localized: "\(timeLeft(secondsLeft)) left")) }
+            return parts.isEmpty ? String(localized: "Running") : parts.joined(separator: " · ")
+        case .idle:
+            return String(localized: "Not running")
+        case .unknown:
+            return "—"
+        }
+    }
+
     /// Long remaining times for the sequence: `h:mm h` from one hour, else whole minutes.
     static func timeLeft(_ seconds: Int) -> String {
         let s = max(0, seconds)

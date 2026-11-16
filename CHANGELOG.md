@@ -15,11 +15,21 @@ All notable changes to this project are documented here. Format based on [Keep a
 - Connection keeps the last 50 image-history entries (backfilled four per poll).
 - Sequence pill: target, frames of this run or loop "n/m", and time left of a time-bound loop, from `/sequence/state` and `/sequence/json` (at most every 15 s); "Not running" when idle, "—" while unknown (#4).
 
+- Ambient mode: after 5 minutes without remote input (1–30 min or off in Settings) the newest frame fills the screen with a glass strip (target · sequence · LIVE and time) that moves every 3 minutes against burn-in; new frames cross-fade. Any input or an alarm (offline, overdue exposure) returns to the overview. While it is enabled, the screensaver does not start on the overview.
+- Device page (button next to Settings): all eleven device types from `/equipment/info` with name and "Connected", "Not connected" or "Unknown"; no new endpoint.
+- Device details: a click on a device opens everything N.I.N.A. reports about it in groups (e.g. camera cooling, exposure, sensor; mount position, motion, meridian, site incl. coordinates; switch readings and outputs; weather; filter list with the active filter), from the same `/equipment/info` poll and read-only. Only connected devices show values; `"NaN"` readings are left out or shown as "—"; enum fields are localized in the app, N.I.N.A.'s own localized labels are not used.
+- Viewer zoom in steps: a click zooms one step closer (whole frame, then 50/75/100/150/200/300/400 %, skipping steps too close to fitting), Menu one step back, Play/Pause to the whole frame. Swipes drag the picture continuously, arrow clicks move a quarter screen. Each change shows the step with one dot per step and a map of the visible part for two seconds; from 100 % on, pixels are drawn as squares. The full-resolution render (`/image/{index}` without `resize`) is requested once, on the first zoom.
+- Demo server (`tools/demo/demo_server.py`): a pretend N.I.N.A. on 127.0.0.1 with sanitized fixtures and a procedural galaxy, for screenshots and UI work without a telescope.
+- README with screenshots of every screen, the app artwork and a tour of the features.
 - TestFlight preparation: layered app icon and Top Shelf images with a procedural nebula (`tools/icons/make_placeholder_icons.py`), `ITSAppUsesNonExemptEncryption = NO`, signing team from a git-ignored `Config/Local.xcconfig`.
 
 ### Changed (M2)
 - Camera setpoint: the driver's `TemperatureSetPoint` is shown only while the cooler is on; `TargetTemp` and `AtTargetTemp` are ignored (#5).
 - Guider state is localized (e.g. "Stopped" → "Gestoppt"); unknown states are shown as received.
+- Header pills use one font and size on one baseline ("Sequence · Not running", like "LIVE · 17:21"); the exposure pill keeps its width while counting down.
+- The newest frame takes the image's aspect ratio (no black bars).
+- Focus: swiping down from the settings button reaches the image, and up returns; the image gets the focus once the first frame is known.
+- Ambient strip no longer repeats the target when the running sequence already names it ("M 31 · 5 frames", not "M 31 · M 31 · 5 frames").
 
 ### Added (M1)
 - tvOS app (`PanGalacticNinaTV.xcodeproj`, tvOS 26.0): setup, add/edit instance with read-only connection test, opt-in local network search, instance picker, dashboard placeholder with live/stale/offline badge and equipment overview, settings.

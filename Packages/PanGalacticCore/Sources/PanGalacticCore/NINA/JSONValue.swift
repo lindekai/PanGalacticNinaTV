@@ -45,3 +45,14 @@ public enum JSONValue: Decodable, Hashable, Sendable {
         return Int(number)
     }
 }
+
+extension JSONValue {
+    /// Finite numbers only: N.I.N.A. sends a missing reading as the string `"NaN"`.
+    public var double: Double? {
+        if case .number(let number) = self, number.isFinite { number } else { nil }
+    }
+
+    public var bool: Bool? {
+        if case .bool(let bool) = self { bool } else { nil }
+    }
+}

@@ -40,8 +40,9 @@ public enum NINAEndpoint: Hashable, Sendable {
     case framingInfo
     case profileHorizon
     case thumbnail(index: Int)
-    /// Server-rendered (debayered, stretched, resized) JPEG of a history image.
-    case image(index: Int, size: PixelSize, quality: Int)
+    /// Server-rendered (debayered, stretched) JPEG of a history image, resized to `size`;
+    /// `nil` is the full resolution (source review 2026-11-16: no `resize` → scale 1).
+    case image(index: Int, size: PixelSize?, quality: Int)
     case preparedImage(size: PixelSize, quality: Int)
     case moonSeparation(raDegrees: Double, decDegrees: Double)
 
@@ -77,8 +78,14 @@ public enum NINAEndpoint: Hashable, Sendable {
             [URLQueryItem(name: "count", value: "true")]
         case .imageHistoryEntry(let index):
             [URLQueryItem(name: "index", value: String(index))]
-        case .image(_, let size, let quality):
+        case .image(_, let size?, let quality):
             Self.renderQuery(size: size, quality: quality) + [URLQueryItem(name: "stream", value: "true")]
+        case .image(_, nil, let quality):
+            [
+                URLQueryItem(name: "quality", value: String(quality)),
+                URLQueryItem(name: "autoPrepare", value: "true"),
+                URLQueryItem(name: "stream", value: "true"),
+            ]
         case .preparedImage(let size, let quality):
             Self.renderQuery(size: size, quality: quality)
         case .moonSeparation(let ra, let dec):
@@ -103,7 +110,12 @@ public enum NINAEndpoint: Hashable, Sendable {
             try Self.check(index >= 0, "index must be >= 0")
         case .image(let index, let size, let quality):
             try Self.check(index >= 0, "index must be >= 0")
-            try Self.validate(size: size, quality: quality)
+            if let size {
+                try Self.validate(size: size, quality: quality)
+            } else {
+                // Quality 0 would switch the server to PNG.
+                try Self.check((1...100).contains(quality), "quality must be in 1...100")
+            }
         case .preparedImage(let size, let quality):
             try Self.validate(size: size, quality: quality)
         case .moonSeparation(let ra, let dec):
