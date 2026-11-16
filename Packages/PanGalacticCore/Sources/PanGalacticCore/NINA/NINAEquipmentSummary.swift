@@ -87,6 +87,8 @@ public struct NINAEquipmentSummary: Decodable, Hashable, Sendable {
 
     /// All device types, unknown ones included, in `DeviceKind` order.
     public let devices: [DeviceStatus]
+    /// Every device's object as sent, for the detail pages (`DeviceDetail`).
+    public let objects: [DeviceKind: JSONValue]
 
     public let camera: Camera?
     public let mount: Mount?
@@ -122,6 +124,11 @@ public struct NINAEquipmentSummary: Decodable, Hashable, Sendable {
                 .first { !$0.isEmpty }
             return DeviceStatus(kind: kind, connected: connected, name: name)
         }
+        var objects: [DeviceKind: JSONValue] = [:]
+        for kind in DeviceKind.allCases {
+            if let object = (try? all.decodeIfPresent(JSONValue.self, forKey: kind)) ?? nil { objects[kind] = object }
+        }
+        self.objects = objects
 
         func device(_ key: Keys) -> (KeyedDecodingContainer<Field>, Device)? {
             guard let d = try? c.nestedContainer(keyedBy: Field.self, forKey: key),

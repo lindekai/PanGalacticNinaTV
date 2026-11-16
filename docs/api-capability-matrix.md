@@ -218,3 +218,20 @@ Plugin `WebService/V2/Equipment/Connection.cs` (L43–85) and `WebService/V2/App
 | Crop / region | Not supported | Panning happens on the TV |
 | Server state, caching, locks | None changed, no cache, no lock: overlapping requests render in parallel | One request in flight; never poll full resolution |
 | `raw_fits` | Checked by key presence (even `raw_fits=false` switches to FITS) | Never sent |
+
+### Device details (source review, 2026-11-16)
+
+Plugin `WebService/V2/Equipment/*.cs` at the pinned commit and N.I.N.A. `Version-3.2` (`2393eae`) `NINA.Equipment` info classes. The detail pages use only `/equipment/info`, already polled; no new endpoint.
+
+| Finding | Source | Consequence |
+|---|---|---|
+| Serialized with System.Text.Json: enums as their C# member names, `NaN` as the string `"NaN"`, nulls omitted | `CoreUtility.cs` serializer options | Numbers decode as finite numbers only; unknown enum members are shown as sent |
+| A disconnected device is a default-constructed info object (0, -1, `pierEast`, `AltAz`, `JNOW`, `Monochrome`, `IsSafe = false`) | N.I.N.A. `*VM.Reset()` | Values are shown only while `Connected` is `true` |
+| `Dome.FollowingType`, `FlatDevice.LocalizedCoverState`, `LocalizedLightOnState` are N.I.N.A. UI strings in its display language | N.I.N.A. `Loc.Instance[...]` | Not shown; `IsFollowing`, `CoverState`, `LightOn` are |
+| `Camera.HasBattery` is never copied; `Battery` is -1 without one. `AtTargetTemp` is exact float equality | plugin `Camera.cs`, N.I.N.A. `CameraVM` | Battery shown when ≥ 0; `AtTargetTemp` not shown |
+| `Dome.Altitude` is never copied (always `"NaN"`); `Guider.LastGuideStep` is never cleared | plugin `Dome.cs`, `Guider.cs` | Neither is shown |
+| `Mount.TrackingRate` serializes as `{}` (struct fields); `TrackingMode` (plugin-added) carries the rate. `TimeToMeridianFlip` is 24 h when not applicable | N.I.N.A. `ITelescope.cs`, `AscomTelescope.cs` | Rate from `TrackingMode`; flip time only below 24 h while tracking |
+| `MountInfo.TrackingMode` is a live driver read on every request; everything else is cached state | plugin `Mount.cs` | Unchanged 5 s poll; no writes, no PHD2 traffic |
+| Switch items: `Id, Name, Description, Value`; writable ones add `Minimum, Maximum, StepSize, TargetValue` (the value N.I.N.A.'s UI would apply next) | N.I.N.A. `ISwitch.cs` | `Value` shown, 0…1 channels in steps of 1 as on/off; `TargetValue` not shown |
+| Sensitive: site latitude/longitude/elevation, `Coordinates`, Alpaca host names in `DisplayName` | — | Displayed on the TV (owner decision 2026-11-16, several observatories); never in fixtures, screenshots or issues |
+
