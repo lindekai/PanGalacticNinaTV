@@ -63,6 +63,31 @@ public struct NINAEquipmentSummary: Decodable, Hashable, Sendable {
         public let temperature: Double?
     }
 
+    /// Every device type N.I.N.A. reports, in the order of its Equipment tab.
+    public enum DeviceKind: String, CodingKey, CaseIterable, Sendable {
+        case camera = "Camera", filterWheel = "FilterWheel", focuser = "Focuser", rotator = "Rotator"
+        case mount = "Mount", guider = "Guider", switchHub = "Switch", flatDevice = "FlatDevice"
+        case weather = "WeatherData", dome = "Dome", safetyMonitor = "SafetyMonitor"
+    }
+
+    /// One row of the device overview. `connected == nil` is unknown (empty object,
+    /// missing or null): the endpoint cannot tell "no device chosen" from "disconnected",
+    /// so a known `false` covers both.
+    public struct DeviceStatus: Hashable, Sendable {
+        public let kind: DeviceKind
+        public let connected: Bool?
+        public let name: String?
+
+        public init(kind: DeviceKind, connected: Bool?, name: String?) {
+            self.kind = kind
+            self.connected = connected
+            self.name = name
+        }
+    }
+
+    /// All device types, unknown ones included, in `DeviceKind` order.
+    public let devices: [DeviceStatus]
+
     public let camera: Camera?
     public let mount: Mount?
     public let filterWheel: FilterWheel?
@@ -88,6 +113,15 @@ public struct NINAEquipmentSummary: Decodable, Hashable, Sendable {
 
     public init(from decoder: any Decoder) throws {
         let c = try decoder.container(keyedBy: Keys.self)
+        let all = try decoder.container(keyedBy: DeviceKind.self)
+        devices = DeviceKind.allCases.map { kind in
+            let d = try? all.nestedContainer(keyedBy: Field.self, forKey: kind)
+            let connected = (try? d?.decodeIfPresent(Bool.self, forKey: .connected)) ?? nil
+            let name = [Field.name, .displayName].lazy
+                .compactMap { (try? d?.decodeIfPresent(String.self, forKey: $0)) ?? nil }
+                .first { !$0.isEmpty }
+            return DeviceStatus(kind: kind, connected: connected, name: name)
+        }
 
         func device(_ key: Keys) -> (KeyedDecodingContainer<Field>, Device)? {
             guard let d = try? c.nestedContainer(keyedBy: Field.self, forKey: key),

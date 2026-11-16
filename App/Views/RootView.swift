@@ -8,7 +8,16 @@ struct RootView: View {
         NavigationStack {
             Group {
                 if let connection = model.connection {
+                    #if DEBUG
+                    // Simulator gate tests have no remote: `-debug.screen devices` opens the device page.
+                    if UserDefaults.standard.string(forKey: "debug.screen") == "devices" {
+                        DevicesView(connection: connection)
+                    } else {
+                        DashboardView(connection: connection)
+                    }
+                    #else
                     DashboardView(connection: connection)
+                    #endif
                 } else if model.store.instances.isEmpty {
                     SetupView()
                 } else {
@@ -25,6 +34,8 @@ struct RootView: View {
                     NetworkScanView()
                 case .settings:
                     SettingsView()
+                case .devices:
+                    if let connection = model.connection { DevicesView(connection: connection) }
                 }
             }
         }
@@ -44,4 +55,5 @@ enum Destination: Hashable {
     case editInstance(DeviceInstance)
     case scan
     case settings
+    case devices
 }

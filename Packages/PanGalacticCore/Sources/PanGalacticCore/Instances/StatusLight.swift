@@ -23,3 +23,23 @@ public enum StatusLight: Hashable, Sendable {
         return base
     }
 }
+
+/// Connection state of one device on the device overview. Only a current connection to
+/// N.I.N.A. says anything; a stale one keeps the last state but marks it with a warning.
+public enum DeviceConnectionState: Hashable, Sendable {
+    case connected(StatusLight)
+    case notConnected
+    case unknown
+
+    public static func of(_ device: NINAEquipmentSummary.DeviceStatus, phase: ConnectionPhase) -> DeviceConnectionState {
+        switch phase {
+        case .offline, .connecting: return .unknown
+        case .live, .stale: break
+        }
+        switch device.connected {
+        case true?: return .connected(phase == .stale ? .warning : .normal)
+        case false?: return .notConnected
+        case nil: return .unknown
+        }
+    }
+}

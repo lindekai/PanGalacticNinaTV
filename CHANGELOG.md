@@ -16,6 +16,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 - Sequence pill: target, frames of this run or loop "n/m", and time left of a time-bound loop, from `/sequence/state` and `/sequence/json` (at most every 15 s); "Not running" when idle, "—" while unknown (#4).
 
 - Ambient mode: after 5 minutes without remote input (1–30 min or off in Settings) the newest frame fills the screen with a glass strip (target · sequence · LIVE and time) that moves every 3 minutes against burn-in; new frames cross-fade. Any input or an alarm (offline, overdue exposure) returns to the overview. While it is enabled, the screensaver does not start on the overview.
+- Device page (button next to Settings): all eleven device types from `/equipment/info` with name and "Connected", "Not connected" or "Unknown"; no new endpoint.
 - TestFlight preparation: layered app icon and Top Shelf images with a procedural nebula (`tools/icons/make_placeholder_icons.py`), `ITSAppUsesNonExemptEncryption = NO`, signing team from a git-ignored `Config/Local.xcconfig`.
 
 ### Changed (M2)
@@ -23,7 +24,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 - Guider state is localized (e.g. "Stopped" → "Gestoppt"); unknown states are shown as received.
 - Header pills use one font and size on one baseline ("Sequence · Not running", like "LIVE · 17:21"); the exposure pill keeps its width while counting down.
 - The newest frame takes the image's aspect ratio (no black bars).
-- Focus: swiping down from the settings button reaches the image, and up returns.
+- Focus: swiping down from the settings button reaches the image, and up returns; the image gets the focus once the first frame is known.
 
 ### Added (M1)
 - tvOS app (`PanGalacticNinaTV.xcodeproj`, tvOS 26.0): setup, add/edit instance with read-only connection test, opt-in local network search, instance picker, dashboard placeholder with live/stale/offline badge and equipment overview, settings.

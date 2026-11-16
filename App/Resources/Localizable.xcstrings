@@ -51,6 +51,16 @@
         }
       }
     },
+    "%lld min": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld min"
+          }
+        }
+      }
+    },
     "%lld stars": {
       "localizations": {
         "de": {
@@ -147,6 +157,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Höhe über Horizont"
+          }
+        }
+      }
+    },
+    "Ambient Mode": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ambient-Modus"
           }
         }
       }
@@ -295,6 +315,26 @@
         }
       }
     },
+    "Devices": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geräte"
+          }
+        }
+      }
+    },
+    "Dome": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kuppel"
+          }
+        }
+      }
+    },
     "Don't Panic. Your Telescope Is Probably Fine.": {
       "localizations": {
         "de": {
@@ -387,6 +427,36 @@
     },
     "Filter": {
       "shouldTranslate": false
+    },
+    "Filter Wheel": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filterrad"
+          }
+        }
+      }
+    },
+    "Flat Panel": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flat-Panel"
+          }
+        }
+      }
+    },
+    "Focuser": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fokussierer"
+          }
+        }
+      }
     },
     "Found": {
       "localizations": {
@@ -902,12 +972,32 @@
         }
       }
     },
+    "Rotator": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rotator"
+          }
+        }
+      }
+    },
     "Running": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Läuft"
+          }
+        }
+      }
+    },
+    "Safety Monitor": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicherheitsmonitor"
           }
         }
       }
@@ -1066,6 +1156,16 @@
         }
       }
     },
+    "Start After": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starten nach"
+          }
+        }
+      }
+    },
     "Start Search": {
       "localizations": {
         "de": {
@@ -1092,6 +1192,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gestoppt"
+          }
+        }
+      }
+    },
+    "Switch": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schalter"
           }
         }
       }
@@ -1188,12 +1298,32 @@
         }
       }
     },
+    "Weather": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wetter"
+          }
+        }
+      }
+    },
     "West": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "West"
+          }
+        }
+      }
+    },
+    "Without remote input, the newest frame fills the screen with a slim status strip. Any button returns to the overview; an alarm returns at once. While it is on, the screensaver does not start on the overview.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ohne Eingabe auf der Fernbedienung füllt das neueste Bild den Bildschirm, mit einer schmalen Statusleiste. Jede Taste führt zurück zur Übersicht, ein Alarm sofort. Solange der Modus an ist, startet auf der Übersicht kein Bildschirmschoner."
           }
         }
       }

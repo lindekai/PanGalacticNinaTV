@@ -202,3 +202,19 @@ Two captures 4.5 min apart while a time-bound loop of 120 s lights ran ("loop un
 | Unlocked reads | The plugin walks the live tree from an HTTP thread; an item that throws while serializing is silently dropped | A missing item is unknown; `json` is matched to `state` by index **and** name, else ignored |
 | Privacy | `json` contains the site's latitude, longitude and elevation (Alt/Az instructions) and file paths with the Windows user name | Sanitizer redacts them; fixtures reviewed |
 
+
+### Device list and full-resolution render (source review, 2026-11-16)
+
+Plugin `WebService/V2/Equipment/Connection.cs` (L43–85) and `WebService/V2/Application/Image.cs` (L326–510) at the pinned commit; N.I.N.A. `DeviceInfo.cs` at `Version-3.2`.
+
+| Topic | Finding | Consequence |
+|---|---|---|
+| `/equipment/info` keys | `Camera, Dome, FilterWheel, FlatDevice, Focuser, Guider, Mount, Rotator, SafetyMonitor, Switch, WeatherData` | Device page lists all eleven |
+| `Connected` | Non-null bool on every `DeviceInfo`; a device without a driver is the default instance (`Connected = false`, strings null and omitted) | "No device chosen" and "disconnected" cannot be told apart: both read "Not connected" |
+| Empty object (`"Focuser": {}` in the idle capture) | Not producible by the pinned source | `{}`, `null` and a missing `Connected` stay unknown, never "not connected" |
+| Names | `Name`: driver-reported, set on connect. `DisplayName`: the Equipment tab label, may carry a suffix such as "(ASCOM)". `DeviceId`: technical | `Name`, else `DisplayName` |
+| `/image/{index}` without `resize` | Full-resolution stretched frame; `quality` 1–100 gives JPEG, else PNG | 1:1 view possible with `quality` set |
+| `scale` | Uniform factor clamped to 0.1–1, overrides `size`; `size` only uses its width | Zoom steps as fractions of the full frame |
+| Crop / region | Not supported | Panning happens on the TV |
+| Server state, caching, locks | None changed, no cache, no lock: overlapping requests render in parallel | One request in flight; never poll full resolution |
+| `raw_fits` | Checked by key presence (even `raw_fits=false` switches to FITS) | Never sent |

@@ -79,3 +79,47 @@ struct OverviewTests {
         #expect(!ImageFormat.isJPEG(Data()))
     }
 }
+
+@Suite("Device overview")
+struct DeviceOverviewTests {
+    @Test func everyDeviceTypeInEquipmentTabOrder() throws {
+        let envelope = try JSONDecoder().decode(NINAEnvelope<NINAEquipmentSummary>.self,
+                                                from: LiveFixtureTests.fixture("nina/equipment-info-idle.json"))
+        let devices = try #require(envelope.response).devices
+        #expect(devices.map(\.kind) == NINAEquipmentSummary.DeviceKind.allCases)
+        let byKind = Dictionary(uniqueKeysWithValues: devices.map { ($0.kind, $0) })
+        #expect(byKind[.camera]?.connected == true)
+        #expect(byKind[.camera]?.name == "ATR2600C")
+        #expect(byKind[.dome]?.connected == false, "idle default: known to be not connected")
+        #expect(byKind[.dome]?.name == nil)
+        #expect(byKind[.focuser]?.connected == nil, "live quirk: an empty object is unknown, not disconnected")
+        #expect(byKind[.weather]?.connected == true, "key is WeatherData")
+    }
+
+    @Test func missingNullAndEmptyNamesAreUnknown() throws {
+        let json = #"{"Camera":null,"Mount":{"Connected":true,"Name":"","DisplayName":"EQ6 (ASCOM)"}}"#
+        let devices = try JSONDecoder().decode(NINAEquipmentSummary.self, from: Data(json.utf8)).devices
+        #expect(devices.first { $0.kind == .camera }?.connected == nil)
+        #expect(devices.first { $0.kind == .rotator }?.connected == nil)
+        #expect(devices.first { $0.kind == .mount }?.name == "EQ6 (ASCOM)", "empty Name falls back to DisplayName")
+    }
+}
+
+@Suite("Device connection state")
+struct DeviceConnectionStateTests {
+    func device(_ connected: Bool?) -> NINAEquipmentSummary.DeviceStatus {
+        NINAEquipmentSummary.DeviceStatus(kind: .camera, connected: connected, name: nil)
+    }
+
+    @Test func liveAndStale() {
+        #expect(DeviceConnectionState.of(device(true), phase: .live) == .connected(.normal))
+        #expect(DeviceConnectionState.of(device(true), phase: .stale) == .connected(.warning))
+        #expect(DeviceConnectionState.of(device(false), phase: .live) == .notConnected)
+        #expect(DeviceConnectionState.of(device(nil), phase: .live) == .unknown)
+    }
+
+    @Test func withoutConnectionNothingIsKnown() {
+        #expect(DeviceConnectionState.of(device(true), phase: .offline) == .unknown)
+        #expect(DeviceConnectionState.of(device(false), phase: .connecting) == .unknown)
+    }
+}

@@ -11,6 +11,8 @@ struct DashboardView: View {
     let connection: InstanceConnection
     @State private var viewerItem: ViewerItem?
     @State private var visible = false
+    @FocusState private var imageFocused: Bool
+    @State private var focusedFirstImage = false
 
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { context in
@@ -31,6 +33,7 @@ struct DashboardView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .background(Theme.bg)
             .ignoresSafeArea()
+            .defaultFocus($imageFocused, true)
             .onChange(of: context.date) {
                 connection.refreshPhase()
                 evaluateAmbient(now: context.date)
@@ -38,6 +41,13 @@ struct DashboardView: View {
             .fullScreenCover(isPresented: Binding(get: { ambient.isShowing }, set: { if !$0 { ambient.registerInput() } })) {
                 AmbientView(connection: connection, service: model.renderService) { ambient.registerInput() }
             }
+        }
+        // The image card is disabled until the first frame is known, so focus starts in the
+        // header; move it to the image once, when the frame arrives.
+        .onChange(of: connection.latestImage == nil, initial: true) { _, noImage in
+            guard !noImage, !focusedFirstImage else { return }
+            focusedFirstImage = true
+            imageFocused = true
         }
         .onAppear {
             visible = true
@@ -93,6 +103,9 @@ struct DashboardView: View {
                     .buttonStyle(GearButtonStyle())
                     .accessibilityLabel(Text("Switch Observatory"))
             }
+            NavigationLink(value: Destination.devices) { Image(systemName: "cable.connector") }
+                .buttonStyle(GearButtonStyle())
+                .accessibilityLabel(Text("Devices"))
             NavigationLink(value: Destination.settings) { Image(systemName: "gearshape") }
                 .buttonStyle(GearButtonStyle())
                 .accessibilityLabel(Text("Settings"))
@@ -175,6 +188,7 @@ struct DashboardView: View {
                 if let index = connection.latestImageIndex { viewerItem = ViewerItem(index: index) }
             }
             .frame(width: Theme.imageWidth)
+            .focused($imageFocused)
 
             VStack(spacing: Theme.moduleGap) {
                 CameraModule(camera: equipment?.camera, light: StatusLight.camera(equipment?.camera, phase: phase, now: now))
