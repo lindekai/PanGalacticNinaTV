@@ -9,10 +9,11 @@ import PanGalacticCore
 public actor ImageRenderService {
     public struct Request: Hashable, Sendable {
         public let index: Int
-        public let size: PixelSize
+        /// `nil`: full resolution, for the 1:1 view.
+        public let size: PixelSize?
         public let quality: Int
 
-        public init(index: Int, size: PixelSize = PixelSize(width: 1920, height: 1080), quality: Int = 85) {
+        public init(index: Int, size: PixelSize? = PixelSize(width: 1920, height: 1080), quality: Int = 85) {
             self.index = index
             self.size = size
             self.quality = quality

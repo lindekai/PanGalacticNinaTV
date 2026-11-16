@@ -87,7 +87,7 @@ struct AmbientView: View {
         guard let service, let index = connection.latestImageIndex, rendered?.index != index else { return }
         let request = ImageRenderService.Request(index: index)
         guard let data = try? await service.render(request) else { return }
-        let maxPixel = max(request.size.width, request.size.height)
+        let maxPixel = request.size.map { max($0.width, $0.height) } ?? ImageViewer.maxFullPixel
         let image = await Task.detached(priority: .utility) { ImageViewer.downsample(data, maxPixel: maxPixel) }.value
         if let image, !Task.isCancelled {
             withAnimation(.easeInOut(duration: 0.6)) { rendered = (index, image) }

@@ -71,6 +71,16 @@
         }
       }
     },
+    "1:1 · swipe to move · Menu: back": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1:1 · Wischen zum Verschieben · Menü: zurück"
+          }
+        }
+      }
+    },
     "About": {
       "localizations": {
         "de": {
@@ -227,6 +237,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sternwarte wählen"
+          }
+        }
+      }
+    },
+    "Click to zoom": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klicken zum Zoomen"
           }
         }
       }
@@ -478,6 +498,16 @@
         }
       }
     },
+    "Full resolution unavailable: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volle Auflösung nicht verfügbar: %@"
+          }
+        }
+      }
+    },
     "Gain": {
       "shouldTranslate": false
     },
@@ -644,12 +674,22 @@
     "N.I.N.A. Advanced API": {
       "shouldTranslate": false
     },
-    "N.I.N.A. is rendering the full image… %lld s": {
+    "N.I.N.A. is rendering the full image…": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "N.I.N.A. rendert das Vollbild … %lld s"
+            "value": "N.I.N.A. rendert das Vollbild …"
+          }
+        }
+      }
+    },
+    "N.I.N.A. is rendering the full resolution…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N.I.N.A. rendert die volle Auflösung …"
           }
         }
       }
@@ -1334,6 +1374,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Du kannst auch eine Instanz sichern, die gerade offline ist; die App versucht es weiter."
+          }
+        }
+      }
+    },
+    "Zoomed · swipe to move · Menu: back": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vergrößert · Wischen zum Verschieben · Menü: zurück"
           }
         }
       }

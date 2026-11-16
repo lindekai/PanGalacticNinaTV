@@ -17,6 +17,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 - Ambient mode: after 5 minutes without remote input (1–30 min or off in Settings) the newest frame fills the screen with a glass strip (target · sequence · LIVE and time) that moves every 3 minutes against burn-in; new frames cross-fade. Any input or an alarm (offline, overdue exposure) returns to the overview. While it is enabled, the screensaver does not start on the overview.
 - Device page (button next to Settings): all eleven device types from `/equipment/info` with name and "Connected", "Not connected" or "Unknown"; no new endpoint.
+- Viewer zoom: a click cycles fit → closer → 1:1, a swipe pans by half a screen, Menu steps back out. The full-resolution render (`/image/{index}` without `resize`) is requested once, on the first zoom.
 - TestFlight preparation: layered app icon and Top Shelf images with a procedural nebula (`tools/icons/make_placeholder_icons.py`), `ITSAppUsesNonExemptEncryption = NO`, signing team from a git-ignored `Config/Local.xcconfig`.
 
 ### Changed (M2)

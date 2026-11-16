@@ -12,6 +12,7 @@ struct NINARequestTests {
         .imageHistoryCount, .imageHistoryEntry(index: 3), .eventHistory, .plugins, .framingInfo,
         .profileHorizon, .thumbnail(index: 0),
         .image(index: 2, size: PixelSize(width: 1920, height: 1080), quality: 85),
+        .image(index: 2, size: nil, quality: 90),
         .preparedImage(size: PixelSize(width: 1280, height: 720), quality: 80),
         .moonSeparation(raDegrees: 10.68, decDegrees: 41.27),
     ] + NINADevice.allCases.map { .deviceInfo($0) }
@@ -32,6 +33,10 @@ struct NINARequestTests {
         #expect(try factory.request(for: .image(index: 4, size: PixelSize(width: 1920, height: 1080), quality: 85))
             .url?.absoluteString
             == "http://nina.example:1888/v2/api/image/4?resize=true&size=1920x1080&quality=85&autoPrepare=true&stream=true")
+        // Full resolution: no resize, JPEG quality set (0 would mean PNG), never `raw_fits`.
+        #expect(try factory.request(for: .image(index: 4, size: nil, quality: 90)).url?.absoluteString
+            == "http://nina.example:1888/v2/api/image/4?quality=90&autoPrepare=true&stream=true")
+        #expect(throws: NINARequestError.self) { try factory.request(for: .image(index: 4, size: nil, quality: 0)) }
     }
 
     static let forbidden: [String] = [
