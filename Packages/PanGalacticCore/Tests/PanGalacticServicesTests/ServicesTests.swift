@@ -381,7 +381,9 @@ struct LatestImageTests {
         _ = await conn.pollOnce()
         _ = await conn.pollOnce()
         #expect(conn.recentImages.count == 10)
-        #expect(conn.recentImages.compactMap(\.hfr) == (0..<10).map { 2.0 + Double($0) / 10 })
+        // Split up: CI's compiler cannot type-check the one-line comparison in time.
+        let expectedHFR: [Double] = (0..<10).map { 2.0 + Double($0) / 10 }
+        #expect(conn.recentImages.compactMap(\.hfr) == expectedHFR)
 
         let before = transport.requests.count
         _ = await conn.pollOnce()
