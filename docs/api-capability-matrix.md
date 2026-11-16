@@ -214,7 +214,7 @@ Plugin `WebService/V2/Equipment/Connection.cs` (L43–85) and `WebService/V2/App
 | Empty object (`"Focuser": {}` in the idle capture) | Not producible by the pinned source | `{}`, `null` and a missing `Connected` stay unknown, never "not connected" |
 | Names | `Name`: driver-reported, set on connect. `DisplayName`: the Equipment tab label, may carry a suffix such as "(ASCOM)". `DeviceId`: technical | `Name`, else `DisplayName` |
 | `/image/{index}` without `resize` | Full-resolution stretched frame; `quality` 1–100 gives JPEG, else PNG | 1:1 view possible with `quality` set |
-| `scale` | Uniform factor clamped to 0.1–1, overrides `size`; `size` only uses its width | Zoom steps as fractions of the full frame |
+| `scale` | Uniform factor clamped to 0.1–1, overrides `size`; `size` only uses its width | Not used: zoom steps scale the one full-resolution render on the TV |
 | Crop / region | Not supported | Panning happens on the TV |
 | Server state, caching, locks | None changed, no cache, no lock: overlapping requests render in parallel | One request in flight; never poll full resolution |
 | `raw_fits` | Checked by key presence (even `raw_fits=false` switches to FITS) | Never sent |

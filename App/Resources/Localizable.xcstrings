@@ -1,6 +1,16 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%@ % · 1:1": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ % · 1:1"
+          }
+        }
+      }
+    },
     "%@ left": {
       "localizations": {
         "de": {
@@ -67,16 +77,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld Sterne"
-          }
-        }
-      }
-    },
-    "1:1 · swipe to move · Menu: back": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1:1 · Wischen zum Verschieben · Menü: zurück"
           }
         }
       }
@@ -247,6 +247,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Klicken zum Zoomen"
+          }
+        }
+      }
+    },
+    "Click: closer · Menu: wider · Play/Pause: whole frame": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klick: näher · Menü: weiter weg · Play/Pause: ganzes Bild"
           }
         }
       }
@@ -1358,6 +1368,16 @@
         }
       }
     },
+    "Whole frame": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ganzes Bild"
+          }
+        }
+      }
+    },
     "Without remote input, the newest frame fills the screen with a slim status strip. Any button returns to the overview; an alarm returns at once. While it is on, the screensaver does not start on the overview.": {
       "localizations": {
         "de": {
@@ -1378,12 +1398,12 @@
         }
       }
     },
-    "Zoomed · swipe to move · Menu: back": {
+    "Zooming…": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vergrößert · Wischen zum Verschieben · Menü: zurück"
+            "value": "Zoomt …"
           }
         }
       }
