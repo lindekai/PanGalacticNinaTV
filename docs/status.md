@@ -1,15 +1,16 @@
 # Project status
 
-Snapshot for picking up work on another machine. Last updated 2026-11-10.
+Snapshot for picking up work on another machine. Last updated 2026-11-16.
 
 ## Where things stand
 
 | Item | State |
 |---|---|
 | M0 API feasibility | Done (PR #2, #3) |
-| M1 Skeleton & connections | Done (PR #10); Apple TV hardware check open in #8 |
-| M2 Overview & imaging | Part 1 in PR #11 (`m2/overview`), CI green, **awaiting review and merge** |
-| Tests | 74 (`swift test`: 52 core, 22 services) |
+| M1 Skeleton & connections | Done (PR #10) |
+| M2 Overview & imaging | Part 1 merged (PR #11). Stacked PRs: #13 TestFlight preparation → #14 dashboard redesign → #15 sequence progress → #16 TV feedback (zoom, ambient mode, devices and device details, demo server) |
+| TestFlight | Build 4 is the current upload candidate; the owner tests on Apple TV 4K |
+| Tests | 126 (`swift test`: 101 core, 25 services) plus 8 for the M0 tooling |
 
 Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 
@@ -17,17 +18,17 @@ Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 
 | Issue | What is needed | Who |
 |---|---|---|
-| #4 | Capture `/sequence/json` and `/sequence/state` while a real sequence runs (e.g. 3 × 30 s lights), then implement "exposure n of m" | Owner starts a sequence; then capture with `tools/m0/m0probe.py rest --label running` |
+| #4 | Check the sequence pill live while a sequence runs | Owner |
 | #5 | Confirm that the cooling ramp ends at `TargetTemp`; if so, show it as "target" next to the current setpoint | Owner lets a cooldown finish |
 | #6 | PHD2 `GuideStep`, dither, settle and RMS definition | M3 |
 | #7 | Filter-change, dither and autofocus WebSocket events | M3 |
-| #8 | Run the app on Apple TV: bare Windows hostname, Wi-Fi vs. Ethernet, idle timer, latency and memory on device | Owner (needs signing team) |
+| #8 | Apple TV hardware check: bare Windows hostname, Wi-Fi vs. Ethernet, latency and memory on device | Owner (TestFlight builds now run on the device) |
 | – | Surveillance camera view: owner answers the open questions in the [proposal](features/surveillance-camera.md) | Owner |
 
 ## Next steps
 
-1. Review and merge PR #11.
-2. Sequence capture (#4) → sequence progress on the Overview; this completes M2.
+1. Review and merge the stacked PRs in order: #13, #14, #15, #16 (retarget each to `main` after its base is merged).
+2. Close M2 after the device checks of the TestFlight build.
 3. M3: guiding chart, RMS, read-only WebSocket listener, foreground alerts.
 
 ## Setting up a new machine
@@ -75,6 +76,10 @@ xcrun simctl launch <device-id> io.github.lindekai.PanGalacticNinaTV -instances.
 ```
 
 Never commit the real host, captures or screenshots that show it.
+
+### Screenshots and UI work without a telescope
+
+`tools/demo/demo_server.py` serves a pretend N.I.N.A. on `127.0.0.1:1888` (see [its README](../tools/demo/README.md)). Seed an instance with host `127.0.0.1` as above; the Debug launch arguments `-debug.openViewer YES`, `-debug.zoom N` and `-debug.screen devices|Camera|Mount|…` (any `/equipment/info` key) open the other screens. Ambient mode after one minute: `xcrun simctl spawn <device-id> defaults write io.github.lindekai.PanGalacticNinaTV ambient.delayMinutes -int 1` (delete the key afterwards). Simulator screenshots of a 4K Apple TV are large PNGs; convert them right away (`sips -Z 1920 -s format jpeg`).
 
 ### Files that are not in the repository
 

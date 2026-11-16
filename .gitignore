@@ -27,3 +27,6 @@ Config/Local.xcconfig
 
 # Brainstorming mockups (local)
 .superpowers/
+
+# Demo server render cache
+tools/demo/.cache/
