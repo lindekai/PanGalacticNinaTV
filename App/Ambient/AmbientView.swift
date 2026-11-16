@@ -48,8 +48,12 @@ struct AmbientView: View {
         let shift = AmbientPolicy.stripShift(at: now)
         let sequence = SequenceDisplay.state(connection.sequence, phase: connection.phase, now: now)
         var parts: [String] = []
-        if let target = connection.latestImage?.targetName { parts.append(target) }
-        if case .running = sequence { parts.append(Format.sequence(sequence)) }
+        // The running sequence's text starts with its target; the frame's target is then not repeated.
+        let sequenceText: String? = if case .running = sequence { Format.sequence(sequence) } else { nil }
+        if let target = connection.latestImage?.targetName, sequenceText?.hasPrefix(target) != true {
+            parts.append(target)
+        }
+        if let sequenceText { parts.append(sequenceText) }
         return HStack(spacing: 16) {
             StatusLED(light)
             Text(verbatim: (parts + [status(now: now)]).joined(separator: " · "))
