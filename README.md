@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="docs/assets/banner.svg" alt="Pan Galactic N.I.N.A. TV – Don't Panic. Your Telescope Is Probably Fine." width="100%">
+  <img src="docs/assets/banner.jpg" alt="Pan Galactic N.I.N.A. TV – Don't Panic. Your Telescope Is Probably Fine. Your observatory on the big screen: read-only monitor for N.I.N.A. and PHD2 on Apple TV" width="100%">
 </p>
 
 <p align="center">
   <a href="https://github.com/lindekai/PanGalacticNinaTV/actions/workflows/ci.yml"><img src="https://github.com/lindekai/PanGalacticNinaTV/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
   <img src="https://img.shields.io/badge/tvOS-26%2B-000000?logo=apple&logoColor=white" alt="tvOS 26+">
   <img src="https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white" alt="Swift 6">
-  <img src="https://img.shields.io/badge/status-M2%20%C2%B7%20TestFlight%20beta-yellow" alt="Status: M2, TestFlight beta">
+  <img src="https://img.shields.io/badge/status-M3%20%C2%B7%20TestFlight%20beta-yellow" alt="Status: M3, TestFlight beta">
   <img src="https://img.shields.io/badge/mode-read--only-2ea44f" alt="Read-only">
   <img src="https://img.shields.io/badge/languages-English%20%C2%B7%20Deutsch-informational" alt="English and German">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a>
@@ -157,8 +157,8 @@ Then add an instance with host `127.0.0.1` in the app. The tvOS Simulator shares
 |---|---|---|
 | **M0** | API feasibility – pinned sources, capability matrix, allowlist, live read-only fixtures | ✅ Complete – [report](docs/m0-report.md) |
 | **M1** | Xcode project, instances, discovery, reconnect | ✅ Done |
-| **M2** | Overview and imaging – dashboard, viewer with zoom, ambient mode, devices, sequence progress, TestFlight | 🟡 In beta on TestFlight |
-| **M3** | Guiding and alerts – PHD2 chart, RMS, WebSocket events, foreground alarms | ⚪ Planned |
+| **M2** | Overview and imaging – dashboard, viewer with zoom, ambient mode, devices, sequence progress, TestFlight | ✅ Done – in beta on TestFlight |
+| **M3** | Guiding and alerts – PHD2 chart, RMS, WebSocket events, foreground alarms | 🟡 Next |
 | **M4** | Astronomy views – sky compass, altitude curve, Sun/Moon, star map | ⚪ Planned |
 | **M5** | Conditions, statistics, personality | ⚪ Planned |
 | **M6** | Reliability, field test, release readiness | ⚪ Planned |
@@ -217,7 +217,7 @@ Signing, TestFlight and simulator tips are in [docs/status.md](docs/status.md). 
   <img src="docs/assets/top-shelf.jpg" alt="Top Shelf banner: Pan Galactic – N.I.N.A. Observatory Monitor" width="66%">
 </p>
 
-The app icon (three parallax layers) and the Top Shelf banner are drawn procedurally by [`tools/icons/make_placeholder_icons.py`](tools/icons/make_placeholder_icons.py). The demo galaxy in the screenshots comes from [`tools/demo/demo_server.py`](tools/demo/demo_server.py). Both are seeded, so they look the same on every run.
+The app icon (three parallax layers) and the Top Shelf banner are drawn procedurally by [`tools/icons/make_placeholder_icons.py`](tools/icons/make_placeholder_icons.py); the banner at the top of this page uses the same nebula ([`tools/icons/make_banner.py`](tools/icons/make_banner.py)). The demo galaxy in the screenshots comes from [`tools/demo/demo_server.py`](tools/demo/demo_server.py). Both are seeded, so they look the same on every run.
 
 ## Acknowledgements
 
