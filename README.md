@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/assets/screenshots/overview.jpg" alt="Overview: newest frame of M 31 with HFR trend, camera cooling, object altitude and coordinates, mount, guiding and filter, plus sequence progress and exposure countdown in the header" width="100%">
+  <img src="docs/assets/screenshots/overview.jpg" alt="Overview: newest frame of M 31 with HFR trend, camera cooling, object altitude and coordinates, mount, time to the meridian flip and filter, a guiding chart with total RMS, plus sequence progress and exposure countdown in the header" width="100%">
 </p>
 
 <p align="center"><sub>Every screenshot comes from the tvOS Simulator running against the bundled <a href="#try-it-without-a-telescope">demo server</a>: a procedural galaxy and sanitized test data, no real observatory.</sub></p>
@@ -39,7 +39,8 @@ One screen for the whole night, laid out for a TV across the room.
 - **Header pills:** the running **sequence** with target, frames and the time left in a time-bound loop, the **exposure countdown**, and the connection state – **LIVE**, **Stale** with the time of the last data, or **Offline**.
 - **Camera:** sensor temperature, the setpoint while the cooler runs, cooler power and gain.
 - **Object:** altitude above the horizon and coordinates.
-- **Mount, guiding and filter** as compact tiles, each with a status light.
+- **Mount, meridian and filter** as compact tiles: tracking state and pier side, the **time to the meridian flip** with its approximate clock time, and the active filter.
+- **Guiding chart:** RA and Dec of the last guide steps with dither markers, and the **total RMS** in arcseconds coloured like a traffic light – green below 1″, yellow up to 2″, red above. The light turns red when the guide star is lost.
 - **Focus starts on the image**, so one click opens it.
 
 ### Full-screen viewer with stepped zoom
@@ -140,7 +141,7 @@ flowchart LR
 
 `tools/demo/demo_server.py` is a pretend N.I.N.A. on `127.0.0.1`. It answers the app's read-only routes from the sanitized test fixtures, dressed up as a clear night:
 - the camera is cooled and exposing;
-- the mount is tracking M 31 and guiding is running;
+- the mount is tracking M 31 and guiding is running, with a live guide graph (`--guider-state LostLock` shows a lost star);
 - a time-bound sequence loop has a few hours left;
 - a history of frames shows a procedural galaxy.
 

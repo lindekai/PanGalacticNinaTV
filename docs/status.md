@@ -1,6 +1,6 @@
 # Project status
 
-Snapshot for picking up work on another machine. Last updated 2026-11-17.
+Snapshot for picking up work on another machine. Last updated 2026-11-17 (M3 part 1).
 
 ## Where things stand
 
@@ -9,7 +9,7 @@ Snapshot for picking up work on another machine. Last updated 2026-11-17.
 | M0 API feasibility | Done (PR #2, #3) |
 | M1 Skeleton & connections | Done (PR #10) |
 | M2 Overview & imaging | Done (PR #11, #13–#16): overview, viewer with zoom, ambient mode, devices and device details, sequence progress. Checked on Apple TV 4K with TestFlight build 4 |
-| M3 Guiding & alerts | Next: design |
+| M3 Guiding & alerts | Part 1 (overview guiding chart, meridian tile) in review |
 | TestFlight | Build 4 is live; raise `CURRENT_PROJECT_VERSION` for the next upload |
 
 Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
@@ -19,13 +19,13 @@ Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 | Issue | What is needed | Who |
 |---|---|---|
 | #5 | Confirm that the cooling ramp ends at `TargetTemp`; if so, show it as "target" next to the current setpoint | Owner lets a cooldown finish |
-| #6 | PHD2 `GuideStep`, dither, settle and RMS definition | M3, needs a guided night with the M0 listeners |
+| #6 | PHD2 `GuideStep`, dither and settle from the PHD2 stream (N.I.N.A.'s RMS definition is settled by source review) | M3, needs a guided night with the M0 listeners |
 | #7 | Filter-change, dither and autofocus WebSocket events | M3, same capture night |
 | – | Surveillance camera view: owner answers the open questions in the [proposal](features/surveillance-camera.md) | Owner |
 
 ## Next steps
 
-1. M3 design: guiding chart, RMS with validated units, read-only WebSocket listener, foreground alerts.
+1. Device check of the guiding chart during a guided night; then M3 part 2: alerts, PHD2 stream, WebSocket events.
 2. Capture night: run `tools/m0` (passive WebSocket and PHD2 listeners) during guided imaging with dithering and an autofocus run, for #6 and #7.
 
 ## Setting up a new machine
