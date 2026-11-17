@@ -41,6 +41,8 @@ public struct NINAEquipmentSummary: Decodable, Hashable, Sendable {
         public let declination: String?
         public let altitudeDegrees: Double?
         public let sideOfPier: SideOfPier?
+        /// Hours until the flip, computed by N.I.N.A. while tracking; 24 means "not applicable".
+        public let timeToMeridianFlipHours: Double?
     }
 
     public enum SideOfPier: String, Hashable, Sendable {
@@ -55,6 +57,9 @@ public struct NINAEquipmentSummary: Decodable, Hashable, Sendable {
     public struct Guider: Hashable, Sendable {
         public let device: Device
         public let state: String?
+        /// N.I.N.A.'s RMS over its guide graph window (population standard deviation per axis).
+        public let rmsError: NINAGuiderInfo.RMSError?
+        public let pixelScale: GuideImageScale?
     }
 
     public struct Focuser: Hashable, Sendable {
@@ -108,7 +113,8 @@ public struct NINAEquipmentSummary: Decodable, Hashable, Sendable {
         case selectedFilter = "SelectedFilter", state = "State", position = "Position"
         case temperatureSetPoint = "TemperatureSetPoint", gain = "Gain", offset = "Offset"
         case rightAscensionString = "RightAscensionString", declinationString = "DeclinationString"
-        case altitude = "Altitude", sideOfPier = "SideOfPier"
+        case altitude = "Altitude", sideOfPier = "SideOfPier", timeToMeridianFlip = "TimeToMeridianFlip"
+        case rmsError = "RMSError", pixelScale = "PixelScale"
     }
 
     enum FilterField: String, CodingKey { case name = "Name" }
@@ -159,14 +165,17 @@ public struct NINAEquipmentSummary: Decodable, Hashable, Sendable {
                   rightAscension: dev.connected ? (try? d.decodeIfPresent(String.self, forKey: .rightAscensionString)) ?? nil : nil,
                   declination: dev.connected ? (try? d.decodeIfPresent(String.self, forKey: .declinationString)) ?? nil : nil,
                   altitudeDegrees: dev.connected ? d.lenientDouble(.altitude) : nil,
-                  sideOfPier: ((try? d.decodeIfPresent(String.self, forKey: .sideOfPier)) ?? nil).flatMap(SideOfPier.init))
+                  sideOfPier: ((try? d.decodeIfPresent(String.self, forKey: .sideOfPier)) ?? nil).flatMap(SideOfPier.init),
+                  timeToMeridianFlipHours: dev.connected ? d.lenientDouble(.timeToMeridianFlip) : nil)
         }
         filterWheel = device(.filterWheel).map { d, dev in
             let filter = try? d.nestedContainer(keyedBy: FilterField.self, forKey: .selectedFilter)
             return FilterWheel(device: dev, selectedFilter: (try? filter?.decodeIfPresent(String.self, forKey: .name)) ?? nil)
         }
         guider = device(.guider).map { d, dev in
-            Guider(device: dev, state: try? d.decodeIfPresent(String.self, forKey: .state))
+            Guider(device: dev, state: try? d.decodeIfPresent(String.self, forKey: .state),
+                   rmsError: dev.connected ? (try? d.decodeIfPresent(NINAGuiderInfo.RMSError.self, forKey: .rmsError)) ?? nil : nil,
+                   pixelScale: d.lenientDouble(.pixelScale).flatMap(GuideImageScale.init(arcsecondsPerPixel:)))
         }
         focuser = device(.focuser).map { d, dev in
             Focuser(device: dev, position: d.lenientInt(.position), temperature: d.lenientDouble(.temperature))
