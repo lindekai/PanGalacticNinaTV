@@ -2,6 +2,14 @@
 
 Snapshot for picking up work on another machine. Last updated 2026-11-17 (M3 part 1).
 
+## Resume here
+
+- Branch `m3/guiding-overview`, **PR #18** open with green CI, waiting for the owner's review. Nothing is uncommitted.
+- After approval: merge #18, archive build 5 from `main`, upload to TestFlight, check the guiding chart on the Apple TV during a guided night.
+- Decisions taken without explicit owner confirmation (change in #18 if wanted): RMS and colours only while the state is Guiding (curves dimmed otherwise); red LED and spelled-out state on LostLock; German tile text "bis Flip"; clock without AM/PM.
+- Discord announcement draft (text and image): [docs/announcements/2026-11-17-discord.md](announcements/2026-11-17-discord.md).
+- Demo server for screenshots: `python3 tools/demo/demo_server.py [--guider-state Guiding|Stopped|LostLock]` ([tools/demo/README.md](../tools/demo/README.md)).
+
 ## Where things stand
 
 | Item | State |
