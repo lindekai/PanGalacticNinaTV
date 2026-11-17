@@ -10,7 +10,7 @@ Snapshot for picking up work on another machine. Last updated 2026-11-17 (M3 par
 | M1 Skeleton & connections | Done (PR #10) |
 | M2 Overview & imaging | Done (PR #11, #13–#16): overview, viewer with zoom, ambient mode, devices and device details, sequence progress. Checked on Apple TV 4K with TestFlight build 4 |
 | M3 Guiding & alerts | Part 1 (overview guiding chart, meridian tile) in review |
-| TestFlight | Build 4 is live; raise `CURRENT_PROJECT_VERSION` for the next upload |
+| TestFlight | Build 4 is live; build 5 (guiding chart) is the next upload candidate |
 
 Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 
