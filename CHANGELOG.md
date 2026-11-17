@@ -29,6 +29,8 @@ All notable changes to this project are documented here. Format based on [Keep a
 - Header pills use one font and size on one baseline ("Sequence · Not running", like "LIVE · 17:21"); the exposure pill keeps its width while counting down.
 - The newest frame takes the image's aspect ratio (no black bars).
 - Focus: swiping down from the settings button reaches the image, and up returns; the image gets the focus once the first frame is known.
+- README banner drawn from the app artwork (`tools/icons/make_banner.py`) instead of the earlier SVG.
+- Dashboard redesign phase 2 (tab bar) dropped: the device page with per-device details covers it.
 - Ambient strip no longer repeats the target when the running sequence already names it ("M 31 · 5 frames", not "M 31 · M 31 · 5 frames").
 
 ### Added (M1)

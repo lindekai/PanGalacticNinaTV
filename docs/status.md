@@ -1,6 +1,6 @@
 # Project status
 
-Snapshot for picking up work on another machine. Last updated 2026-11-16.
+Snapshot for picking up work on another machine. Last updated 2026-11-17.
 
 ## Where things stand
 
@@ -8,9 +8,9 @@ Snapshot for picking up work on another machine. Last updated 2026-11-16.
 |---|---|
 | M0 API feasibility | Done (PR #2, #3) |
 | M1 Skeleton & connections | Done (PR #10) |
-| M2 Overview & imaging | Part 1 merged (PR #11). Stacked PRs: #13 TestFlight preparation → #14 dashboard redesign → #15 sequence progress → #16 TV feedback (zoom, ambient mode, devices and device details, demo server) |
-| TestFlight | Build 4 is the current upload candidate; the owner tests on Apple TV 4K |
-| Tests | 126 (`swift test`: 101 core, 25 services) plus 8 for the M0 tooling |
+| M2 Overview & imaging | Done (PR #11, #13–#16): overview, viewer with zoom, ambient mode, devices and device details, sequence progress. Checked on Apple TV 4K with TestFlight build 4 |
+| M3 Guiding & alerts | Next: design |
+| TestFlight | Build 4 is live; raise `CURRENT_PROJECT_VERSION` for the next upload |
 
 Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 
@@ -18,18 +18,15 @@ Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 
 | Issue | What is needed | Who |
 |---|---|---|
-| #4 | Check the sequence pill live while a sequence runs | Owner |
 | #5 | Confirm that the cooling ramp ends at `TargetTemp`; if so, show it as "target" next to the current setpoint | Owner lets a cooldown finish |
-| #6 | PHD2 `GuideStep`, dither, settle and RMS definition | M3 |
-| #7 | Filter-change, dither and autofocus WebSocket events | M3 |
-| #8 | Apple TV hardware check: bare Windows hostname, Wi-Fi vs. Ethernet, latency and memory on device | Owner (TestFlight builds now run on the device) |
+| #6 | PHD2 `GuideStep`, dither, settle and RMS definition | M3, needs a guided night with the M0 listeners |
+| #7 | Filter-change, dither and autofocus WebSocket events | M3, same capture night |
 | – | Surveillance camera view: owner answers the open questions in the [proposal](features/surveillance-camera.md) | Owner |
 
 ## Next steps
 
-1. Review and merge the stacked PRs in order: #13, #14, #15, #16 (retarget each to `main` after its base is merged).
-2. Close M2 after the device checks of the TestFlight build.
-3. M3: guiding chart, RMS, read-only WebSocket listener, foreground alerts.
+1. M3 design: guiding chart, RMS with validated units, read-only WebSocket listener, foreground alerts.
+2. Capture night: run `tools/m0` (passive WebSocket and PHD2 listeners) during guided imaging with dithering and an autofocus run, for #6 and #7.
 
 ## Setting up a new machine
 
