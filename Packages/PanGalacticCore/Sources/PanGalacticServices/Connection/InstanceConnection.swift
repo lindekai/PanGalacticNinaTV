@@ -41,6 +41,12 @@ public final class InstanceConnection {
     /// request failed, or offline). Kept while stale, never invented.
     public private(set) var sequence: SequenceProgress?
 
+    /// N.I.N.A.'s guide graph while the guider is connected; kept while stale, never invented.
+    public private(set) var guiderGraph: NINAGuiderGraph?
+    /// The last graph request failed (the plugin reads it via reflection, which a N.I.N.A.
+    /// update can break); the chart then says so instead of showing nothing.
+    public private(set) var guiderGraphFailed = false
+
     /// The sequence tree is larger than the other polls (6–20 KB); fetch it at most this often.
     public static let sequenceInterval: TimeInterval = 15
 
@@ -120,6 +126,7 @@ public final class InstanceConnection {
             let delay = machine.recordSuccess(at: at)
             onSuccess?(at)
             refreshPhase()
+            await pollGuiderGraph()
             await pollSequence(at: at)
             await pollImages()
             return delay
@@ -135,6 +142,22 @@ public final class InstanceConnection {
             }
             refreshPhase()
             return delay
+        }
+    }
+
+    /// About 25 KB with 100 steps; requested only while a guider is connected.
+    private func pollGuiderGraph() async {
+        guard equipment?.guider?.device.connected == true else {
+            guiderGraph = nil
+            guiderGraphFailed = false
+            return
+        }
+        do {
+            guiderGraph = try await client.get(.guiderGraph, as: NINAGuiderGraph.self)
+            guiderGraphFailed = false
+        } catch {
+            guiderGraph = nil
+            guiderGraphFailed = true
         }
     }
 

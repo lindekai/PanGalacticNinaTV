@@ -319,6 +319,51 @@ struct InstanceConnectionTests {
         #expect(conn.phase == .live, "a failing sequence request is not a connection failure")
         #expect(conn.sequence == nil, "unknown, not the old value")
     }
+
+    @Test func guiderGraphOnlyWhileGuiderConnected() async {
+        let clock = Clock()
+        let guider = LockedValue(true)
+        let graphFails = LockedValue(false)
+        let transport = FakeTransport { request in
+            switch request.url?.path() {
+            case "/v2/api/version": FakeTransport.ok(#""2.2.15.3""#)
+            case "/v2/api/version/nina": FakeTransport.ok(#""3.2""#)
+            case "/v2/api/equipment/info": FakeTransport.ok(#"{"Guider": {"Connected": \#(guider.value), "State": "Guiding"}}"#)
+            case "/v2/api/equipment/guider/graph":
+                graphFails.value ? (500, "") : FakeTransport.ok(#"{"GuideSteps": [{"Id": 1, "RADistanceRaw": 0.2, "DECDistanceRaw": -0.1, "Dither": "NaN"}], "PixelScale": 1.5}"#)
+            default: (404, "")
+            }
+        }
+        let conn = connection(transport, clock: clock)
+        func graphRequests() -> Int { transport.paths.filter { $0 == "/v2/api/equipment/guider/graph" }.count }
+
+        _ = await conn.pollOnce()
+        #expect(graphRequests() == 1)
+        #expect(conn.guiderGraph?.steps.count == 1)
+
+        graphFails.value = true
+        clock.now += 5
+        _ = await conn.pollOnce()
+        #expect(conn.phase == .live, "a failing graph is not a connection failure")
+        #expect(conn.guiderGraph == nil && conn.guiderGraphFailed)
+
+        guider.value = false
+        clock.now += 5
+        _ = await conn.pollOnce()
+        #expect(graphRequests() == 2, "no request without a connected guider")
+        #expect(conn.guiderGraph == nil && !conn.guiderGraphFailed)
+    }
+}
+
+/// Mutable test switch shared with a transport handler.
+final class LockedValue<T: Sendable>: @unchecked Sendable {
+    private let lock = NSLock()
+    private var stored: T
+    init(_ value: T) { stored = value }
+    var value: T {
+        get { lock.withLock { stored } }
+        set { lock.withLock { stored = newValue } }
+    }
 }
 
 @Suite("Latest image")
