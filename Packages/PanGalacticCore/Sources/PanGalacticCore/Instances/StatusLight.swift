@@ -16,6 +16,13 @@ public enum StatusLight: Hashable, Sendable {
         return phase == .stale ? .warning : .normal
     }
 
+    /// Like `device`, red while the guider reports a lost guide star (PHD2 `LostLock`).
+    public static func guider(_ guider: NINAEquipmentSummary.Guider?, phase: ConnectionPhase) -> StatusLight {
+        let base = device(guider?.device, phase: phase)
+        guard base == .normal, let state = guider?.state, PHD2AppState(wire: state) == .lostLock else { return base }
+        return .fault
+    }
+
     /// Like `device`, plus a warning for an exposure that is overdue (hung driver).
     public static func camera(_ camera: NINAEquipmentSummary.Camera?, phase: ConnectionPhase, now: Date) -> StatusLight {
         let base = device(camera?.device, phase: phase)

@@ -125,6 +125,12 @@ struct GuidingOverviewTests {
         #expect(model.ditherPositions.count == 1)
     }
 
+    @Test func lostStarTurnsTheLightRed() throws {
+        #expect(StatusLight.guider(try Self.guider(state: "LostLock"), phase: .live) == .fault)
+        #expect(StatusLight.guider(try Self.guider(state: "Guiding"), phase: .live) == .normal)
+        #expect(StatusLight.guider(try Self.guider(state: "LostLock"), phase: .stale) == .warning, "stale wins")
+    }
+
     @Test func noCurvesWithoutConnectedGuider() throws {
         let graph = try Self.fixture("guider-graph-guiding.json")
         #expect(GuidingChartModel(guider: nil, graph: graph).points.isEmpty)

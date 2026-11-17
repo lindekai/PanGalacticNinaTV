@@ -196,16 +196,22 @@ struct DashboardView: View {
                 HStack(alignment: .top, spacing: Theme.moduleGap) {
                     MountTile(mount: equipment?.mount, light: StatusLight.device(equipment?.mount?.device, phase: phase))
                         .frame(width: Theme.mountTileWidth).frame(maxHeight: .infinity, alignment: .top)
-                    GuidingTile(guider: equipment?.guider, light: StatusLight.device(equipment?.guider?.device, phase: phase))
-                        .frame(width: Theme.guidingTileWidth).frame(maxHeight: .infinity, alignment: .top)
+                    MeridianTile(flip: MeridianFlipDisplay(mount: equipment?.mount, now: now))
+                        .frame(width: Theme.meridianTileWidth).frame(maxHeight: .infinity, alignment: .top)
                     FilterTile(wheel: equipment?.filterWheel, light: StatusLight.device(equipment?.filterWheel?.device, phase: phase))
                         .frame(width: Theme.filterTileWidth).frame(maxHeight: .infinity, alignment: .top)
                 }
                 .fixedSize(horizontal: false, vertical: true)
+                GuidingChartPanel(model: GuidingChartModel(guider: equipment?.guider, graph: connection.guiderGraph),
+                                  guider: equipment?.guider, graphFailed: connection.guiderGraphFailed,
+                                  light: StatusLight.guider(equipment?.guider, phase: phase))
+                    .frame(maxHeight: .infinity)
             }
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .opacity(asOf != nil && equipment != nil ? 0.55 : 1)
         }
+        // Both columns as tall as the taller one, so the guiding chart reaches the image's bottom edge.
+        .fixedSize(horizontal: false, vertical: true)
         .frame(maxHeight: .infinity, alignment: .top)
         .focusSection()
     }
@@ -283,15 +289,30 @@ struct MountTile: View {
     }
 }
 
-struct GuidingTile: View {
-    let guider: NINAEquipmentSummary.Guider?
-    let light: StatusLight
+struct MeridianTile: View {
+    let flip: MeridianFlipDisplay?
 
     var body: some View {
-        ModulePanel("Guiding", icon: Image(systemName: "target"), light: light, fillHeight: true) {
-            // RMS needs the validated definition from M3 (#6); until then "—".
-            TileValue(nil, detail: Format.guiderState(guider?.device.connected == true ? guider?.state : nil)
-                      ?? String(localized: "RMS not available yet"))
+        ModulePanel("Meridian", icon: Image(systemName: "globe"), light: nil, fillHeight: true) {
+            if let flip {
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack(alignment: .firstTextBaseline, spacing: 6) {
+                        Text(verbatim: Format.flipRemaining(flip.wholeMinutes)).font(.pgTileValue).foregroundStyle(Theme.text)
+                        Text(verbatim: "h").font(.system(size: 28)).foregroundStyle(Theme.text2)
+                    }
+                    .lineLimit(1).minimumScaleFactor(0.6)
+                    HStack(alignment: .firstTextBaseline, spacing: 6) {
+                        Text("until flip").font(.pgLabel).foregroundStyle(Theme.text2).minimumScaleFactor(0.7)
+                        Spacer(minLength: 0)
+                        // Approximate: N.I.N.A.'s countdown added to the TV's clock.
+                        Text(verbatim: "≈ " + Format.clockWithoutDayPeriod(flip.flipAt))
+                            .font(.system(size: 18)).foregroundStyle(Theme.text3).fixedSize()
+                    }
+                    .lineLimit(1)
+                }
+            } else {
+                TileValue(nil, detail: nil)
+            }
         }
     }
 }
