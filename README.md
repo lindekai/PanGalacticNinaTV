@@ -220,9 +220,13 @@ Signing, TestFlight and simulator tips are in [docs/status.md](docs/status.md). 
 
 The app icon (three parallax layers) and the Top Shelf banner are drawn procedurally by [`tools/icons/make_placeholder_icons.py`](tools/icons/make_placeholder_icons.py); the banner at the top of this page uses the same nebula ([`tools/icons/make_banner.py`](tools/icons/make_banner.py)). The demo galaxy in the screenshots comes from [`tools/demo/demo_server.py`](tools/demo/demo_server.py). Both are seeded, so they look the same on every run.
 
-## Acknowledgements
+## Credits
 
-Built on the shoulders of the [N.I.N.A.](https://nighttime-imaging.eu/) project, Christian Palm's [Advanced API plugin](https://github.com/christian-photo/ninaAPI) and the [PHD2](https://openphdguiding.org/) team. Thank you.
+- **Author:** Kai Linde – [github.com/lindekai](https://github.com/lindekai)
+- **Community:** Dark Matters Discord
+- **Software:** [N.I.N.A.](https://nighttime-imaging.eu/) with Christian Palm's [Advanced API](https://github.com/christian-photo/ninaAPI), [PHD2](https://openphdguiding.org/); the app uses only Apple's frameworks (SwiftUI), the tooling only the Python 3 standard library
+
+Built on the shoulders of these projects – thank you. Questions, ideas or photos of your setup? Please open an [issue](https://github.com/lindekai/PanGalacticNinaTV/issues).
 
 ## Disclaimer
 
