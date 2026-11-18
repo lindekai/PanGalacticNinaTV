@@ -224,9 +224,8 @@ The app icon (three parallax layers) and the Top Shelf banner are drawn procedur
 
 - **Author:** Kai Linde – [github.com/lindekai](https://github.com/lindekai)
 - **Community:** Dark Matters Discord
-- **Software:** [N.I.N.A.](https://nighttime-imaging.eu/) with Christian Palm's [Advanced API](https://github.com/christian-photo/ninaAPI), [PHD2](https://openphdguiding.org/); the app uses only Apple's frameworks (SwiftUI), the tooling only the Python 3 standard library
 
-Built on the shoulders of these projects – thank you. Questions, ideas or photos of your setup? Please open an [issue](https://github.com/lindekai/PanGalacticNinaTV/issues).
+Built on the shoulders of the [N.I.N.A.](https://nighttime-imaging.eu/) project, Christian Palm's [Advanced API plugin](https://github.com/christian-photo/ninaAPI) and the [PHD2](https://openphdguiding.org/) team. Thank you.
 
 ## Disclaimer
 

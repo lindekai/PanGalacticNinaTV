@@ -10,7 +10,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 - Source review: N.I.N.A.'s guide RMS is the population standard deviation about the mean; `RMSError` in `/equipment/info` comes from the same history as the graph.
 - Demo server: live guide graph and `--guider-state`.
 - Capture night checklist for the open M3 captures (#5, #6, #7) and the device check of the guiding chart.
-- README: credits (author, community, software used) in place of the acknowledgements, as in the NINA Pocket Companion.
+- README: credits with author and community, as in the NINA Pocket Companion.
 
 ### Changed (M3)
 - The Guiding tile is replaced by the Meridian tile; guiding lives in the chart.
