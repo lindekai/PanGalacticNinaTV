@@ -1,6 +1,6 @@
 # Project status
 
-Snapshot for picking up work on another machine. Last updated 2026-11-17 (M3 part 1).
+Snapshot for picking up work on another machine. Last updated 2026-11-18 (M3 part 1).
 
 ## Resume here
 
@@ -8,6 +8,7 @@ Snapshot for picking up work on another machine. Last updated 2026-11-17 (M3 par
 - After approval: merge #18, archive build 5 from `main`, upload to TestFlight, check the guiding chart on the Apple TV during a guided night.
 - Decisions taken without explicit owner confirmation (change in #18 if wanted): RMS and colours only while the state is Guiding (curves dimmed otherwise); red LED and spelled-out state on LostLock; German tile text "bis Flip"; clock without AM/PM.
 - Discord announcement draft (text and image): [docs/announcements/2026-11-17-discord.md](announcements/2026-11-17-discord.md).
+- Capture night (#5, #6, #7 and the device check in one night): [checklist](m3-capture-night.md).
 - Demo server for screenshots: `python3 tools/demo/demo_server.py [--guider-state Guiding|Stopped|LostLock]` ([tools/demo/README.md](../tools/demo/README.md)).
 
 ## Where things stand
@@ -34,7 +35,7 @@ Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 ## Next steps
 
 1. Device check of the guiding chart during a guided night; then M3 part 2: alerts, PHD2 stream, WebSocket events.
-2. Capture night: run `tools/m0` (passive WebSocket and PHD2 listeners) during guided imaging with dithering and an autofocus run, for #6 and #7.
+2. Capture night: run `tools/m0` (passive WebSocket and PHD2 listeners) during guided imaging with dithering and an autofocus run, for #6 and #7; cooling snapshots for #5. Follow the [checklist](m3-capture-night.md).
 
 ## Setting up a new machine
 

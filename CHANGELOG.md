@@ -9,6 +9,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 - Meridian tile: time to the meridian flip as N.I.N.A. computes it, with the approximate clock time; "—" when not tracking.
 - Source review: N.I.N.A.'s guide RMS is the population standard deviation about the mean; `RMSError` in `/equipment/info` comes from the same history as the graph.
 - Demo server: live guide graph and `--guider-state`.
+- Capture night checklist for the open M3 captures (#5, #6, #7) and the device check of the guiding chart.
 
 ### Changed (M3)
 - The Guiding tile is replaced by the Meridian tile; guiding lives in the chart.
