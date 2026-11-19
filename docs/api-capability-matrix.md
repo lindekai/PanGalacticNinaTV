@@ -201,6 +201,10 @@ Two captures 4.5 min apart while a time-bound loop of 120 s lights ran ("loop un
 | `LoopCondition` | `Iterations` (target) and `CompletedIterations`, in both endpoints | "n/m" from the condition's own pair |
 | Unlocked reads | The plugin walks the live tree from an HTTP thread; an item that throws while serializing is silently dropped | A missing item is unknown; `json` is matched to `state` by index **and** name, else ignored |
 | Privacy | `json` contains the site's latitude, longitude and elevation (Alt/Az instructions) and file paths with the Windows user name | Sanitizer redacts them; fixtures reviewed |
+| Names | Plugin appends `_Container`, `_Condition`, `_Trigger`; unnamed containers are just `_Container`. Names are N.I.N.A.'s display names in its UI language | Suffix stripped; names shown as sent, never translated |
+| Between exposures (2026-11-19) | During download, dither or autofocus the exposure instruction is `CREATED` while its container stays `RUNNING` | Current step = first open instruction of the deepest running container |
+| Fields shown on the sequence page | `TargetTime` (conditions, wait instruction), `Iterations`/`CompletedIterations`, `Exposures`/`TargetExposures` (dither trigger), `ExposureTime`/`Type`/`Gain` (≥ 0), `Temperature`, `Filter` | Everything else ignored; coordinates and `FilePath` never read |
+| Dither trigger | Any trigger carrying `Exposures`/`TargetExposures` is shown as "Dither every n" (seen only on N.I.N.A.'s "Dither after exposures" trigger in the captures) | Interval from `TargetExposures` |
 
 
 ### Device list and full-resolution render (source review, 2026-11-16)

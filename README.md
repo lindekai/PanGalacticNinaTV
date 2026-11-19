@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/assets/screenshots/overview.jpg" alt="Overview: newest frame of M 31 with HFR trend, camera cooling, object altitude and coordinates, mount, time to the meridian flip and filter, a guiding chart with total RMS, plus sequence progress and exposure countdown in the header" width="100%">
+  <img src="docs/assets/screenshots/overview.jpg" alt="Overview: newest frame of M 31 with HFR trend, camera cooling, object altitude and coordinates, mount, time to the meridian flip and filter, a guiding chart with total RMS, a sequence strip with last, current and next step, plus sequence progress and exposure countdown in the header" width="100%">
 </p>
 
 <p align="center"><sub>Every screenshot comes from the tvOS Simulator running against the bundled <a href="#try-it-without-a-telescope">demo server</a>: a procedural galaxy and sanitized test data, no real observatory.</sub></p>
@@ -41,7 +41,16 @@ One screen for the whole night, laid out for a TV across the room.
 - **Object:** altitude above the horizon and coordinates.
 - **Mount, meridian and filter** as compact tiles: tracking state and pier side, the **time to the meridian flip** with its approximate clock time, and the active filter.
 - **Guiding chart:** RA and Dec of the last guide steps with dither markers, and the **total RMS** in arcseconds coloured like a traffic light – green below 1″, yellow up to 2″, red above. The light turns red when the guide star is lost.
+- **Sequence strip:** the last step (✓, or ✕ if it failed), the current step with its container, and the next step. A click opens the sequence page.
 - **Focus starts on the image**, so one click opens it.
+
+### The sequence
+
+<p align="center">
+  <img src="docs/assets/screenshots/sequence.jpg" alt="Sequence page: the whole Advanced Sequence as a tree with a status per step, the running branch expanded on the current step" width="100%">
+</p>
+
+The whole Advanced Sequence as a tree, with a status per step. The running branch is expanded and the page opens on the current step; containers expand and collapse with a click. Under each step you see what N.I.N.A. reports: loop end and iterations, the dither interval, exposure time, type, gain, filter and temperature. Step names are shown exactly as N.I.N.A. sends them. The page is read-only.
 
 ### Full-screen viewer with stepped zoom
 
