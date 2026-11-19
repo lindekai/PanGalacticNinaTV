@@ -17,11 +17,16 @@ public struct SequenceSteps: Equatable, Sendable {
     public let current: Step?
     public let next: Step?
 
-    public var isRunning: Bool { current != nil }
+    /// Name of the deepest running container; `nil` when no container runs.
+    public let runningContainer: String?
+
+    /// A container runs, even if its current step is unknown.
+    public var isRunning: Bool { runningContainer != nil }
 
     public init(tree: SequenceTree) {
         var flat: [Step] = []
         Self.flatten(tree.roots, container: "", into: &flat)
+        runningContainer = Self.deepestRunningContainer(tree)?.name
         let index = flat.lastIndex { $0.status == .running } ?? Self.firstOpenInDeepestRunning(tree, flat)
         guard let index else {
             last = nil; current = nil; next = nil
@@ -32,7 +37,8 @@ public struct SequenceSteps: Equatable, Sendable {
         next = flat[(index + 1)...].first { $0.status == .created }
     }
 
-    /// Ids of the chain of running containers (expanded by default on the page).
+    /// Ids of the chain of running containers (expanded by default on the page);
+    /// follows the first running container per level.
     public static func runningContainers(in tree: SequenceTree) -> Set<[Int]> {
         var ids: Set<[Int]> = []
         var nodes = tree.roots
@@ -41,6 +47,16 @@ public struct SequenceSteps: Equatable, Sendable {
             nodes = running.children ?? []
         }
         return ids
+    }
+
+    private static func deepestRunningContainer(_ tree: SequenceTree) -> SequenceTree.Node? {
+        var found: SequenceTree.Node?
+        var nodes = tree.roots
+        while let running = nodes.first(where: { $0.isContainer && $0.status == .running }) {
+            found = running
+            nodes = running.children ?? []
+        }
+        return found
     }
 
     private static func flatten(_ nodes: [SequenceTree.Node], container: String, into flat: inout [Step]) {

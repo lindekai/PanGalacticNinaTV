@@ -52,6 +52,7 @@ struct SequenceStepsTests {
     @Test func nothingRunning() throws {
         let steps = SequenceSteps(tree: try SequenceTreeTests.tree("sequence-json-idle"))
         #expect(!steps.isRunning)
+        #expect(steps.runningContainer == nil)
         #expect(steps.last == nil && steps.next == nil)
     }
 
@@ -70,7 +71,8 @@ struct SequenceStepsTests {
              {"Name":"End","Status":"CREATED","Items":[{"Name":"Park","Status":"CREATED"}]}]
             """#)
         #expect(steps.current == nil, "a dropped or finished item is not invented")
-        #expect(!steps.isRunning)
+        #expect(steps.isRunning, "a running container is running, even without a known step")
+        #expect(steps.runningContainer == "Lights")
     }
 
     @Test func runningContainersAreTheRunningChain() throws {

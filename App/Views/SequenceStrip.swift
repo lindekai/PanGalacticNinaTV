@@ -54,6 +54,13 @@ struct SequenceStrip: View {
                 }
             }
             .font(.pgLabel)
+        } else if let steps, let container = steps.runningContainer {
+            // A container runs but its current step is not in the answer.
+            HStack(spacing: 12) {
+                Circle().fill(Theme.accent).frame(width: 16, height: 16)
+                Text(verbatim: container).font(.pgValue).foregroundStyle(Theme.text)
+                Text(verbatim: "· —").font(.pgLabel).foregroundStyle(Theme.text2)
+            }
         } else if steps != nil {
             Text("Not running").font(.pgLabel).foregroundStyle(Theme.text2)
         } else {

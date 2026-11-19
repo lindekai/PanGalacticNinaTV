@@ -320,6 +320,39 @@ struct InstanceConnectionTests {
         #expect(conn.phase == .live, "a failing sequence request is not a connection failure")
         #expect(conn.sequence == nil, "unknown, not the old value")
         #expect(conn.sequenceTree == nil, "the json answer is no tree either ({} is not an array)")
+        #expect(conn.sequenceTreeIsEmpty, "an answer without containers is empty, not unknown")
+    }
+
+    @Test func sequenceTreeUnknownIsNotEmpty() async {
+        let transport = FakeTransport { request in
+            switch request.url?.path() {
+            case "/v2/api/version": FakeTransport.ok(#""2.2.15.3""#)
+            case "/v2/api/version/nina": FakeTransport.ok(#""3.2""#)
+            case "/v2/api/equipment/info": FakeTransport.ok("{}")
+            case "/v2/api/sequence/json": (500, "")
+            default: (404, "")
+            }
+        }
+        let conn = connection(transport, clock: Clock())
+        _ = await conn.pollOnce()
+        #expect(conn.sequenceTree == nil)
+        #expect(!conn.sequenceTreeIsEmpty, "a failed request is unknown, not empty")
+    }
+
+    @Test func sequenceJSONWithoutContainersIsEmpty() async {
+        let transport = FakeTransport { request in
+            switch request.url?.path() {
+            case "/v2/api/version": FakeTransport.ok(#""2.2.15.3""#)
+            case "/v2/api/version/nina": FakeTransport.ok(#""3.2""#)
+            case "/v2/api/equipment/info": FakeTransport.ok("{}")
+            case "/v2/api/sequence/json": FakeTransport.ok(#"[{"GlobalTriggers":[]}]"#)
+            default: (404, "")
+            }
+        }
+        let conn = connection(transport, clock: Clock())
+        _ = await conn.pollOnce()
+        #expect(conn.sequenceTree == nil)
+        #expect(conn.sequenceTreeIsEmpty)
     }
 
     @Test func sequenceTreeDoesNotNeedTheStateTree() async {

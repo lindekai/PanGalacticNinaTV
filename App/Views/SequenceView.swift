@@ -38,7 +38,11 @@ struct SequenceView: View {
                         .onChange(of: tree) { prune(tree) }
                     }
                 } else {
-                    Text("No sequence loaded").font(.pgValue).foregroundStyle(Theme.text2)
+                    if connection.sequenceTreeIsEmpty {
+                        Text("No sequence loaded").font(.pgValue).foregroundStyle(Theme.text2)
+                    } else {
+                        Text(verbatim: "—").font(.pgValue).foregroundStyle(Theme.text2)
+                    }
                     Spacer(minLength: 0)
                 }
             }
@@ -49,6 +53,9 @@ struct SequenceView: View {
             .ignoresSafeArea()
             .opacity(connection.phase == .live ? 1 : 0.55)
             .onChange(of: context.date) { connection.refreshPhase() }
+            .onChange(of: connection.sequenceTree == nil) { _, unknown in
+                if unknown { seeded = false } // seed again when the tree comes back
+            }
         }
     }
 
@@ -83,14 +90,23 @@ struct SequenceView: View {
     private func seed(_ tree: SequenceTree, proxy: ScrollViewProxy) {
         guard !seeded else { return }
         seeded = true
-        expanded = SequenceSteps.runningContainers(in: tree)
-        if let current = SequenceSteps(tree: tree).current?.id {
+        let current = SequenceSteps(tree: tree).current?.id
+        // The running chain plus every ancestor of the current step (it may sit under a second running sibling).
+        var open = SequenceSteps.runningContainers(in: tree)
+        if let current {
+            for length in 1..<max(current.count, 1) {
+                let prefix = Array(current.prefix(length))
+                if tree.node(at: prefix)?.isContainer == true { open.insert(prefix) }
+            }
+        }
+        expanded = open
+        if let current {
             // After the expanded rows exist: focus the current step and scroll it to the centre.
             Task { @MainActor in
                 // The focus engine settles on its default first; move it once it has.
                 try? await Task.sleep(for: .milliseconds(300))
-                focusedID = current
                 proxy.scrollTo(current, anchor: .center)
+                focusedID = current
             }
         }
     }
