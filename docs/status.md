@@ -1,6 +1,6 @@
 # Project status
 
-Snapshot for picking up work on another machine. Last updated 2026-11-19 (M3 part 1).
+Snapshot for picking up work on another machine. Last updated 2026-11-19 (M3 TV feedback).
 
 ## Resume here
 

@@ -50,7 +50,7 @@ One screen for the whole night, laid out for a TV across the room.
   <img src="docs/assets/screenshots/sequence.jpg" alt="Sequence page: the whole Advanced Sequence as a tree with a status per step, the running branch expanded on the current step" width="100%">
 </p>
 
-The whole Advanced Sequence as a tree, with a status per step. The running branch is expanded and the page opens on the current step; containers expand and collapse with a click. Under each step you see what N.I.N.A. reports: loop end and iterations, the dither interval, exposure time, type, gain, filter and temperature. Step names are shown exactly as N.I.N.A. sends them. The page is read-only.
+The whole Advanced Sequence as a tree, with a status per step. The running branch is expanded and the page opens on the current step; containers expand and collapse with a click. Under each step you see what N.I.N.A. reports: loop end and iterations, the dither interval, exposure time, type, gain, filter and temperature. Step names are shown exactly as N.I.N.A. sends them (the German names in the screenshot come from a German N.I.N.A.). The page is read-only.
 
 ### Full-screen viewer with stepped zoom
 
