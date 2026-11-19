@@ -339,7 +339,7 @@ struct FilterTile: View {
     let light: StatusLight
 
     var body: some View {
-        ModulePanel("Filter", icon: Image(systemName: "circle.grid.cross"), light: light, fillHeight: true) {
+        ModulePanel("Filter", icon: Image("FilterWheel"), light: light, fillHeight: true) {
             TileValue(wheel?.device.connected == true ? wheel?.selectedFilter : nil, detail: nil)
         }
     }

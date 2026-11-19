@@ -112,7 +112,7 @@ extension NINAEquipmentSummary.DeviceKind {
     var icon: Image {
         switch self {
         case .camera: Image(systemName: "camera")
-        case .filterWheel: Image(systemName: "circle.grid.cross")
+        case .filterWheel: Image("FilterWheel")
         case .focuser: Image(systemName: "scope")
         case .rotator: Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90")
         case .mount: Image("TelescopeMount")

@@ -5,6 +5,9 @@ struct SettingsView: View {
     @Environment(AppModel.self) private var model
     @State private var pendingDeletion: DeviceInstance?
     @AppStorage(AmbientController.enabledKey) private var ambientEnabled = true
+
+    private static var version: String { Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—" }
+    private static var build: String { Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "—" }
     @AppStorage(AmbientController.delayKey) private var ambientDelay = AmbientPolicy.defaultDelayMinutes
 
     var body: some View {
@@ -44,6 +47,8 @@ struct SettingsView: View {
             Section("About") {
                 Text("Pan Galactic N.I.N.A. TV is an independent, unofficial companion app. It only reads data from N.I.N.A. and PHD2 and never controls equipment.")
                     .foregroundStyle(.secondary)
+                Text("Version \(Self.version) (\(Self.build))")
+                    .font(.pgLabel).foregroundStyle(Theme.text3)
             }
         }
         .navigationTitle("Settings")

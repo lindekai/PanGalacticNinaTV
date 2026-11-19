@@ -2511,6 +2511,16 @@
         }
       }
     },
+    "Version %@ (%@)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version %1$@ (%2$@)"
+          }
+        }
+      }
+    },
     "until %@": {
       "localizations": {
         "de": {
