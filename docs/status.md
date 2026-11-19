@@ -1,6 +1,17 @@
 # Project status
 
-Snapshot for picking up work on another machine. Last updated 2026-11-17.
+Snapshot for picking up work on another machine. Last updated 2026-11-19 (M3 part 1).
+
+## Resume here
+
+- Branch `m3/guiding-overview`, **PR #18** open with green CI, waiting for the owner's review. Nothing is uncommitted.
+- After approval: merge #18, start M4 ([ADR 0005](adr/0005-m4-before-m3-part-2.md)); check the guiding chart on the Apple TV during the next guided night.
+- TestFlight build 5 is uploaded (2026-11-19; the first attempt on 2026-11-17 failed during an App Store Connect outage).
+- Archiving lets Xcode rewrite `App/Resources/Localizable.xcstrings` (reformatted, many keys marked `stale`, `HFR`/`Live` dropped). Do not commit that: `git restore App/Resources/Localizable.xcstrings`.
+- Decisions taken without explicit owner confirmation (change in #18 if wanted): RMS and colours only while the state is Guiding (curves dimmed otherwise); red LED and spelled-out state on LostLock; German tile text "bis Flip"; clock without AM/PM.
+- Discord announcement draft (text and image): [docs/announcements/2026-11-17-discord.md](announcements/2026-11-17-discord.md).
+- Capture night (#5, #6, #7 and the device check in one night): [checklist](m3-capture-night.md).
+- Demo server for screenshots: `python3 tools/demo/demo_server.py [--guider-state Guiding|Stopped|LostLock]` ([tools/demo/README.md](../tools/demo/README.md)).
 
 ## Where things stand
 
@@ -9,8 +20,9 @@ Snapshot for picking up work on another machine. Last updated 2026-11-17.
 | M0 API feasibility | Done (PR #2, #3) |
 | M1 Skeleton & connections | Done (PR #10) |
 | M2 Overview & imaging | Done (PR #11, #13–#16): overview, viewer with zoom, ambient mode, devices and device details, sequence progress. Checked on Apple TV 4K with TestFlight build 4 |
-| M3 Guiding & alerts | Next: design |
-| TestFlight | Build 4 is live; raise `CURRENT_PROJECT_VERSION` for the next upload |
+| M3 Guiding & alerts | Paused: part 1 (overview guiding chart, meridian tile) in review; part 2 waits for the capture night |
+| M4 Astronomy | Next, starts after #18 ([ADR 0005](adr/0005-m4-before-m3-part-2.md)) |
+| TestFlight | Build 5 (guiding chart) uploaded 2026-11-19 |
 
 Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 
@@ -19,14 +31,15 @@ Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 | Issue | What is needed | Who |
 |---|---|---|
 | #5 | Confirm that the cooling ramp ends at `TargetTemp`; if so, show it as "target" next to the current setpoint | Owner lets a cooldown finish |
-| #6 | PHD2 `GuideStep`, dither, settle and RMS definition | M3, needs a guided night with the M0 listeners |
+| #6 | PHD2 `GuideStep`, dither and settle from the PHD2 stream (N.I.N.A.'s RMS definition is settled by source review) | M3, needs a guided night with the M0 listeners |
 | #7 | Filter-change, dither and autofocus WebSocket events | M3, same capture night |
 | – | Surveillance camera view: owner answers the open questions in the [proposal](features/surveillance-camera.md) | Owner |
 
 ## Next steps
 
-1. M3 design: guiding chart, RMS with validated units, read-only WebSocket listener, foreground alerts.
-2. Capture night: run `tools/m0` (passive WebSocket and PHD2 listeners) during guided imaging with dithering and an autofocus run, for #6 and #7.
+1. Merge #18, then start M4 on `m4/<topic>` with a design spec: Sun/Moon, altitude curve and compass first (computed, no new endpoint); star map and FOV overlay last, after the catalogue licence is settled ([ADR 0005](adr/0005-m4-before-m3-part-2.md)).
+2. M5 after M4: conditions, EN/DE and message engine first; statistics once verified metrics exist.
+3. Whenever a clear night comes: device check of the guiding chart, then M3 part 2 (alerts, PHD2 stream, WebSocket events). Capture night: run `tools/m0` (passive WebSocket and PHD2 listeners) during guided imaging with dithering and an autofocus run, for #6 and #7; cooling snapshots for #5. Follow the [checklist](m3-capture-night.md).
 
 ## Setting up a new machine
 

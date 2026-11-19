@@ -30,7 +30,7 @@ enum Theme {
     static let columnGap: CGFloat = 40
     static let moduleGap: CGFloat = 24
     static let mountTileWidth: CGFloat = 268
-    static let guidingTileWidth: CGFloat = 190
+    static let meridianTileWidth: CGFloat = 190
     static let filterTileWidth: CGFloat = 190
     static let radius: CGFloat = 12
 
@@ -40,6 +40,20 @@ enum Theme {
         case .warning: warn
         case .fault: fault
         case .unknown: text3
+        }
+    }
+
+    /// Guide chart lines (PHD2-like: RA blue, Dec orange).
+    static let guideRA = Color(hex: 0x6CB4EE)
+    static let guideDec = Color(hex: 0xE58A6F)
+
+    /// Traffic-light colour of the total guide error; plain text when ungraded (pixels).
+    static func color(for grade: RMSGrade?) -> Color {
+        switch grade {
+        case .good: accent
+        case .fair: warn
+        case .poor: fault
+        case nil: text
         }
     }
 }

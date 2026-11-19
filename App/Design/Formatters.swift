@@ -59,6 +59,28 @@ enum Format {
             : "\((s + 59) / 60) min"
     }
 
+    /// `0.55″` or `0.71 px`.
+    static func guideValue(_ value: GuideValue) -> String {
+        let number = value.value.formatted(.number.precision(.fractionLength(2)))
+        return value.unit == .arcseconds ? number + "″" : number + " px"
+    }
+
+    /// Clock time in the region's style without AM/PM ("3:37", "15:37"); short enough
+    /// for a small tile, and only an approximate guide.
+    static func clockWithoutDayPeriod(_ date: Date, locale: Locale = .current) -> String {
+        let pattern = DateFormatter.dateFormat(fromTemplate: "jmm", options: 0, locale: locale) ?? "HH:mm"
+        let formatter = DateFormatter()
+        formatter.locale = locale
+        formatter.dateFormat = pattern.replacingOccurrences(of: "a", with: "")
+            .trimmingCharacters(in: .whitespaces)
+        return formatter.string(from: date)
+    }
+
+    /// `2:21` (hours:minutes) until the meridian flip.
+    static func flipRemaining(_ minutes: Int) -> String {
+        String(format: "%d:%02d", minutes / 60, minutes % 60)
+    }
+
     /// PHD2 application state as reported through N.I.N.A.; unknown values verbatim.
     static func guiderState(_ wire: String?) -> String? {
         guard let wire else { return nil }

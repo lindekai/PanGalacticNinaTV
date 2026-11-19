@@ -3,7 +3,8 @@
 
 Serves the read-only routes the app polls (Advanced API 2.2.15.3 shapes) on
 127.0.0.1 from the sanitized test fixtures, dressed up as a clear night:
-camera cooled and exposing, mount tracking M 31, guiding, a time-bound
+camera cooled and exposing, mount tracking M 31, guiding with a live guide
+graph, a time-bound
 sequence loop with a few hours left, and a history of frames. The frames are a
 procedural galaxy (seeded, so every run draws the same picture); nothing comes
 from a real observatory.
@@ -79,14 +80,7 @@ def equipment(now: datetime) -> dict:
         SiderealTime=22.61, SiderealTimeString="22:36:44", **SITE,
     )
     info["Mount"].pop("Coordinates", None)
-    info["Guider"].update(
-        State="Guiding", PixelScale=3.87,
-        RMSError={
-            "RA": {"Pixel": 0.111, "Arcseconds": 0.43}, "Dec": {"Pixel": 0.090, "Arcseconds": 0.35},
-            "Total": {"Pixel": 0.143, "Arcseconds": 0.55}, "PeakRA": {"Pixel": 0.41, "Arcseconds": 1.59},
-            "PeakDec": {"Pixel": 0.33, "Arcseconds": 1.28},
-        },
-    )
+    info["Guider"].update(State=GUIDER_STATE, PixelScale=GUIDE_SCALE, RMSError=guide_graph(now)["RMSError"])
     info["Focuser"] = {
         "Position": 30126, "StepSize": 0, "Temperature": 8.4, "IsMoving": False, "IsSettling": False,
         "TempComp": False, "TempCompAvailable": False, "Connected": True, "Name": "ZWO EAF",
@@ -100,6 +94,66 @@ def equipment(now: datetime) -> dict:
     )
     info["SafetyMonitor"].update(IsSafe=True)
     return info
+
+
+# MARK: Guiding
+
+GUIDE_SCALE = 3.87  # arcseconds per guide-camera pixel
+GUIDE_EVERY = 2.0  # seconds per guide step
+DITHER_EVERY = 90  # guide steps between dithers
+HISTORY = 100  # N.I.N.A.'s default graph history
+GUIDER_STATE = "Guiding"  # --guider-state, e.g. Stopped or LostLock to see those states
+
+
+def guide_graph(now: datetime) -> dict:
+    """N.I.N.A.'s guide graph: the newest 100 steps of a seeded random walk plus dither
+    markers, and the RMS N.I.N.A. computes over them (population standard deviation)."""
+    import random
+
+    rng = random.Random(7)
+    count = int((now - START).total_seconds() // GUIDE_EVERY) + 2 * HISTORY
+    entries, ra, dec = [], 0.0, 0.0
+    for i in range(count):
+        if i % DITHER_EVERY == DITHER_EVERY - 1:
+            entries.append({"Dither": 0.01, "RADistanceRaw": 0, "DECDistanceRaw": 0})
+            ra, dec = ra + 0.35, dec - 0.25  # the star settles back after the dither
+        ra = 0.45 * ra + rng.gauss(0, 0.099)
+        dec = 0.45 * dec + rng.gauss(0, 0.08)
+        entries.append({"Dither": "NaN", "RADistanceRaw": round(ra, 3), "DECDistanceRaw": round(dec, 3)})
+    guided = [i for i, e in enumerate(entries) if e["Dither"] == "NaN"]
+    window = entries[guided[-HISTORY]:]
+    steps = []
+    for n, e in enumerate(window):
+        steps.append({
+            "Id": len(entries) - len(window) + n + 1, "RADistanceRaw": e["RADistanceRaw"],
+            "RADistanceRawDisplay": e["RADistanceRaw"] * GUIDE_SCALE, "RADuration": 0,
+            "DECDistanceRaw": e["DECDistanceRaw"], "DECDistanceRawDisplay": e["DECDistanceRaw"] * GUIDE_SCALE,
+            "DECDuration": 0, "Dither": e["Dither"],
+        })
+
+    def std(values):
+        mean = sum(values) / len(values)
+        return math.sqrt(sum((v - mean) ** 2 for v in values) / len(values))
+
+    guide = [s for s in steps if s["Dither"] == "NaN"]
+    ra_px, dec_px = std([s["RADistanceRaw"] for s in guide]), std([s["DECDistanceRaw"] for s in guide])
+    total = math.hypot(ra_px, dec_px)
+    peak_ra = max(abs(s["RADistanceRaw"]) for s in guide)
+    peak_dec = max(abs(s["DECDistanceRaw"]) for s in guide)
+
+    def unit(px):
+        return {"Pixel": px, "Arcseconds": px * GUIDE_SCALE}
+
+    rms = {"RA": unit(ra_px), "Dec": unit(dec_px), "Total": unit(total), "PeakRA": unit(peak_ra), "PeakDec": unit(peak_dec)}
+    return {
+        "RMSError": rms,
+        "Response": {
+            "RMS": {"RA": ra_px, "Dec": dec_px, "Total": total, "Scale": GUIDE_SCALE, "PeakRA": peak_ra,
+                    "PeakDec": peak_dec, "DataPoints": len(guide)},
+            "ChangeId": len(entries), "Interval": 0.5, "MaxY": 2, "MinY": -2, "GuideSteps": steps,
+            "HistorySize": HISTORY, "PixelScale": GUIDE_SCALE, "Scale": "ARCSECONDS",
+        },
+    }
 
 
 # MARK: Sequence
@@ -223,6 +277,8 @@ class Handler(BaseHTTPRequestHandler):
             return self.json(fixture("version-nina-friendly.json"))
         if path == "/equipment/info":
             return self.json(envelope(equipment(now)))
+        if path == "/equipment/guider/graph":
+            return self.json(envelope(guide_graph(now)["Response"]))
         if path == "/sequence/state":
             return self.json(sequence("sequence-state-running-2.json", now))
         if path == "/sequence/json":
@@ -256,7 +312,9 @@ class Handler(BaseHTTPRequestHandler):
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--port", type=int, default=1888)
+    parser.add_argument("--guider-state", default=GUIDER_STATE, help="PHD2 state, e.g. Guiding, Stopped, LostLock")
     args = parser.parse_args()
+    globals()["GUIDER_STATE"] = args.guider_state
     print("Drawing the demo frame (first run takes a moment)…")
     galaxy()
     server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)

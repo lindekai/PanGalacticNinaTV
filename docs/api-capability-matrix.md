@@ -52,7 +52,7 @@ Server layout at the pinned commit (`API.cs`):
 | `GET /equipment/filterwheel/info` | selected filter, filter list | ✅ | ✅ idle |
 | `GET /equipment/focuser/info` | position, temperature, moving | ✅ | ✅ idle |
 | `GET /equipment/guider/info` | state, RMS RA/Dec/Total/peaks, `PixelScale`, last guide step | ✅ | ✅ idle |
-| `GET /equipment/guider/graph` | guide step history (`RADistanceRaw`, `DECDistanceRaw`, `Dither`), RMS, scale | ✅ (reads `GuideStepsHistory` via reflection – fragile) | ✅ idle |
+| `GET /equipment/guider/graph` | guide step history (`RADistanceRaw`, `DECDistanceRaw`, `Dither`), RMS, scale | ✅ (reads `GuideStepsHistory` via reflection – fragile) | ✅ idle, guiding (2026-11-15); used for the overview chart |
 | `GET /equipment/{rotator,safetymonitor,weather,dome,switch,flatdevice}/info` | device state | ✅ | ✅ idle |
 | `GET /sequence/json` | sequence tree with item status (author: "more reliable") | ✅ | ✅ idle |
 | `GET /sequence/state` | richer sequence tree incl. plugin items | ✅ | ✅ idle |
@@ -234,4 +234,18 @@ Plugin `WebService/V2/Equipment/*.cs` at the pinned commit and N.I.N.A. `Version
 | `MountInfo.TrackingMode` is a live driver read on every request; everything else is cached state | plugin `Mount.cs` | Unchanged 5 s poll; no writes, no PHD2 traffic |
 | Switch items: `Id, Name, Description, Value`; writable ones add `Minimum, Maximum, StepSize, TargetValue` (the value N.I.N.A.'s UI would apply next) | N.I.N.A. `ISwitch.cs` | `Value` shown, 0…1 channels in steps of 1 as on/off; `TargetValue` not shown |
 | Sensitive: site latitude/longitude/elevation, `Coordinates`, Alpaca host names in `DisplayName` | — | Displayed on the TV (owner decision 2026-11-16, several observatories); never in fixtures, screenshots or issues |
+
+### Guider graph, RMS and meridian flip (source review, 2026-11-17)
+
+Pins: plugin 2.2.15.3 (`353a853`), N.I.N.A. `Version-3.2` (`2393eae`). Checked against the 2026-11-15 captures (guiding, 101 steps, one dither).
+
+| Field | Source | Finding | App |
+|---|---|---|---|
+| `guider/graph` | plugin `Guider.cs:243` | N.I.N.A.'s `GuideStepsHistory` serialised unchanged, read via reflection; on failure the plugin's error table | Polled every 5 s while the guider is connected; failure → "Guiding chart not available" |
+| `GuideSteps[]` | `GuideStepsHistory.cs` | Oldest first, up to `HistorySize` (default 100) guide steps plus dither markers; `RADistanceRaw`/`DECDistanceRaw` in guide-camera pixels | Curves = raw × `PixelScale` |
+| `Dither` | `HistoryStep.GenerateDitherStep` | 0.01 with all distances 0 on a dither; `"NaN"` on guide steps | Vertical marker, never a data point |
+| History reset | `GuiderVM.ResetGraphValues` | Only on guider connect or "clear graph" – **not** when guiding stops | Old curves dimmed, RMS "—" unless `Guiding` |
+| RMS | `NINA.Core/Model/RMS.cs` | Population standard deviation about the mean per axis (Welford), pixels; `Total = sqrt(RA² + Dec²)`; arcsec = × `PixelScale` | N.I.N.A.'s values unchanged |
+| `equipment/info` `Guider.RMSError` | `GuiderVM.Guider_GuideEvent` | Built from the same `GuideStepsHistory.RMS` on every step; identical to the graph's RMS in the captures | Source of the total RMS |
+| `Mount.TimeToMeridianFlip` | `AscomTelescope.cs:686`, `MeridianFlip.cs:58` | Hours; only while tracking, else exactly 24; never negative (a day is subtracted above 24 h); `NaN` while disconnected | Meridian tile; "—" for 24, `NaN`, not tracking |
 

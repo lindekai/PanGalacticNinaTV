@@ -4,6 +4,18 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ## [Unreleased]
 
+### Added (M3)
+- Guiding chart on the overview: RA and Dec of N.I.N.A.'s last guide steps (`/equipment/guider/graph`) with dither markers and ±1″/±2″ lines; the y range grows with large errors (up to ±8″). Total, RA and Dec RMS in the header, the total coloured green below 1″, yellow up to 2″ and red above (owner's thresholds). RMS is shown only while guiding; after a stop the old curves are dimmed. The light turns red when the guide star is lost.
+- Meridian tile: time to the meridian flip as N.I.N.A. computes it, with the approximate clock time; "—" when not tracking.
+- Source review: N.I.N.A.'s guide RMS is the population standard deviation about the mean; `RMSError` in `/equipment/info` comes from the same history as the graph.
+- Demo server: live guide graph and `--guider-state`.
+- Capture night checklist for the open M3 captures (#5, #6, #7) and the device check of the guiding chart.
+- README: credits with author and community, as in the NINA Pocket Companion.
+- ADR 0005: M4 starts while M3 part 2 waits for live data; M5 follows M4.
+
+### Changed (M3)
+- The Guiding tile is replaced by the Meridian tile; guiding lives in the chart.
+
 ### Added (M2)
 - Overview: newest frame with target, type, filter, exposure, HFR and stars; camera with sensor temperature, active setpoint, cooler power, gain and exposure countdown; mount with RA/Dec, altitude, pier side and state; filter and guider.
 - Full-screen image viewer: shows the thumbnail at once, then a 1920×1080 render from N.I.N.A. (one request at a time, cached).
