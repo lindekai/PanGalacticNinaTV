@@ -12,9 +12,15 @@ All notable changes to this project are documented here. Format based on [Keep a
 - Capture night checklist for the open M3 captures (#5, #6, #7) and the device check of the guiding chart.
 - README: credits with author and community, as in the NINA Pocket Companion.
 - ADR 0005: M4 starts while M3 part 2 waits for live data; M5 follows M4.
+- Sequence strip on the overview: last step (✓, or ✕ when it failed), current step with its container, and the next step, from the existing `/sequence/json` poll. A click opens the sequence page.
+- Sequence page: the whole Advanced Sequence as a tree with status per step; the running branch is expanded and centred, containers expand and collapse with a click; loop end, iterations, dither interval and exposure settings under each step.
+- Settings: app version and build.
+- Filter wheel icon for the Filter tile and the device list, in outline style: housing ring, five filter cells and a hub.
+- TestFlight build 6 is the candidate for this feedback round.
 
 ### Changed (M3)
 - The Guiding tile is replaced by the Meridian tile; guiding lives in the chart.
+- Overview margins 56 px left/right and 36 px top/bottom (were Apple's 80/60 safe area), so the strip fits without shrinking the image.
 
 ### Added (M2)
 - Overview: newest frame with target, type, filter, exposure, HFR and stars; camera with sensor temperature, active setpoint, cooler power, gain and exposure countdown; mount with RA/Dec, altitude, pier side and state; filter and guider.

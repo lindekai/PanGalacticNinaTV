@@ -1,10 +1,12 @@
 # Project status
 
-Snapshot for picking up work on another machine. Last updated 2026-11-19 (M3 part 1).
+Snapshot for picking up work on another machine. Last updated 2026-11-19 (M3 TV feedback).
 
 ## Resume here
 
-- Branch `m3/guiding-overview`, **PR #18** open with green CI, waiting for the owner's review. Nothing is uncommitted.
+- Branch `m3/tv-feedback` (sequence strip and page, app version in Settings, filter wheel icon, build 6); the controller opens the PR. Nothing is uncommitted.
+- Device check on the TV with build 6 is still open: focus path image ⇄ strip ⇄ header, Menu back from the sequence page, and the sequence page opening on the current step with a long real sequence.
+- Earlier: branch `m3/guiding-overview`, **PR #18**, waiting for the owner's review.
 - After approval: merge #18, start M4 ([ADR 0005](adr/0005-m4-before-m3-part-2.md)); check the guiding chart on the Apple TV during the next guided night.
 - TestFlight build 5 is uploaded (2026-11-19; the first attempt on 2026-11-17 failed during an App Store Connect outage).
 - Archiving lets Xcode rewrite `App/Resources/Localizable.xcstrings` (reformatted, many keys marked `stale`, `HFR`/`Live` dropped). Do not commit that: `git restore App/Resources/Localizable.xcstrings`.
@@ -20,9 +22,9 @@ Snapshot for picking up work on another machine. Last updated 2026-11-19 (M3 par
 | M0 API feasibility | Done (PR #2, #3) |
 | M1 Skeleton & connections | Done (PR #10) |
 | M2 Overview & imaging | Done (PR #11, #13–#16): overview, viewer with zoom, ambient mode, devices and device details, sequence progress. Checked on Apple TV 4K with TestFlight build 4 |
-| M3 Guiding & alerts | Paused: part 1 (overview guiding chart, meridian tile) in review; part 2 waits for the capture night |
+| M3 Guiding & alerts | Paused: part 1 (overview guiding chart, meridian tile) in review; TV feedback (sequence strip and page, version, filter icon) on `m3/tv-feedback`, device check with build 6 open; part 2 waits for the capture night |
 | M4 Astronomy | Next, starts after #18 ([ADR 0005](adr/0005-m4-before-m3-part-2.md)) |
-| TestFlight | Build 5 (guiding chart) uploaded 2026-11-19 |
+| TestFlight | Build 5 (guiding chart) uploaded 2026-11-19; build 6 (sequence strip and page) is the candidate on `m3/tv-feedback`, PR to be opened |
 
 Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 

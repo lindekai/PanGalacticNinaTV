@@ -68,6 +68,7 @@ Each milestone ends with a review; the next one starts only after approval. Exce
 
 - [x] Source review of `/equipment/guider/graph`, RMS and `TimeToMeridianFlip`; N.I.N.A.'s RMS definition (population standard deviation) – the N.I.N.A. half of #6
 - [x] Overview part 1: guiding chart with traffic-light total RMS, meridian tile replaces the guiding tile ([spec](superpowers/specs/2026-11-17-m3-guiding-overview-design.md))
+- [x] TV feedback after build 5: sequence strip and page, version, filter wheel icon ([spec](superpowers/specs/2026-11-19-m3-tv-feedback-design.md)) – device check on the TV with build 6 open
 - [ ] Device check of part 1 on Apple TV with a guided night ([capture night checklist](m3-capture-night.md))
 - [ ] PHD2 event stream (port 4400, listen only): `GuideStep`, dither, settle, star lost (#6)
 - [ ] N.I.N.A. WebSocket events: filter change, dither, autofocus (#7)

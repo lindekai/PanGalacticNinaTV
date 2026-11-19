@@ -71,6 +71,16 @@
         }
       }
     },
+    "%lld of %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld von %2$lld"
+          }
+        }
+      }
+    },
     "%lld stars": {
       "localizations": {
         "de": {
@@ -595,6 +605,16 @@
         }
       }
     },
+    "Dither every %lld (%lld/%lld)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dither alle %1$lld (%2$lld/%3$lld)"
+          }
+        }
+      }
+    },
     "Dome": {
       "localizations": {
         "de": {
@@ -849,6 +869,9 @@
       }
     },
     "Gain": {
+      "shouldTranslate": false
+    },
+    "Gain %lld": {
       "shouldTranslate": false
     },
     "Gain range": {
@@ -1317,6 +1340,16 @@
         }
       }
     },
+    "Next:": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Nächstes:"
+          }
+        }
+      }
+    },
     "No": {
       "localizations": {
         "de": {
@@ -1374,6 +1407,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine Netzwerkverbindung"
+          }
+        }
+      }
+    },
+    "No sequence loaded": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Sequenz geladen"
           }
         }
       }
@@ -1955,6 +1998,16 @@
         }
       }
     },
+    "SEQUENCE": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SEQUENZ"
+          }
+        }
+      }
+    },
     "Sequence": {
       "localizations": {
         "de": {
@@ -2454,6 +2507,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nicht sicher"
+          }
+        }
+      }
+    },
+    "Version %@ (%@)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "until %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bis %@"
           }
         }
       }

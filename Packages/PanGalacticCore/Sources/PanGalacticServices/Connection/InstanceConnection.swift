@@ -41,6 +41,12 @@ public final class InstanceConnection {
     /// request failed, or offline). Kept while stale, never invented.
     public private(set) var sequence: SequenceProgress?
 
+    /// The sequence as a tree for the strip and the sequence page; `nil` while unknown.
+    /// Kept while stale, never invented.
+    public private(set) var sequenceTree: SequenceTree?
+    /// `/sequence/json` answered, but without a container; distinct from an unknown tree.
+    public private(set) var sequenceTreeIsEmpty = false
+
     /// N.I.N.A.'s guide graph while the guider is connected; kept while stale, never invented.
     public private(set) var guiderGraph: NINAGuiderGraph?
     /// The last graph request failed (the plugin reads it via reflection, which a N.I.N.A.
@@ -138,6 +144,8 @@ public final class InstanceConnection {
                 images.reset()
                 history.reset()
                 sequence = nil
+                sequenceTree = nil
+                sequenceTreeIsEmpty = false
                 lastSequencePoll = nil
             }
             refreshPhase()
@@ -162,16 +170,16 @@ public final class InstanceConnection {
     }
 
     /// `/sequence/state` carries pass counts and loop conditions, `/sequence/json` the
-    /// live end time of time-bound loops; without the state tree the progress is unknown.
+    /// live end time of time-bound loops and the tree for the strip and the sequence page.
+    /// Each is unknown on its own when its request fails.
     private func pollSequence(at now: Date) async {
         if let last = lastSequencePoll, now.timeIntervalSince(last) < Self.sequenceInterval { return }
         lastSequencePoll = now
-        guard let state = try? await client.get(.sequenceState, as: JSONValue.self) else {
-            sequence = nil
-            return
-        }
+        let state = try? await client.get(.sequenceState, as: JSONValue.self)
         let json = try? await client.get(.sequenceJSON, as: JSONValue.self)
-        sequence = SequenceProgress(state: state, json: json)
+        sequence = state.map { SequenceProgress(state: $0, json: json) }
+        sequenceTree = json.flatMap { SequenceTree(json: $0) }
+        sequenceTreeIsEmpty = json != nil && sequenceTree == nil
     }
 
     /// Fetches metadata and thumbnail only when the newest image changed. Reachability
