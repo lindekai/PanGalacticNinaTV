@@ -1,0 +1,415 @@
+{
+  "source": "JPL DE421 ephemeris via Skyfield 1.55, generated 2026-11-20; sunrise/sunset and civil twilight of the first site cross-checked against the U.S. Naval Observatory API (aa.usno.navy.mil)",
+  "definitions": "Sun: topocentric geometric altitude of the centre crossing -0.833/-6/-12/-18 deg. Moon rise/set: geocentric altitude of the centre crossing +0.125 deg. Snapshot altitudes: topocentric, apparent, no refraction. RA/Dec: apparent, equinox of date, geocentric. M31: J2000 00h42m44s +41d16'07\". Night window: local noon to next local noon.",
+  "sites": [
+    {
+      "name": "central-europe-november",
+      "latitude": 50.0,
+      "longitude": 8.0,
+      "elevation": 0.0,
+      "timeZone": "Europe/Berlin",
+      "nightStart": "2026-11-19T11:00:00Z",
+      "nightEnd": "2026-11-20T11:00:00Z",
+      "sun": {
+        "horizon": [
+          {
+            "time": "2026-11-19T15:39:14Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-11-20T06:48:35Z",
+            "direction": "rise"
+          }
+        ],
+        "civil": [
+          {
+            "time": "2026-11-19T16:15:16Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-11-20T06:12:25Z",
+            "direction": "rise"
+          }
+        ],
+        "nautical": [
+          {
+            "time": "2026-11-19T16:54:57Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-11-20T05:32:36Z",
+            "direction": "rise"
+          }
+        ],
+        "astronomical": [
+          {
+            "time": "2026-11-19T17:33:14Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-11-20T04:54:14Z",
+            "direction": "rise"
+          }
+        ]
+      },
+      "moon": [
+        {
+          "time": "2026-11-19T13:05:05Z",
+          "direction": "rise"
+        },
+        {
+          "time": "2026-11-20T01:24:46Z",
+          "direction": "set"
+        }
+      ],
+      "snapshot": {
+        "time": "2026-11-19T20:00:00Z",
+        "sun": {
+          "ra": 235.228,
+          "dec": -19.6011,
+          "altitude": -41.248,
+          "azimuth": 290.541
+        },
+        "moon": {
+          "ra": 354.0558,
+          "dec": 0.1327,
+          "distanceKm": 384993.0,
+          "altitude": 38.2019,
+          "azimuth": 196.5609,
+          "illuminated": 0.7285
+        },
+        "m31": {
+          "raOfDate": 11.058,
+          "decOfDate": 41.4206,
+          "altitude": 80.9381,
+          "azimuth": 159.6184,
+          "moonSeparation": 44.059
+        }
+      },
+      "m31Transit": [
+        "2026-11-19T20:16:44Z"
+      ],
+      "nextFullMoon": "2026-11-24T14:53:33Z"
+    },
+    {
+      "name": "north-midsummer",
+      "latitude": 58.0,
+      "longitude": 12.0,
+      "elevation": 0.0,
+      "timeZone": "Europe/Stockholm",
+      "nightStart": "2026-06-21T10:00:00Z",
+      "nightEnd": "2026-06-22T10:00:00Z",
+      "sun": {
+        "horizon": [
+          {
+            "time": "2026-06-21T20:19:17Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-06-22T02:08:33Z",
+            "direction": "rise"
+          }
+        ],
+        "civil": [
+          {
+            "time": "2026-06-21T21:35:11Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-06-22T00:52:39Z",
+            "direction": "rise"
+          }
+        ],
+        "nautical": [],
+        "astronomical": []
+      },
+      "moon": [
+        {
+          "time": "2026-06-21T10:49:04Z",
+          "direction": "rise"
+        },
+        {
+          "time": "2026-06-21T22:53:04Z",
+          "direction": "set"
+        }
+      ],
+      "snapshot": {
+        "time": "2026-06-21T19:00:00Z",
+        "sun": {
+          "ra": 90.4591,
+          "dec": 23.4372,
+          "altitude": 6.8977,
+          "azimuth": 304.2211
+        },
+        "moon": {
+          "ra": 178.1383,
+          "dec": -1.7207,
+          "distanceKm": 387773.0,
+          "altitude": 25.1563,
+          "azimuth": 212.4575,
+          "illuminated": 0.4886
+        },
+        "m31": {
+          "raOfDate": 11.0458,
+          "decOfDate": 41.4109,
+          "altitude": 10.3,
+          "azimuth": 12.0863,
+          "moonSeparation": 138.639
+        }
+      },
+      "m31Transit": [
+        "2026-06-22T05:54:26Z"
+      ],
+      "nextFullMoon": "2026-06-29T23:56:41Z"
+    },
+    {
+      "name": "equator-equinox",
+      "latitude": 0.0,
+      "longitude": 30.0,
+      "elevation": 0.0,
+      "timeZone": "Africa/Kampala",
+      "nightStart": "2026-03-20T09:00:00Z",
+      "nightEnd": "2026-03-21T09:00:00Z",
+      "sun": {
+        "horizon": [
+          {
+            "time": "2026-03-20T16:10:42Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-03-21T04:03:54Z",
+            "direction": "rise"
+          }
+        ],
+        "civil": [
+          {
+            "time": "2026-03-20T16:31:22Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-03-21T03:43:15Z",
+            "direction": "rise"
+          }
+        ],
+        "nautical": [
+          {
+            "time": "2026-03-20T16:55:21Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-03-21T03:19:15Z",
+            "direction": "rise"
+          }
+        ],
+        "astronomical": [
+          {
+            "time": "2026-03-20T17:19:21Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-03-21T02:55:15Z",
+            "direction": "rise"
+          }
+        ]
+      },
+      "moon": [
+        {
+          "time": "2026-03-20T17:22:38Z",
+          "direction": "set"
+        },
+        {
+          "time": "2026-03-21T05:49:25Z",
+          "direction": "rise"
+        }
+      ],
+      "snapshot": {
+        "time": "2026-03-20T18:00:00Z",
+        "sun": {
+          "ra": 0.1228,
+          "dec": 0.0534,
+          "altitude": -28.1617,
+          "azimuth": 270.0605
+        },
+        "moon": {
+          "ra": 19.3872,
+          "dec": 12.0879,
+          "distanceKm": 368500.0,
+          "altitude": -9.6741,
+          "azimuth": 282.2307,
+          "illuminated": 0.0385
+        },
+        "m31": {
+          "raOfDate": 11.0361,
+          "decOfDate": 41.4121,
+          "altitude": -12.8472,
+          "azimuth": 312.723,
+          "moonSeparation": 30.221
+        }
+      },
+      "m31Transit": [
+        "2026-03-20T10:52:11Z"
+      ],
+      "nextFullMoon": "2026-04-02T02:11:57Z"
+    },
+    {
+      "name": "south-winter",
+      "latitude": -34.0,
+      "longitude": 151.0,
+      "elevation": 0.0,
+      "timeZone": "Australia/Sydney",
+      "nightStart": "2026-07-15T02:00:00Z",
+      "nightEnd": "2026-07-16T02:00:00Z",
+      "sun": {
+        "horizon": [
+          {
+            "time": "2026-07-15T07:04:47Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-07-15T20:58:56Z",
+            "direction": "rise"
+          }
+        ],
+        "civil": [
+          {
+            "time": "2026-07-15T07:32:03Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-07-15T20:31:43Z",
+            "direction": "rise"
+          }
+        ],
+        "nautical": [
+          {
+            "time": "2026-07-15T08:02:52Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-07-15T20:00:57Z",
+            "direction": "rise"
+          }
+        ],
+        "astronomical": [
+          {
+            "time": "2026-07-15T08:33:00Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-07-15T19:30:50Z",
+            "direction": "rise"
+          }
+        ]
+      },
+      "moon": [
+        {
+          "time": "2026-07-15T07:57:46Z",
+          "direction": "set"
+        },
+        {
+          "time": "2026-07-15T22:21:28Z",
+          "direction": "rise"
+        }
+      ],
+      "snapshot": {
+        "time": "2026-07-15T11:00:00Z",
+        "sun": {
+          "ra": 114.8184,
+          "dec": 21.479,
+          "altitude": -48.2003,
+          "azimuth": 264.7362
+        },
+        "moon": {
+          "ra": 130.6161,
+          "dec": 20.2783,
+          "distanceKm": 363123.0,
+          "altitude": -35.3791,
+          "azimuth": 272.462,
+          "illuminated": 0.0167
+        },
+        "m31": {
+          "raOfDate": 11.0498,
+          "decOfDate": 41.4121,
+          "altitude": -44.1797,
+          "azimuth": 62.8006,
+          "moonSeparation": 96.769
+        }
+      },
+      "m31Transit": [
+        "2026-07-15T19:05:36Z"
+      ],
+      "nextFullMoon": "2026-07-29T14:35:43Z"
+    },
+    {
+      "name": "arctic-polar-night",
+      "latitude": 70.0,
+      "longitude": 20.0,
+      "elevation": 0.0,
+      "timeZone": "Europe/Oslo",
+      "nightStart": "2026-12-21T11:00:00Z",
+      "nightEnd": "2026-12-22T11:00:00Z",
+      "sun": {
+        "horizon": [],
+        "civil": [
+          {
+            "time": "2026-12-21T12:41:40Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-12-22T08:34:52Z",
+            "direction": "rise"
+          }
+        ],
+        "nautical": [
+          {
+            "time": "2026-12-21T14:30:27Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-12-22T06:46:05Z",
+            "direction": "rise"
+          }
+        ],
+        "astronomical": [
+          {
+            "time": "2026-12-21T15:50:29Z",
+            "direction": "set"
+          },
+          {
+            "time": "2026-12-22T05:26:04Z",
+            "direction": "rise"
+          }
+        ]
+      },
+      "moon": [],
+      "snapshot": {
+        "time": "2026-12-21T20:00:00Z",
+        "sun": {
+          "ra": 269.9613,
+          "dec": -23.4374,
+          "altitude": -38.0046,
+          "azimuth": 312.1391
+        },
+        "moon": {
+          "ra": 55.0087,
+          "dec": 24.7663,
+          "distanceKm": 362796.0,
+          "altitude": 43.964,
+          "azimuth": 174.1151,
+          "illuminated": 0.925
+        },
+        "m31": {
+          "raOfDate": 11.0563,
+          "decOfDate": 41.4212,
+          "altitude": 55.0869,
+          "azimuth": 236.1705,
+          "moonSeparation": 39.884
+        }
+      },
+      "m31Transit": [
+        "2026-12-21T17:23:02Z"
+      ],
+      "nextFullMoon": "2026-12-24T01:28:14Z"
+    }
+  ]
+}

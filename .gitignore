@@ -30,3 +30,4 @@ Config/Local.xcconfig
 
 # Demo server render cache
 tools/demo/.cache/
+de421.bsp
