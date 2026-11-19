@@ -13,6 +13,9 @@ struct DashboardView: View {
     @State private var visible = false
     @FocusState private var imageFocused: Bool
     @State private var focusedFirstImage = false
+    #if DEBUG
+    @State private var debugOpenSequence = false
+    #endif
 
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { context in
@@ -73,6 +76,11 @@ struct DashboardView: View {
                 viewerItem = ViewerItem(index: index)
             }
         }
+        // `-debug.openSequence YES` opens the sequence page once the tree is known.
+        .onChange(of: connection.sequenceTree != nil) { _, known in
+            if known, UserDefaults.standard.bool(forKey: "debug.openSequence") { debugOpenSequence = true }
+        }
+        .navigationDestination(isPresented: $debugOpenSequence) { SequenceView(connection: connection) }
         #endif
         .fullScreenCover(item: $viewerItem) { item in
             ImageViewer(index: item.index, image: connection.latestImage, thumbnail: connection.latestThumbnail,
