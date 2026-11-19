@@ -11,6 +11,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 - Demo server: live guide graph and `--guider-state`.
 - Capture night checklist for the open M3 captures (#5, #6, #7) and the device check of the guiding chart.
 - README: credits with author and community, as in the NINA Pocket Companion.
+- ADR 0005: M4 starts while M3 part 2 waits for live data; M5 follows M4.
 
 ### Changed (M3)
 - The Guiding tile is replaced by the Meridian tile; guiding lives in the chart.

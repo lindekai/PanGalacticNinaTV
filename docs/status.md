@@ -5,7 +5,7 @@ Snapshot for picking up work on another machine. Last updated 2026-11-19 (M3 par
 ## Resume here
 
 - Branch `m3/guiding-overview`, **PR #18** open with green CI, waiting for the owner's review. Nothing is uncommitted.
-- After approval: merge #18, check the guiding chart on the Apple TV during a guided night.
+- After approval: merge #18, start M4 ([ADR 0005](adr/0005-m4-before-m3-part-2.md)); check the guiding chart on the Apple TV during the next guided night.
 - TestFlight build 5 is uploaded (2026-11-19; the first attempt on 2026-11-17 failed during an App Store Connect outage).
 - Archiving lets Xcode rewrite `App/Resources/Localizable.xcstrings` (reformatted, many keys marked `stale`, `HFR`/`Live` dropped). Do not commit that: `git restore App/Resources/Localizable.xcstrings`.
 - Decisions taken without explicit owner confirmation (change in #18 if wanted): RMS and colours only while the state is Guiding (curves dimmed otherwise); red LED and spelled-out state on LostLock; German tile text "bis Flip"; clock without AM/PM.
@@ -20,7 +20,8 @@ Snapshot for picking up work on another machine. Last updated 2026-11-19 (M3 par
 | M0 API feasibility | Done (PR #2, #3) |
 | M1 Skeleton & connections | Done (PR #10) |
 | M2 Overview & imaging | Done (PR #11, #13–#16): overview, viewer with zoom, ambient mode, devices and device details, sequence progress. Checked on Apple TV 4K with TestFlight build 4 |
-| M3 Guiding & alerts | Part 1 (overview guiding chart, meridian tile) in review |
+| M3 Guiding & alerts | Paused: part 1 (overview guiding chart, meridian tile) in review; part 2 waits for the capture night |
+| M4 Astronomy | Next, starts after #18 ([ADR 0005](adr/0005-m4-before-m3-part-2.md)) |
 | TestFlight | Build 5 (guiding chart) uploaded 2026-11-19 |
 
 Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
@@ -36,8 +37,9 @@ Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 
 ## Next steps
 
-1. Device check of the guiding chart during a guided night; then M3 part 2: alerts, PHD2 stream, WebSocket events.
-2. Capture night: run `tools/m0` (passive WebSocket and PHD2 listeners) during guided imaging with dithering and an autofocus run, for #6 and #7; cooling snapshots for #5. Follow the [checklist](m3-capture-night.md).
+1. Merge #18, then start M4 on `m4/<topic>` with a design spec: Sun/Moon, altitude curve and compass first (computed, no new endpoint); star map and FOV overlay last, after the catalogue licence is settled ([ADR 0005](adr/0005-m4-before-m3-part-2.md)).
+2. M5 after M4: conditions, EN/DE and message engine first; statistics once verified metrics exist.
+3. Whenever a clear night comes: device check of the guiding chart, then M3 part 2 (alerts, PHD2 stream, WebSocket events). Capture night: run `tools/m0` (passive WebSocket and PHD2 listeners) during guided imaging with dithering and an autofocus run, for #6 and #7; cooling snapshots for #5. Follow the [checklist](m3-capture-night.md).
 
 ## Setting up a new machine
 

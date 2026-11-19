@@ -159,8 +159,8 @@ Then add an instance with host `127.0.0.1` in the app. The tvOS Simulator shares
 | **M0** | API feasibility – pinned sources, capability matrix, allowlist, live read-only fixtures | ✅ Complete – [report](docs/m0-report.md) |
 | **M1** | Xcode project, instances, discovery, reconnect | ✅ Done |
 | **M2** | Overview and imaging – dashboard, viewer with zoom, ambient mode, devices, sequence progress, TestFlight | ✅ Done – in beta on TestFlight |
-| **M3** | Guiding and alerts – PHD2 chart, RMS, WebSocket events, foreground alarms | 🟡 Next |
-| **M4** | Astronomy views – sky compass, altitude curve, Sun/Moon, star map | ⚪ Planned |
+| **M3** | Guiding and alerts – PHD2 chart, RMS, WebSocket events, foreground alarms | 🟡 Part 1 done; part 2 waits for a clear night |
+| **M4** | Astronomy views – sky compass, altitude curve, Sun/Moon, star map | 🟡 Next |
 | **M5** | Conditions, statistics, personality | ⚪ Planned |
 | **M6** | Reliability, field test, release readiness | ⚪ Planned |
 
