@@ -1,11 +1,13 @@
 # Project status
 
-Snapshot for picking up work on another machine. Last updated 2026-11-18 (M3 part 1).
+Snapshot for picking up work on another machine. Last updated 2026-11-19 (M3 part 1).
 
 ## Resume here
 
 - Branch `m3/guiding-overview`, **PR #18** open with green CI, waiting for the owner's review. Nothing is uncommitted.
 - After approval: merge #18, archive build 5 from `main`, upload to TestFlight, check the guiding chart on the Apple TV during a guided night.
+- TestFlight upload of build 5 on 2026-11-17 failed in Xcode's Organizer with "Error Downloading App Information … status code: 500" during an App Store Connect outage (Apple system status). Not yet confirmed as uploaded: retry *Distribute App*; if Xcode keeps failing, export the `.ipa` and upload it with Transporter.
+- Archiving lets Xcode rewrite `App/Resources/Localizable.xcstrings` (reformatted, many keys marked `stale`, `HFR`/`Live` dropped). Do not commit that: `git restore App/Resources/Localizable.xcstrings`.
 - Decisions taken without explicit owner confirmation (change in #18 if wanted): RMS and colours only while the state is Guiding (curves dimmed otherwise); red LED and spelled-out state on LostLock; German tile text "bis Flip"; clock without AM/PM.
 - Discord announcement draft (text and image): [docs/announcements/2026-11-17-discord.md](announcements/2026-11-17-discord.md).
 - Capture night (#5, #6, #7 and the device check in one night): [checklist](m3-capture-night.md).
@@ -19,7 +21,7 @@ Snapshot for picking up work on another machine. Last updated 2026-11-18 (M3 par
 | M1 Skeleton & connections | Done (PR #10) |
 | M2 Overview & imaging | Done (PR #11, #13–#16): overview, viewer with zoom, ambient mode, devices and device details, sequence progress. Checked on Apple TV 4K with TestFlight build 4 |
 | M3 Guiding & alerts | Part 1 (overview guiding chart, meridian tile) in review |
-| TestFlight | Build 4 is live; build 5 (guiding chart) is the next upload candidate |
+| TestFlight | Build 4 is live; build 5 (guiding chart) is the next upload candidate (first attempt blocked by an App Store Connect outage) |
 
 Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 
