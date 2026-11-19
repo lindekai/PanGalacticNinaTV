@@ -10,6 +10,7 @@ struct SequenceView: View {
 
     @State private var expanded: Set<[Int]> = []
     @State private var seeded = false
+    @FocusState private var focusedID: [Int]?
 
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { context in
@@ -28,6 +29,7 @@ struct SequenceView: View {
                                         toggle(row.node.id)
                                     }
                                     .id(row.node.id)
+                                    .focused($focusedID, equals: row.node.id)
                                 }
                             }
                             .padding(.vertical, 12)
@@ -77,13 +79,19 @@ struct SequenceView: View {
         if expanded.contains(id) { expanded.remove(id) } else { expanded.insert(id) }
     }
 
-    /// Once per visit: expand the running chain and scroll to the current step.
+    /// Once per visit: expand the running chain, focus the current step and scroll to it.
     private func seed(_ tree: SequenceTree, proxy: ScrollViewProxy) {
         guard !seeded else { return }
         seeded = true
         expanded = SequenceSteps.runningContainers(in: tree)
         if let current = SequenceSteps(tree: tree).current?.id {
-            DispatchQueue.main.async { proxy.scrollTo(current, anchor: .center) }
+            // After the expanded rows exist: focus the current step and scroll it to the centre.
+            Task { @MainActor in
+                // The focus engine settles on its default first; move it once it has.
+                try? await Task.sleep(for: .milliseconds(300))
+                focusedID = current
+                proxy.scrollTo(current, anchor: .center)
+            }
         }
     }
 
