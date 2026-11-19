@@ -276,7 +276,7 @@ struct InstanceConnectionTests {
             #expect(throws: Never.self) { try NINAReadOnlyGuard.validate(request) }
         }
         #expect(Set(transport.paths) == ["/v2/api/version", "/v2/api/version/nina", "/v2/api/equipment/info",
-                                         "/v2/api/sequence/state", "/v2/api/image-history"])
+                                         "/v2/api/sequence/state", "/v2/api/sequence/json", "/v2/api/image-history"])
     }
 
     @Test func sequenceIsPolledAtMostEveryFifteenSeconds() async {
@@ -299,6 +299,7 @@ struct InstanceConnectionTests {
         _ = await conn.pollOnce()
         #expect(conn.sequence?.completedPasses == 3)
         #expect(conn.sequence?.loop == .until(Date(timeIntervalSince1970: 5 * 3600)))
+        #expect(conn.sequenceTree?.roots.map(\.name) == ["Lights"])
         #expect(sequenceRequests() == 2)
 
         clock.now += 5
@@ -318,6 +319,25 @@ struct InstanceConnectionTests {
         _ = await conn.pollOnce()
         #expect(conn.phase == .live, "a failing sequence request is not a connection failure")
         #expect(conn.sequence == nil, "unknown, not the old value")
+        #expect(conn.sequenceTree == nil, "the json answer is no tree either ({} is not an array)")
+    }
+
+    @Test func sequenceTreeDoesNotNeedTheStateTree() async {
+        let transport = FakeTransport { request in
+            switch request.url?.path() {
+            case "/v2/api/version": FakeTransport.ok(#""2.2.15.3""#)
+            case "/v2/api/version/nina": FakeTransport.ok(#""3.2""#)
+            case "/v2/api/equipment/info": FakeTransport.ok("{}")
+            case "/v2/api/sequence/state": (500, "")
+            case "/v2/api/sequence/json":
+                FakeTransport.ok(#"[{"GlobalTriggers":[]},{"Name":"Lights","Status":"RUNNING","Items":[]}]"#)
+            default: (404, "")
+            }
+        }
+        let conn = connection(transport, clock: Clock())
+        _ = await conn.pollOnce()
+        #expect(conn.sequence == nil)
+        #expect(conn.sequenceTree?.roots.first?.name == "Lights")
     }
 
     @Test func guiderGraphOnlyWhileGuiderConnected() async {
