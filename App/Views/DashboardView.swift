@@ -16,7 +16,7 @@ struct DashboardView: View {
 
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { context in
-            VStack(alignment: .leading, spacing: 32) {
+            VStack(alignment: .leading, spacing: 24) {
                 header(now: context.date)
                 if let version = connection.incompatibility {
                     Label("Advanced API \(version) is not supported yet (supported: 2.x). Monitoring stopped.",
@@ -26,6 +26,15 @@ struct DashboardView: View {
                 } else {
                     if connection.phase == .offline { offlineBanner(now: context.date) }
                     overview(now: context.date)
+                    NavigationLink(value: Destination.sequence) {
+                        SequenceStrip(steps: connection.sequenceTree.map(SequenceSteps.init(tree:)),
+                                      dimmed: asOf != nil)
+                    }
+                    .buttonStyle(LiftButtonStyle(scale: 1.01))
+                    // Full width like the header: a swipe down from the image reaches the strip,
+                    // a swipe up returns to the image.
+                    .focusSection()
+                    .accessibilityLabel(Text("Sequence"))
                 }
             }
             .padding(.horizontal, Theme.margin)
@@ -195,7 +204,7 @@ struct DashboardView: View {
                 ObjectModule(target: connection.latestImage?.targetName, mount: equipment?.mount)
                 HStack(alignment: .top, spacing: Theme.moduleGap) {
                     MountTile(mount: equipment?.mount, light: StatusLight.device(equipment?.mount?.device, phase: phase))
-                        .frame(width: Theme.mountTileWidth).frame(maxHeight: .infinity, alignment: .top)
+                        .frame(maxWidth: .infinity).frame(maxHeight: .infinity, alignment: .top)
                     MeridianTile(flip: MeridianFlipDisplay(mount: equipment?.mount, now: now))
                         .frame(width: Theme.meridianTileWidth).frame(maxHeight: .infinity, alignment: .top)
                     FilterTile(wheel: equipment?.filterWheel, light: StatusLight.device(equipment?.filterWheel?.device, phase: phase))

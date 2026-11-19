@@ -1317,6 +1317,16 @@
         }
       }
     },
+    "Next:": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Nächstes:"
+          }
+        }
+      }
+    },
     "No": {
       "localizations": {
         "de": {
@@ -1951,6 +1961,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sensortyp"
+          }
+        }
+      }
+    },
+    "SEQUENCE": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SEQUENZ"
           }
         }
       }

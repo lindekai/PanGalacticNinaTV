@@ -24,12 +24,11 @@ enum Theme {
     static let fault = Color(hex: 0xE0584D)
     static let focus = Color(hex: 0xF2F5F6)
 
-    static let margin: CGFloat = 80
-    static let marginVertical: CGFloat = 60
+    static let margin: CGFloat = 56
+    static let marginVertical: CGFloat = 36
     static let imageWidth: CGFloat = 1024
     static let columnGap: CGFloat = 40
     static let moduleGap: CGFloat = 24
-    static let mountTileWidth: CGFloat = 268
     static let meridianTileWidth: CGFloat = 190
     static let filterTileWidth: CGFloat = 190
     static let radius: CGFloat = 12

@@ -42,6 +42,8 @@ struct RootView: View {
                     if let connection = model.connection { DevicesView(connection: connection) }
                 case .device(let kind):
                     if let connection = model.connection { DeviceDetailView(connection: connection, kind: kind) }
+                case .sequence:
+                    if let connection = model.connection { SequenceView(connection: connection) }
                 }
             }
         }
@@ -62,5 +64,6 @@ enum Destination: Hashable {
     case scan
     case settings
     case devices
+    case sequence
     case device(NINAEquipmentSummary.DeviceKind)
 }
