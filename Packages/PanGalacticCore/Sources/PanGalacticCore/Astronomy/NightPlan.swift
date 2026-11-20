@@ -24,7 +24,9 @@ public enum SiteResolution {
 /// Everything about one night that does not change by the minute; computed once per
 /// night, target or site.
 public struct NightPlan: Equatable, Sendable {
-    public enum TargetVisibility: Equatable, Sendable { case visible, neverRises }
+    /// Judged over `chartRange` (sunset − 2 h to sunrise + 1 h), the time the chart shows:
+    /// a target up only by day is `notTonight`.
+    public enum TargetVisibility: Equatable, Sendable { case visible, notTonight }
     public enum Darkness: Equatable, Sendable {
         case astronomical(from: Date, until: Date)
         case nautical(from: Date, until: Date)
@@ -46,10 +48,6 @@ public struct NightPlan: Equatable, Sendable {
     /// Target coordinates of date (middle of the night); `nil` without target.
     let targetOfDate: Equatorial?
 
-    /// The target is above the horizon somewhere in the chart range (its curve is drawn
-    /// only there); `false` without target.
-    public var targetRisesInChart: Bool { targetCurve?.contains { $0.altitude > 0 } == true }
-
     public var darkness: Darkness {
         if let from = events.astronomicalDusk, let until = events.astronomicalDawn { return .astronomical(from: from, until: until) }
         if let from = events.nauticalDusk, let until = events.nauticalDawn { return .nautical(from: from, until: until) }
@@ -63,13 +61,12 @@ public struct NightPlan: Equatable, Sendable {
         let end = min(window.end, events.sunrise?.addingTimeInterval(3600) ?? window.end)
         let range = start < end ? DateInterval(start: start, end: end) : window
         let ofDate = target?.ofDate(window.start.addingTimeInterval(window.duration / 2))
-        let visibility: TargetVisibility? = ofDate.map { eq in
-            AltitudeCurve.target(eq, site: site, over: window).allSatisfy { $0.altitude <= 0 } ? .neverRises : .visible
-        }
+        let targetCurve = ofDate.map { AltitudeCurve.target($0, site: site, over: range) }
+        let visibility: TargetVisibility? = targetCurve.map { $0.contains { $0.altitude > 0 } ? .visible : .notTonight }
         return NightPlan(site: site, target: target, events: events, chartRange: range,
                          sunCurve: AltitudeCurve.sun(site: site, over: range),
                          moonCurve: AltitudeCurve.moon(site: site, over: range),
-                         targetCurve: ofDate.map { AltitudeCurve.target($0, site: site, over: range) },
+                         targetCurve: targetCurve,
                          transit: ofDate.flatMap { AltitudeCurve.transit($0, site: site, over: window) },
                          targetVisibility: visibility,
                          laterMoonEvents: NightEvents.moonCrossings(site: site, in: DateInterval(start: window.end, duration: 86400)),

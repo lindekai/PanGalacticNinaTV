@@ -88,7 +88,7 @@ New `NavigationLink` to `Destination.night` with `moon.stars`, left of the devic
 ### Object module
 
 - A `Button`/`NavigationLink` to `Destination.night`, focusable like the sequence strip.
-- Rubric "Object" with the target name as accessory; key figure: current altitude of the target, computed; right: mini curve of the night (target line in `accent`, only above the horizon, astronomical night darker, now line in `focus` white), no axes; no mini curve while the target stays below the horizon over the chart (the key figure still shows its negative altitude).
+- Rubric "Object" with the target name as accessory; key figure: current altitude of the target, computed; right: mini curve of the night (target line in `accent`, only above the horizon, astronomical night darker, now line in `focus` white), no axes; no mini curve while the target is not above the horizon tonight (see "Empty and special states"; the key figure still shows its negative altitude).
 - No target: key figure "—", no curve. No site: key figure "—" and "Site unknown".
 - RA/Dec are removed from this module.
 - Focus: image → right → Object module; left back to the image; down → sequence strip. Menu on the night page returns to the element it came from.
@@ -110,7 +110,7 @@ Layout as the approved mock-up (1920 × 1080, margins as `Theme`):
 |---|---|
 | No site | Page and module: "Site unknown – connect the mount once"; all computed values "—" |
 | No target | Curve panel without target line, "No target"; Sun, Moon and compass as usual |
-| Target below the horizon all night | "Not above the horizon tonight"; no target line; the Object module shows no mini curve |
+| Target below the horizon all night | "Not above the horizon tonight"; no target line; the Object module shows no mini curve. Judged over the chart's range (sunset −2 h to sunrise +1 h), so a target that is up only by day counts too |
 | Target circumpolar | Curve fully above the horizon; no special text |
 | No astronomical darkness | "No astronomical darkness"; the Sun panel shows nautical dark from/until instead; if the Sun does not get below −12° either (`NightPlan.Darkness.none`), it shows only "No astronomical darkness" |
 | No sunrise/sunset (polar day/night) | Times "—", text "Sun does not set" / "Sun does not rise" |

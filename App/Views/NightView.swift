@@ -117,7 +117,7 @@ struct NightView: View {
                 AltitudeChart(plan: plan, now: date, style: .full)
                     .frame(minHeight: 520, maxHeight: .infinity)
                     .overlay {
-                        if plan.targetVisibility == .neverRises {
+                        if plan.targetVisibility == .notTonight {
                             Text("Not above the horizon tonight").font(.pgValue).foregroundStyle(Theme.text2)
                                 .padding(.horizontal, 20).padding(.vertical, 10)
                                 .background(Theme.surface.opacity(0.85), in: .rect(cornerRadius: Theme.radius))

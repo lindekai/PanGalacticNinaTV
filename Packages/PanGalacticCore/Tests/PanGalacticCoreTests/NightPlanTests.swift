@@ -41,7 +41,19 @@ struct NightPlanTests {
         let ref = try ReferenceSite.load("south-winter") // Polaris never rises at 34° S
         let south = NightTarget(name: "Polaris", coordinates: Equatorial(ra: 37.95, dec: 89.26), epoch: .j2000, source: .sequence)
         let plan = NightPlan.compute(site: ref.site, target: south, containing: ref.snapshotTime)
-        #expect(plan.targetVisibility == .neverRises)
+        #expect(plan.targetVisibility == .notTonight)
+    }
+
+    /// Visibility is judged over the chart's range (sunset − 2 h to sunrise + 1 h): a target up
+    /// only by day (transit about 10:40 UT, up about 08:25–12:50 UT at 50° N) is not shown tonight.
+    @Test func targetUpOnlyByDayIsNotAboveTheHorizonTonight() throws {
+        let ref = try ReferenceSite.load("central-europe-november")
+        let day = NightTarget(name: "Day", coordinates: Equatorial(ra: 222, dec: -35), epoch: .j2000, source: .sequence)
+        let plan = NightPlan.compute(site: ref.site, target: day, containing: ref.snapshotTime)
+        let window = AltitudeCurve.target(day.ofDate(ref.snapshotTime), site: ref.site, over: plan.events.window)
+        #expect(window.contains { $0.altitude > 0 }, "up by day within the noon-to-noon window")
+        #expect(plan.targetVisibility == .notTonight)
+        #expect(NightPlan.compute(site: ref.site, target: Self.m31, containing: ref.snapshotTime).targetVisibility == .visible)
     }
 
     @Test func circumpolarTargetIsVisible() throws {
@@ -135,15 +147,6 @@ struct NightPlanTests {
         #expect(segments.map { $0.map(\.altitude) } == [[2, 4], [3], [1, 6]], "0° counts as not above; [3] is an isolated sample")
         #expect(AltitudeCurve.segmentsAboveHorizon([]).isEmpty)
         #expect(AltitudeCurve.segmentsAboveHorizon(points.map { AltitudePoint(date: $0.date, altitude: -abs($0.altitude)) }).isEmpty)
-    }
-
-    @Test func targetAboveTheHorizonInTheChart() throws {
-        let ref = try ReferenceSite.load("south-winter")
-        let polaris = NightTarget(name: "Polaris", coordinates: Equatorial(ra: 37.95, dec: 89.26), epoch: .j2000, source: .sequence)
-        #expect(!NightPlan.compute(site: ref.site, target: polaris, containing: ref.snapshotTime).targetRisesInChart)
-        #expect(!NightPlan.compute(site: ref.site, target: nil, containing: ref.snapshotTime).targetRisesInChart)
-        let home = try ReferenceSite.load("central-europe-november")
-        #expect(NightPlan.compute(site: home.site, target: Self.m31, containing: home.snapshotTime).targetRisesInChart)
     }
 
     @Test func mountSiteWinsOverTheCache() {
