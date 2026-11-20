@@ -373,6 +373,30 @@ struct InstanceConnectionTests {
         #expect(conn.sequenceTree?.roots.first?.name == "Lights")
     }
 
+    @Test func sequenceTargetComesFromTheState() async {
+        let clock = Clock()
+        let stateFails = LockedValue(false)
+        let body = #"[{"Name":"Lights","Status":"RUNNING","Items":[{"Name":"M 31_Container","Status":"RUNNING","Items":[],"Target":{"TargetName":"M 31","InputCoordinates":{"RAHours":0,"RAMinutes":42,"RASeconds":44.0,"NegativeDec":false,"DecDegrees":41,"DecMinutes":16,"DecSeconds":7.0}}}]}]"#
+        let transport = FakeTransport { request in
+            switch request.url?.path() {
+            case "/v2/api/version": FakeTransport.ok(#""2.2.15.3""#)
+            case "/v2/api/version/nina": FakeTransport.ok(#""3.2""#)
+            case "/v2/api/equipment/info": FakeTransport.ok("{}")
+            case "/v2/api/sequence/state": stateFails.value ? (500, "") : FakeTransport.ok(body)
+            default: (404, "")
+            }
+        }
+        let conn = connection(transport, clock: clock)
+        _ = await conn.pollOnce()
+        #expect(conn.sequenceTarget?.name == "M 31")
+        #expect(conn.sequenceTarget?.source == .sequence)
+
+        stateFails.value = true
+        clock.now += 30
+        _ = await conn.pollOnce()
+        #expect(conn.sequenceTarget == nil)
+    }
+
     @Test func guiderGraphOnlyWhileGuiderConnected() async {
         let clock = Clock()
         let guider = LockedValue(true)
@@ -681,5 +705,54 @@ extension FakeTransport {
         case "/v2/api/version/nina": ok(#""3.2""#)
         default: (404, "")
         }
+    }
+}
+
+
+@Suite("Site store")
+@MainActor
+struct SiteStoreTests {
+    let a = UUID(), b = UUID()
+    let site = Site(latitude: 50, longitude: 8, elevation: 100)
+
+    @Test func keepsTheLastSitePerInstance() {
+        let store = SiteStore(storage: InMemorySiteStorage())
+        let t0 = Date(timeIntervalSince1970: 1_000_000)
+        store.record(site, for: a, at: t0)
+        #expect(store.site(for: a) == CachedSite(site: site, reported: t0))
+        #expect(store.site(for: b) == nil)
+    }
+
+    @Test func persistsAcrossStores() {
+        let storage = InMemorySiteStorage()
+        SiteStore(storage: storage).record(site, for: a, at: Date(timeIntervalSince1970: 1))
+        #expect(SiteStore(storage: storage).site(for: a)?.site == site)
+    }
+
+    @Test func refreshesTheDateAtMostHourly() {
+        let store = SiteStore(storage: InMemorySiteStorage())
+        let t0 = Date(timeIntervalSince1970: 1_000_000)
+        store.record(site, for: a, at: t0)
+        store.record(site, for: a, at: t0.addingTimeInterval(600))
+        #expect(store.site(for: a)?.reported == t0)
+        store.record(site, for: a, at: t0.addingTimeInterval(3601))
+        #expect(store.site(for: a)?.reported == t0.addingTimeInterval(3601))
+        let moved = Site(latitude: 48, longitude: 11, elevation: 500)
+        store.record(moved, for: a, at: t0.addingTimeInterval(3700))
+        #expect(store.site(for: a)?.site == moved)
+    }
+
+    @Test func removedWithTheInstance() {
+        let store = SiteStore(storage: InMemorySiteStorage())
+        store.record(site, for: a, at: Date())
+        store.remove(id: a)
+        #expect(store.site(for: a) == nil)
+    }
+
+    @Test func userDefaultsUseTheirOwnKey() throws {
+        let defaults = try #require(UserDefaults(suiteName: "SiteStoreTests-\(UUID())"))
+        UserDefaultsSiteStorage(defaults: defaults).save([a: CachedSite(site: site, reported: Date(timeIntervalSince1970: 5))])
+        #expect(defaults.data(forKey: "site.v1") != nil)
+        #expect(UserDefaultsSiteStorage(defaults: defaults).load()[a]?.site == site)
     }
 }
