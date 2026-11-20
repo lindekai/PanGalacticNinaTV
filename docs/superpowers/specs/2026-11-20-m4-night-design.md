@@ -39,8 +39,8 @@ Pure functions and value types, no I/O, no UI. Angles in degrees at the API, `Da
 | `Equatorial`, `Horizontal` | RA/Dec ↔ altitude/azimuth for a site and instant; azimuth from north through east | ch. 13 |
 | `Precession` | J2000 → mean equinox of date (rigorous method) | ch. 21 |
 | `Sun` | Apparent position, low accuracy (≈ 0.01°) | ch. 25 |
-| `Moon` | Geocentric position from the main periodic terms; topocentric parallax for altitude | ch. 47, 40 |
-| `MoonPhase` | Illuminated fraction, waxing/waning, next full moon | ch. 48, 49 |
+| `Moon` | Geocentric position from the main periodic terms; topocentric altitude from the horizontal parallax | ch. 47 |
+| `MoonPhase` | Illuminated fraction, waxing/waning, next full moon by searching the elongation | ch. 48 |
 | `Separation` | Angular distance between two equatorial positions | ch. 17 |
 | `RiseSet` | Instants when a body crosses a given altitude, found by sampling every 10 min and bisecting to 1 s | – |
 | `Night` | The night window from local noon to the next local noon; Sun at −0.833° (sunset/sunrise), −6°, −12°, −18°; Moon rise/set at +0.125° (mean semi-diameter, parallax and refraction) | ch. 15 |
@@ -61,7 +61,7 @@ Altitudes in the curve are geometric (no refraction). Rise and set use the stand
 
 `NightTarget`: name, J2000 RA/Dec, source (`sequence` or `mount`).
 
-1. **Sequence**: the deepest running target container (N.I.N.A.'s deep sky object container) in `/sequence/json`; if none runs, the first target container whose status is `CREATED`. Name and coordinates come from the container's target fields. **The exact field names are settled by a source review** of N.I.N.A. `Version-3.2` and the plugin at 2.2.15.3 before implementation, recorded in the capability matrix §7 and checked against the 2026-11-19 captures (M31 with `Epoch` `J2000`). If the review finds no reliable target field, the coordinates of the container's "Slew and center" instruction are used, and failing that the sequence is not a target source.
+1. **Sequence**: the deepest running target container (N.I.N.A.'s deep sky object container) in `/sequence/json`; if none runs, the first target container whose status is `CREATED`. Name and coordinates come from `/sequence/state` `Target.TargetName` and `Target.InputCoordinates` (J2000); `/sequence/json` has no target on the container (source review 2026-11-20, capability matrix §7).
 2. **Mount**: while the mount is tracking, its RA/Dec (`JNOW`, used as of date, no precession) with the name of the latest image's target if there is one, else no name.
 3. Otherwise no target.
 
@@ -112,9 +112,9 @@ Layout as the approved mock-up (1920 × 1080, margins as `Theme`):
 | No target | Curve panel without target line, "No target"; Sun, Moon and compass as usual |
 | Target below the horizon all night | "Not above the horizon tonight" |
 | Target circumpolar | Curve fully above the horizon; no special text |
-| No astronomical darkness | "No astronomical darkness"; the Sun panel shows nautical dark from/until instead |
+| No astronomical darkness | "No astronomical darkness"; the Sun panel shows nautical dark from/until instead; if the Sun does not get below −12° either (`NightPlan.Darkness.none`), it shows only "No astronomical darkness" |
 | No sunrise/sunset (polar day/night) | Times "—", text "Sun does not set" / "Sun does not rise" |
-| Moon does not rise or set tonight | That time "—" |
+| Moon does not rise or set tonight | That time "—"; the next Moon event is looked up to 24 h past the night window, so in the morning the Moon panel shows the next moonrise |
 
 ### Ambient mode
 
@@ -127,9 +127,9 @@ New strings in `Localizable.xcstrings` (en, de), among them: "Night"/"Die Nacht"
 ## Testing
 
 - **Engine, worked examples**: the Meeus examples for JD (7.a), sidereal time (12.a), precession (21.b), Sun (25.a), Moon (47.a), illuminated fraction (48.a), separation (17.a), transit/rise/set (15.a).
-- **Engine, reference table** (`Fixtures/astronomy/reference.json`, with source and retrieval date): sunrise, sunset, civil/nautical/astronomical twilight, moonrise, moonset and Sun/Moon positions from the U.S. Naval Observatory and JPL Horizons (public data) for invented sites only:
+- **Engine, reference table** (`Fixtures/astronomy/reference.json`, with source and retrieval date): sunrise, sunset, civil/nautical/astronomical twilight, moonrise, moonset and Sun/Moon positions from the JPL DE421 ephemeris via Skyfield (`tools/astronomy/reference_values.py`), cross-checked against the U.S. Naval Observatory, for invented sites only:
   - 50° N 8° E, 2026-11-19 (Central Europe, November);
-  - 58° N 12° E, 2026-06-21 (no astronomical darkness);
+  - 58° N 12° E, 2026-06-21 (no darkness at all: the Sun only reaches about −8.6°; tests `NightPlan.Darkness.none`); the nautical fallback is tested with an invented 52° N site;
   - 0° N 30° E, 2026-03-20 (equator);
   - 34° S 151° E, 2026-07-15 (southern hemisphere);
   - 70° N 20° E, 2026-12-21 (no sunrise).
@@ -138,7 +138,7 @@ New strings in `Localizable.xcstrings` (en, de), among them: "Night"/"Die Nacht"
 - **Target**: from the sanitised 2026-11-19 fixtures (M31, J2000); order running → next → mount; containers without coordinates; nothing running and nothing created.
 - **SiteStore**: per instance; mount wins; `0, 0, 0` is no site; date of the last report; removed with the instance; no site value in any log string.
 - **NightModel**: every row of "Empty and special states".
-- **Performance**: computing a whole night (Sun, Moon, twilight, curve) stays well below 50 ms in the test; it runs once per night, target or site change.
+- **Performance**: computing a whole night (Sun, Moon, twilight, curve) stays well below 50 ms in the test; it runs once per night, target or site change. A target counts as unchanged when name, source and epoch match and its position moved by less than 0.01°, so a tracking mount's RA/Dec jitter does not trigger a recompute.
 - **App**: tvOS build; simulator against the demo server (invented site and a target container added to `tools/demo/demo_server.py`) in EN and DE: night page, Object module, header icon, focus paths image ⇄ Object module ⇄ strip and back from the page; README screenshots in en_US.
 - Device check on the owner's TV with build 7 (gate "usable on Apple TV HD" is checked on the Apple TV 4K the owner has; HD remains a budget, not a device test).
 

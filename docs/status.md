@@ -1,10 +1,11 @@
 # Project status
 
-Snapshot for picking up work on another machine. Last updated 2026-11-19 (M3 TV feedback).
+Snapshot for picking up work on another machine. Last updated 2026-11-20 (M4.1 The Night).
 
 ## Resume here
 
-- Branch `m3/tv-feedback` (sequence strip and page, app version in Settings, filter wheel icon, build 6); the controller opens the PR. Nothing is uncommitted.
+- Branch `m4/night` (M4.1 The Night: night page, Object module with computed altitude, site cache, build 7). Earlier: branch `m3/tv-feedback` (sequence strip and page, build 6).
+- Device check on the TV with build 7 is open: focus path image ⇄ Object module ⇄ sequence strip, and Menu back from the night page (could not be pressed in the simulator).
 - Device check on the TV with build 6 is still open: focus path image ⇄ strip ⇄ header, Menu back from the sequence page, and the sequence page opening on the current step with a long real sequence.
 - Earlier: branch `m3/guiding-overview`, **PR #18**, waiting for the owner's review.
 - After approval: merge #18, start M4 ([ADR 0005](adr/0005-m4-before-m3-part-2.md)); check the guiding chart on the Apple TV during the next guided night.
@@ -23,8 +24,8 @@ Snapshot for picking up work on another machine. Last updated 2026-11-19 (M3 TV 
 | M1 Skeleton & connections | Done (PR #10) |
 | M2 Overview & imaging | Done (PR #11, #13–#16): overview, viewer with zoom, ambient mode, devices and device details, sequence progress. Checked on Apple TV 4K with TestFlight build 4 |
 | M3 Guiding & alerts | Paused: part 1 (overview guiding chart, meridian tile) in review; TV feedback (sequence strip and page, version, filter icon) on `m3/tv-feedback`, device check with build 6 open; part 2 waits for the capture night |
-| M4 Astronomy | Next, starts after #18 ([ADR 0005](adr/0005-m4-before-m3-part-2.md)) |
-| TestFlight | Build 5 (guiding chart) uploaded 2026-11-19; build 6 (sequence strip and page) is the candidate on `m3/tv-feedback`, PR to be opened |
+| M4 Astronomy | In progress: M4.1 The Night on `m4/night`, build 7 ([spec](superpowers/specs/2026-11-20-m4-night-design.md)) |
+| TestFlight | Build 5 (guiding chart) uploaded 2026-11-19; build 6 (sequence strip and page) and build 7 (the night) are candidates |
 
 Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 
@@ -39,7 +40,7 @@ Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 
 ## Next steps
 
-1. Merge #18, then start M4 on `m4/<topic>` with a design spec: Sun/Moon, altitude curve and compass first (computed, no new endpoint); star map and FOV overlay last, after the catalogue licence is settled ([ADR 0005](adr/0005-m4-before-m3-part-2.md)).
+1. Device check of build 7 on the TV, then M4.2 (planets, time travel); M4.3 star map and FOV overlay last, after the catalogue licence is settled ([ADR 0005](adr/0005-m4-before-m3-part-2.md)).
 2. M5 after M4: conditions, EN/DE and message engine first; statistics once verified metrics exist.
 3. Whenever a clear night comes: device check of the guiding chart, then M3 part 2 (alerts, PHD2 stream, WebSocket events). Capture night: run `tools/m0` (passive WebSocket and PHD2 listeners) during guided imaging with dithering and an autofocus run, for #6 and #7; cooling snapshots for #5. Follow the [checklist](m3-capture-night.md).
 
