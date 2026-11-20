@@ -88,7 +88,7 @@ New `NavigationLink` to `Destination.night` with `moon.stars`, left of the devic
 ### Object module
 
 - A `Button`/`NavigationLink` to `Destination.night`, focusable like the sequence strip.
-- Rubric "Object" with the target name as accessory; key figure: current altitude of the target, computed; right: mini curve of the night (target line in `accent`, astronomical night darker, now line in `focus` white), no axes.
+- Rubric "Object" with the target name as accessory; key figure: current altitude of the target, computed; right: mini curve of the night (target line in `accent`, only above the horizon, astronomical night darker, now line in `focus` white), no axes; no mini curve while the target stays below the horizon over the chart (the key figure still shows its negative altitude).
 - No target: key figure "—", no curve. No site: key figure "—" and "Site unknown".
 - RA/Dec are removed from this module.
 - Focus: image → right → Object module; left back to the image; down → sequence strip. Menu on the night page returns to the element it came from.
@@ -98,7 +98,7 @@ New `NavigationLink` to `Destination.night` with `moon.stars`, left of the devic
 Layout as the approved mock-up (1920 × 1080, margins as `Theme`):
 
 - Title "Night" (DE "Die Nacht"), instance name and date, site source at the right.
-- **Altitude panel** (left, about 60 % width): rubric "Altitude above horizon", target name and source ("from the sequence" / "from the mount"), RA/Dec (J2000) under the name, current altitude as key figure. Chart over the night window from 2 h before sunset to 1 h after sunrise: background bands for day, civil, nautical, astronomical twilight and astronomical night; 0°, 30°, 60° grid lines; hour labels; target curve in `accent`; Moon curve dashed in `text2`, only above the horizon; meridian transit dashed with time; now line in `focus`. Legend under the chart.
+- **Altitude panel** (left, about 60 % width): rubric "Altitude above horizon", target name and source ("from the sequence" / "from the mount"), RA/Dec (J2000) under the name, current altitude as key figure. Chart over the night window from 2 h before sunset to 1 h after sunrise: background bands for day, civil, nautical, astronomical twilight and astronomical night; 0°, 30°, 60° grid lines; hour labels; target curve in `accent` and Moon curve dashed in `text2`, both drawn only above the horizon (the path breaks where the altitude is 0° or less; a single sample above it shows as a dot); meridian transit dashed with time; now line in `focus`. Legend under the chart.
 - **Compass** (right, top): circle with N/E/S/W (DE N/O/S/W), rings for 30° and 60° altitude, centre = zenith. Telescope dot in `accent`; Sun (`warn`) and Moon (`text2`) as rings, dashed below the horizon and then drawn on the rim. Text: telescope direction as compass point and degrees, altitude.
 - **Sun** panel: astronomical dark from/until, duration of darkness; sunset and sunrise in small text.
 - **Moon** panel: phase drawing, illuminated %, waxing/waning; next set (or rise, whichever comes next); separation from the target; rise, set and next full moon in small text.
@@ -110,7 +110,7 @@ Layout as the approved mock-up (1920 × 1080, margins as `Theme`):
 |---|---|
 | No site | Page and module: "Site unknown – connect the mount once"; all computed values "—" |
 | No target | Curve panel without target line, "No target"; Sun, Moon and compass as usual |
-| Target below the horizon all night | "Not above the horizon tonight" |
+| Target below the horizon all night | "Not above the horizon tonight"; no target line; the Object module shows no mini curve |
 | Target circumpolar | Curve fully above the horizon; no special text |
 | No astronomical darkness | "No astronomical darkness"; the Sun panel shows nautical dark from/until instead; if the Sun does not get below −12° either (`NightPlan.Darkness.none`), it shows only "No astronomical darkness" |
 | No sunrise/sunset (polar day/night) | Times "—", text "Sun does not set" / "Sun does not rise" |

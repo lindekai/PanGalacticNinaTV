@@ -300,7 +300,8 @@ struct ObjectModule: View {
                         .opacity(night?.targetIsStale == true ? 0.55 : 1)
                 }
                 Spacer(minLength: 0)
-                if let plan = night?.plan, plan.targetCurve != nil {
+                // Nothing to draw while the target stays below the horizon over the chart.
+                if let plan = night?.plan, plan.targetRisesInChart {
                     AltitudeChart(plan: plan, now: Date(), style: .mini)
                         .frame(width: 300, height: 90)
                         .clipShape(.rect(cornerRadius: 6))

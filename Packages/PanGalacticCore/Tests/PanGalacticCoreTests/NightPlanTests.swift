@@ -125,6 +125,27 @@ struct NightPlanTests {
         #expect(plan.isCurrent(site: site, target: nil, at: date.addingTimeInterval(3600)))
     }
 
+    /// Owner decision: the target curve, like the Moon's, is drawn only above the horizon.
+    @Test func curveSegmentsOnlyAboveTheHorizon() {
+        let t0 = Date(timeIntervalSince1970: 0)
+        let points = [-5.0, 2, 4, 0, -1, 3, -2, 1, 6].enumerated().map {
+            AltitudePoint(date: t0.addingTimeInterval(Double($0.offset) * 300), altitude: $0.element)
+        }
+        let segments = AltitudeCurve.segmentsAboveHorizon(points)
+        #expect(segments.map { $0.map(\.altitude) } == [[2, 4], [3], [1, 6]], "0° counts as not above; [3] is an isolated sample")
+        #expect(AltitudeCurve.segmentsAboveHorizon([]).isEmpty)
+        #expect(AltitudeCurve.segmentsAboveHorizon(points.map { AltitudePoint(date: $0.date, altitude: -abs($0.altitude)) }).isEmpty)
+    }
+
+    @Test func targetAboveTheHorizonInTheChart() throws {
+        let ref = try ReferenceSite.load("south-winter")
+        let polaris = NightTarget(name: "Polaris", coordinates: Equatorial(ra: 37.95, dec: 89.26), epoch: .j2000, source: .sequence)
+        #expect(!NightPlan.compute(site: ref.site, target: polaris, containing: ref.snapshotTime).targetRisesInChart)
+        #expect(!NightPlan.compute(site: ref.site, target: nil, containing: ref.snapshotTime).targetRisesInChart)
+        let home = try ReferenceSite.load("central-europe-november")
+        #expect(NightPlan.compute(site: home.site, target: Self.m31, containing: home.snapshotTime).targetRisesInChart)
+    }
+
     @Test func mountSiteWinsOverTheCache() {
         let mount = Site(latitude: 50, longitude: 8, elevation: 0)
         let cached = CachedSite(site: Site(latitude: 48, longitude: 11, elevation: 0), reported: Date(timeIntervalSince1970: 0))

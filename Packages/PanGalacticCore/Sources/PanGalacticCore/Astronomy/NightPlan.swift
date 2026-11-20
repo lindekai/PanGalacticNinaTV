@@ -46,6 +46,10 @@ public struct NightPlan: Equatable, Sendable {
     /// Target coordinates of date (middle of the night); `nil` without target.
     let targetOfDate: Equatorial?
 
+    /// The target is above the horizon somewhere in the chart range (its curve is drawn
+    /// only there); `false` without target.
+    public var targetRisesInChart: Bool { targetCurve?.contains { $0.altitude > 0 } == true }
+
     public var darkness: Darkness {
         if let from = events.astronomicalDusk, let until = events.astronomicalDawn { return .astronomical(from: from, until: until) }
         if let from = events.nauticalDusk, let until = events.nauticalDawn { return .nautical(from: from, until: until) }

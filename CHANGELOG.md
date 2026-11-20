@@ -5,7 +5,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 ## [Unreleased]
 
 ### Added (M4.1)
-- Night page: altitude curve of the target over the night with twilight bands, Moon curve and meridian transit; compass with telescope, Sun and Moon; Sun panel (sunset, darkness, sunrise) and Moon panel (phase, rise/set, separation from the target, next full moon). Computed on the Apple TV by an own astronomy engine after Meeus, no new endpoint ([spec](docs/superpowers/specs/2026-11-20-m4-night-design.md), [licensing](docs/licensing-and-attribution.md)).
+- Night page: altitude curve of the target over the night with twilight bands, Moon curve (both only above the horizon) and meridian transit; compass with telescope, Sun and Moon; Sun panel (sunset, darkness, sunrise) and Moon panel (phase, rise/set, separation from the target, next full moon). Computed on the Apple TV by an own astronomy engine after Meeus, no new endpoint ([spec](docs/superpowers/specs/2026-11-20-m4-night-design.md), [licensing](docs/licensing-and-attribution.md)).
 - Moon icon in the header opens the night page.
 - Object module: computed altitude and a mini altitude curve; RA/Dec moved to the night page.
 - Site cache: the site the mount reports is kept per instance on the device, so the night can be shown while the mount is off ([ADR 0006](docs/adr/0006-site-cached-on-device.md)).

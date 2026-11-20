@@ -2,7 +2,7 @@ import PanGalacticCore
 import SwiftUI
 
 /// Altitude over the night: twilight bands from the Sun's altitude, 0/30/60° lines,
-/// target in accent, Moon dashed (only above the horizon), meridian transit, now line.
+/// target in accent and Moon dashed (both only above the horizon), meridian transit, now line.
 struct AltitudeChart: View {
     enum Style { case full, mini }
     let plan: NightPlan
@@ -33,6 +33,16 @@ struct AltitudeChart: View {
                 plot.minX + plot.width * CGFloat(date.timeIntervalSince(range.start) / range.duration)
             }
             func y(_ altitude: Double) -> CGFloat { plot.maxY - plot.height * CGFloat(max(0, min(90, altitude)) / 90) }
+            /// The runs above the horizon; a lone sample becomes a zero-length segment.
+            func aboveHorizon(_ points: [AltitudePoint]) -> Path {
+                var path = Path()
+                for segment in AltitudeCurve.segmentsAboveHorizon(points) {
+                    path.move(to: CGPoint(x: x(segment[0].date), y: y(segment[0].altitude)))
+                    for point in segment.dropFirst() { path.addLine(to: CGPoint(x: x(point.date), y: y(point.altitude))) }
+                    if segment.count == 1 { path.addLine(to: CGPoint(x: x(segment[0].date), y: y(segment[0].altitude))) }
+                }
+                return path
+            }
 
             // Twilight bands, one rectangle per sample interval.
             for (a, b) in zip(plan.sunCurve, plan.sunCurve.dropFirst()) {
@@ -74,23 +84,13 @@ struct AltitudeChart: View {
                     }
                 }
                 // Moon: dashed, only above the horizon.
-                var moon = Path()
-                var drawing = false
-                for point in plan.moonCurve {
-                    if point.altitude > 0 {
-                        let p = CGPoint(x: x(point.date), y: y(point.altitude))
-                        if drawing { moon.addLine(to: p) } else { moon.move(to: p); drawing = true }
-                    } else { drawing = false }
-                }
-                context.stroke(moon, with: .color(Theme.text2), style: StrokeStyle(lineWidth: 3, dash: [10, 8]))
+                context.stroke(aboveHorizon(plan.moonCurve), with: .color(Theme.text2), style: StrokeStyle(lineWidth: 3, dash: [10, 8]))
             }
             if let curve = plan.targetCurve {
-                var target = Path()
-                for (i, point) in curve.enumerated() {
-                    let p = CGPoint(x: x(point.date), y: y(point.altitude))
-                    if i == 0 { target.move(to: p) } else { target.addLine(to: p) }
-                }
-                context.stroke(target, with: .color(Theme.accent), lineWidth: style == .full ? 5 : 3)
+                // Like the Moon, only above the horizon (owner decision); round caps turn a
+                // single sample above 0° into a dot.
+                context.stroke(aboveHorizon(curve), with: .color(Theme.accent),
+                               style: StrokeStyle(lineWidth: style == .full ? 5 : 3, lineCap: .round, lineJoin: .round))
             }
             if range.contains(now) {
                 var line = Path()

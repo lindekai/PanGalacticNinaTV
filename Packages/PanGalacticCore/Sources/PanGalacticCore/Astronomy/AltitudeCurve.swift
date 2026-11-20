@@ -9,6 +9,23 @@ public struct AltitudePoint: Equatable, Sendable {
 public enum AltitudeCurve {
     public static let step: TimeInterval = 300
 
+    /// The runs of consecutive samples above the horizon (altitude > 0), in order: curves
+    /// are drawn only above the horizon. A run can be a single sample.
+    public static func segmentsAboveHorizon(_ points: [AltitudePoint]) -> [[AltitudePoint]] {
+        var segments: [[AltitudePoint]] = []
+        var current: [AltitudePoint] = []
+        for point in points {
+            if point.altitude > 0 {
+                current.append(point)
+            } else if !current.isEmpty {
+                segments.append(current)
+                current = []
+            }
+        }
+        if !current.isEmpty { segments.append(current) }
+        return segments
+    }
+
     static func sample(_ interval: DateInterval, _ altitude: (Date) -> Double) -> [AltitudePoint] {
         let count = Int((interval.duration / step).rounded(.down))
         var points = (0 ... count).map { i -> AltitudePoint in
