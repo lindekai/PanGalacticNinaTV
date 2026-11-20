@@ -9,6 +9,10 @@ struct AltitudeChart: View {
     let now: Date
     let style: Style
 
+    /// Built once, not on every redraw. `Locale.current` is read on first use; tvOS
+    /// relaunches the app when the language or region changes.
+    private static let hourFormat = Format.hourWithoutDayPeriod()
+
     static func band(_ sunAltitude: Double) -> Color {
         switch sunAltitude {
         case ..<(-18): Color(hex: 0x141B1F)
@@ -46,7 +50,7 @@ struct AltitudeChart: View {
                 }
                 var calendar = Calendar.current
                 calendar.timeZone = .current
-                let hourFormat = Format.hourWithoutDayPeriod()
+                let hourFormat = Self.hourFormat
                 var hour = calendar.nextDate(after: range.start, matching: DateComponents(minute: 0), matchingPolicy: .nextTime) ?? range.start
                 while hour < range.end {
                     if calendar.component(.hour, from: hour) % 2 == 0 {

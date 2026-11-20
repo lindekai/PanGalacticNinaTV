@@ -12,12 +12,13 @@ final class AppModel {
     private(set) var connection: InstanceConnection?
     /// Full-resolution renders for the image viewer; one per active instance.
     private(set) var renderService: ImageRenderService?
-    let siteStore = SiteStore()
+    let siteStore: SiteStore
     /// Night page and Object module of the active instance.
     private(set) var night: NightModel?
 
-    init(store: InstanceStore = InstanceStore()) {
+    init(store: InstanceStore = InstanceStore(), siteStore: SiteStore = SiteStore()) {
         self.store = store
+        self.siteStore = siteStore
         if case .dashboard(let id) = store.launchRoute {
             activate(id)
         }

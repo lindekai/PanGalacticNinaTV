@@ -52,8 +52,8 @@ public struct NightPlan: Equatable, Sendable {
         return .none
     }
 
-    public static func compute(site: Site, target: NightTarget?, containing date: Date, timeZone: TimeZone) -> NightPlan {
-        let events = NightEvents.compute(site: site, containing: date, timeZone: timeZone)
+    public static func compute(site: Site, target: NightTarget?, containing date: Date) -> NightPlan {
+        let events = NightEvents.compute(site: site, containing: date)
         let window = events.window
         let start = max(window.start, events.sunset?.addingTimeInterval(-7200) ?? window.start)
         let end = min(window.end, events.sunrise?.addingTimeInterval(3600) ?? window.end)
@@ -80,9 +80,9 @@ public struct NightPlan: Equatable, Sendable {
             && Sky.separation(a.coordinates, b.coordinates) < 0.01
     }
 
-    public func isCurrent(site: Site, target: NightTarget?, at date: Date, timeZone: TimeZone) -> Bool {
-        self.site == site && Self.sameTarget(self.target, target) && events.window.contains(date)
-            && events.window == NightEvents.window(containing: date, timeZone: timeZone)
+    public func isCurrent(site: Site, target: NightTarget?, at date: Date) -> Bool {
+        self.site == site && Self.sameTarget(self.target, target)
+            && events.window == NightEvents.window(containing: date, site: site)
     }
 }
 

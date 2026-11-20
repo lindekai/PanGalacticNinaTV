@@ -1,6 +1,6 @@
 import Foundation
 
-/// Sun and Moon events of one night, from local noon to the next local noon.
+/// Sun and Moon events of one night at a site, from the site's mean local noon to the next.
 public struct NightEvents: Equatable, Sendable {
     public static let horizonAltitude = -0.833
     public static let civilAltitude = -6.0
@@ -22,15 +22,16 @@ public struct NightEvents: Equatable, Sendable {
     public let sunAlwaysUp: Bool
     public let sunAlwaysDown: Bool
 
-    /// The night that contains `date`: from local noon (today, or yesterday before noon)
-    /// to the next local noon, DST-safe.
-    public static func window(containing date: Date, timeZone: TimeZone) -> DateInterval {
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = timeZone
-        let noon = calendar.date(bySettingHour: 12, minute: 0, second: 0, of: date)!
-        let start = date >= noon ? noon : calendar.date(byAdding: .day, value: -1, to: noon)!
-        let end = calendar.date(byAdding: .day, value: 1, to: start)!
-        return DateInterval(start: start, end: end)
+    /// The night at `site` that contains `date`: from the site's mean local noon (today, or
+    /// yesterday before noon) to the next one, exactly 24 h. Mean local time follows the
+    /// longitude (4 min per degree, DST-free), so the night belongs to the site, not to the
+    /// time zone of the device showing it; times are displayed in the device's zone.
+    public static func window(containing date: Date, site: Site) -> DateInterval {
+        let offset = (site.longitude * 240).rounded()
+        let local = date.timeIntervalSince1970 + offset
+        var noon = (local / 86400).rounded(.down) * 86400 + 43200
+        if local < noon { noon -= 86400 }
+        return DateInterval(start: Date(timeIntervalSince1970: noon - offset), duration: 86400)
     }
 
     /// Moonrises and moonsets in `interval` (Moon's centre at `moonAltitude`).
@@ -38,8 +39,8 @@ public struct NightEvents: Equatable, Sendable {
         Crossings.find(in: interval, threshold: moonAltitude) { Moon.geocentricAltitude(site: site, at: $0) }
     }
 
-    public static func compute(site: Site, containing date: Date, timeZone: TimeZone) -> NightEvents {
-        let window = window(containing: date, timeZone: timeZone)
+    public static func compute(site: Site, containing date: Date) -> NightEvents {
+        let window = window(containing: date, site: site)
         let sunAltitude = { (d: Date) in Sun.horizontal(site: site, at: d).altitude }
         func duskDawn(_ threshold: Double) -> (Date?, Date?) {
             let crossings = Crossings.find(in: window, threshold: threshold, altitude: sunAltitude)

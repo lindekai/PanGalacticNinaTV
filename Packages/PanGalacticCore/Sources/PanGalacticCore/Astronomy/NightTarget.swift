@@ -65,3 +65,27 @@ public struct NightTarget: Equatable, Sendable {
         sequence ?? fromMount(mount, name: imageTarget)
     }
 }
+
+/// What the night views show for the target, by connection phase: unknown, stale and
+/// empty stay distinct. Offline the connection keeps the last equipment (and so a mount
+/// target) but not the sequence; whatever target remains is stale.
+public enum NightTargetState: Equatable, Sendable {
+    case live(NightTarget)
+    case stale(NightTarget)
+    /// The instance answers (or answered last), and there is no target.
+    case none
+    /// Connecting or offline without a target: nothing is known ("—").
+    case unknown
+
+    public init(target: NightTarget?, phase: ConnectionPhase) {
+        switch (target, phase) {
+        case (let target?, .live): self = .live(target)
+        case (let target?, _): self = .stale(target)
+        case (nil, .live), (nil, .stale): self = .none
+        case (nil, .connecting), (nil, .offline): self = .unknown
+        }
+    }
+
+    public var isStale: Bool { if case .stale = self { true } else { false } }
+    public var isUnknown: Bool { self == .unknown }
+}

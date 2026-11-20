@@ -43,7 +43,7 @@ Pure functions and value types, no I/O, no UI. Angles in degrees at the API, `Da
 | `MoonPhase` | Illuminated fraction, waxing/waning, next full moon by searching the elongation | ch. 48 |
 | `Separation` | Angular distance between two equatorial positions | ch. 17 |
 | `RiseSet` | Instants when a body crosses a given altitude, found by sampling every 10 min and bisecting to 1 s | – |
-| `Night` | The night window from local noon to the next local noon; Sun at −0.833° (sunset/sunrise), −6°, −12°, −18°; Moon rise/set at +0.125° (mean semi-diameter, parallax and refraction) | ch. 15 |
+| `Night` | The night window from the site's mean local noon to the next (12:00 UT − longitude × 4 min, DST-free; the night belongs to the site, not to the Apple TV's time zone, times are shown in the device's zone); Sun at −0.833° (sunset/sunrise), −6°, −12°, −18°; Moon rise/set at +0.125° (mean semi-diameter, parallax and refraction) | ch. 15 |
 | `AltitudeCurve` | Altitude of an equatorial position every 5 min over the night window; meridian transit | – |
 
 Altitudes in the curve are geometric (no refraction). Rise and set use the standard altitudes above, which include refraction.
@@ -79,7 +79,7 @@ Device clock; all times shown in the Apple TV's time zone like the rest of the a
 
 ### NightModel
 
-Built from site, target, telescope position and `now`. Sun, Moon, twilight and the curve are recomputed only when the night window, the target or the site changes; `now`-dependent values (current altitudes, compass positions, the now line) once a minute through the existing `TimelineView`. Values that depend only on site and clock stay valid while the connection is stale or offline; the target follows the sequence's freshness (while the connection is stale it is dimmed and shows "As of <time>" under its altitude; "—" while unknown).
+Built from site, target, telescope position and `now`. Sun, Moon, twilight and the curve are recomputed only when the night window, the target or the site changes; `now`-dependent values (current altitudes, compass positions, the now line) once a minute through the existing `TimelineView`. Values that depend only on site and clock stay valid while the connection is stale or offline; the target (from the sequence or the mount) and the telescope position follow the connection's freshness (whenever the connection is not live they are dimmed, and the target shows "As of <time>" under its altitude; while connecting or offline without a known target the panel shows "—", not "No target").
 
 ### Header
 

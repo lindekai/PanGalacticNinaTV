@@ -69,6 +69,63 @@ struct NightTargetTests {
         #expect(NightTarget.resolve(sequence: nil, mount: nil, imageTarget: "X") == nil)
     }
 
+    /// The idle fixture's mount, switched to tracking (unparked, tracking on).
+    static func trackingMount() throws -> NINAEquipmentSummary.Mount {
+        let data = try LiveFixtureTests.fixture("nina/equipment-info-idle.json")
+        var root = try #require(try JSONSerialization.jsonObject(with: data) as? [String: Any])
+        var response = try #require(root["Response"] as? [String: Any])
+        var mount = try #require(response["Mount"] as? [String: Any])
+        mount["Connected"] = true
+        mount["AtPark"] = false
+        mount["Slewing"] = false
+        mount["TrackingEnabled"] = true
+        mount["RightAscension"] = 0.75
+        mount["Declination"] = 41.5
+        response["Mount"] = mount
+        root["Response"] = response
+        let patched = try JSONSerialization.data(withJSONObject: root)
+        let summary = try JSONDecoder().decode(NINAEnvelope<NINAEquipmentSummary>.self, from: patched).payload()
+        return try #require(summary.mount)
+    }
+
+    @Test func trackingMountIsATargetOfDate() throws {
+        let mount = try Self.trackingMount()
+        #expect(mount.activity == .tracking)
+        let target = try #require(NightTarget.fromMount(mount, name: "M 31"))
+        #expect(target.name == "M 31")
+        #expect(target.source == .mount && target.epoch == .ofDate)
+        #expect(abs(target.coordinates.ra - 11.25) < 1e-9, "0.75 h × 15")
+        #expect(abs(target.coordinates.dec - 41.5) < 1e-9)
+        #expect(NightTarget.fromMount(mount, name: nil)?.name == nil)
+    }
+
+    @Test func resolveFallsBackToTheTrackingMount() throws {
+        let mount = try Self.trackingMount()
+        let resolved = try #require(NightTarget.resolve(sequence: nil, mount: mount, imageTarget: "NGC 7000"))
+        #expect(resolved.source == .mount && resolved.name == "NGC 7000")
+        let sequence = try #require(NightTarget.fromSequence(state: try Self.state("RUNNING")))
+        #expect(NightTarget.resolve(sequence: sequence, mount: mount, imageTarget: "NGC 7000") == sequence)
+    }
+
+    /// Spec: the target is dimmed with "As of" when stale and "—" while unknown; unknown,
+    /// stale and empty stay distinct (AGENTS.md).
+    @Test func targetStateFollowsTheConnection() throws {
+        let mount = try #require(NightTarget.fromMount(try Self.trackingMount(), name: nil))
+        let sequence = try #require(NightTarget.fromSequence(state: try Self.state("RUNNING")))
+        #expect(NightTargetState(target: sequence, phase: .live) == .live(sequence))
+        #expect(NightTargetState(target: nil, phase: .live) == .none)
+        for target in [sequence, mount] {
+            #expect(NightTargetState(target: target, phase: .stale) == .stale(target))
+            #expect(NightTargetState(target: target, phase: .offline) == .stale(target), "the mount target is kept while offline")
+            #expect(NightTargetState(target: target, phase: .connecting) == .stale(target))
+        }
+        #expect(NightTargetState(target: nil, phase: .stale) == .none, "last known: no target")
+        #expect(NightTargetState(target: nil, phase: .offline) == .unknown)
+        #expect(NightTargetState(target: nil, phase: .connecting) == .unknown)
+        #expect(NightTargetState.stale(mount).isStale && !NightTargetState.live(mount).isStale)
+        #expect(NightTargetState.unknown.isUnknown && !NightTargetState.none.isUnknown)
+    }
+
     @Test func ofDatePrecessesOnlyJ2000() {
         let date = ISO8601DateFormatter().date(from: "2026-11-19T20:00:00Z")!
         let j2000 = NightTarget(name: nil, coordinates: Equatorial(ra: 10.683333, dec: 41.268611), epoch: .j2000, source: .sequence)

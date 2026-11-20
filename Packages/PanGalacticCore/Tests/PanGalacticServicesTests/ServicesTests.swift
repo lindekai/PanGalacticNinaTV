@@ -397,6 +397,36 @@ struct InstanceConnectionTests {
         #expect(conn.sequenceTarget == nil)
     }
 
+    @Test func sequenceTargetIsResetWhenOffline() async {
+        let clock = Clock()
+        let down = LockedValue(false)
+        let body = #"[{"Name":"Lights","Status":"RUNNING","Items":[{"Name":"M 31_Container","Status":"RUNNING","Items":[],"Target":{"TargetName":"M 31","InputCoordinates":{"RAHours":0,"RAMinutes":42,"RASeconds":44.0,"NegativeDec":false,"DecDegrees":41,"DecMinutes":16,"DecSeconds":7.0}}}]}]"#
+        let transport = FakeTransport { request in
+            if down.value { throw URLError(.timedOut) }
+            switch request.url?.path() {
+            case "/v2/api/version": return FakeTransport.ok(#""2.2.15.3""#)
+            case "/v2/api/version/nina": return FakeTransport.ok(#""3.2""#)
+            case "/v2/api/equipment/info": return FakeTransport.ok("{}")
+            case "/v2/api/sequence/state": return FakeTransport.ok(body)
+            default: return (404, "")
+            }
+        }
+        let conn = connection(transport, clock: clock)
+        _ = await conn.pollOnce()
+        #expect(conn.sequenceTarget?.name == "M 31")
+
+        down.value = true
+        clock.now += 5
+        _ = await conn.pollOnce()
+        #expect(conn.phase == .stale)
+        #expect(conn.sequenceTarget?.name == "M 31", "kept while stale")
+        clock.now += 5
+        _ = await conn.pollOnce()
+        #expect(conn.phase == .offline)
+        #expect(conn.sequenceTarget == nil, "offline: the sequence target is no longer known")
+        #expect(conn.equipment != nil, "the equipment (and a mount target) is kept; the views mark it stale")
+    }
+
     @Test func guiderGraphOnlyWhileGuiderConnected() async {
         let clock = Clock()
         let guider = LockedValue(true)

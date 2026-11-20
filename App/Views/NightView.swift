@@ -95,6 +95,8 @@ struct NightView: View {
                                 }
                                 .font(.pgLabel).foregroundStyle(Theme.text2).lineLimit(1)
                             }
+                        } else if model.targetIsUnknown {
+                            Text(verbatim: "—").font(.pgTileValue).foregroundStyle(Theme.text3)
                         } else {
                             Text("No target").font(.pgTileValue).foregroundStyle(Theme.text3)
                         }
@@ -103,7 +105,7 @@ struct NightView: View {
                     VStack(alignment: .trailing, spacing: 10) {
                         KeyFigure(now.target.map { Format.degrees($0.altitude) }, unit: "°", label: "now")
                             .opacity(model.targetIsStale ? 0.55 : 1)
-                        // The target follows the sequence's freshness, labelled like the overview's image.
+                        // The target (sequence or mount) follows the connection's freshness, labelled like the overview's image.
                         if model.targetIsStale, let since = connection.lastSuccess {
                             Text("As of \(since.formatted(date: .omitted, time: .shortened))")
                                 .font(.pgLabel).foregroundStyle(Theme.bg)
@@ -156,7 +158,7 @@ struct NightView: View {
     private func compassPanel(now: NightNow) -> some View {
         NightPanel("Compass") {
             HStack(alignment: .center, spacing: 28) {
-                CompassView(now: now, telescope: model.telescope).frame(width: 260, height: 260)
+                CompassView(now: now, telescope: model.telescope, telescopeIsStale: model.telescopeIsStale).frame(width: 260, height: 260)
                 VStack(alignment: .leading, spacing: 10) {
                     if let telescope = model.telescope {
                         HStack(alignment: .firstTextBaseline, spacing: 10) {
@@ -164,12 +166,14 @@ struct NightView: View {
                             Text(verbatim: "\(Int(telescope.azimuth.rounded()) % 360)°")
                         }
                         .font(.pgTileValue).foregroundStyle(Theme.text).lineLimit(1)
+                        .opacity(model.telescopeIsStale ? 0.55 : 1)
                         HStack(spacing: 8) {
                             Text("Telescope")
                             Text(verbatim: "·")
                             Text("Altitude \(Int(telescope.altitude.rounded()))°")
                         }
                         .font(.pgLabel).foregroundStyle(Theme.text2).lineLimit(1)
+                        .opacity(model.telescopeIsStale ? 0.55 : 1)
                     } else {
                         Text(verbatim: "—").font(.pgTileValue).foregroundStyle(Theme.text3)
                         Text("Telescope").font(.pgLabel).foregroundStyle(Theme.text2)

@@ -7,14 +7,22 @@ import Testing
 struct NightEventsTests {
     static let tolerance: TimeInterval = 120
 
+    /// The window runs from the site's mean local noon (12:00 UT − longitude × 4 min) to the
+    /// next. The fixture's own windows use the civil zone's noon; with daylight saving time
+    /// both lie within two hours.
     @Test(arguments: try ReferenceSite.all())
-    func windowIsLocalNoonToNoon(_ ref: ReferenceSite) {
-        let window = NightEvents.window(containing: ref.snapshotTime, timeZone: ref.timeZone)
-        #expect(window.start == ref.nightStart)
-        #expect(window.end == ref.nightEnd)
+    func windowIsTheSitesMeanLocalNoonToNoon(_ ref: ReferenceSite) {
+        let window = NightEvents.window(containing: ref.snapshotTime, site: ref.site)
+        let offset = ref.site.longitude * 240
+        let localStart = (window.start.timeIntervalSince1970 + offset).truncatingRemainder(dividingBy: 86400)
+        #expect(abs(localStart - 43200) < 1, "\(ref.name) starts at mean local noon")
+        #expect(window.duration == 86400)
+        #expect(window.contains(ref.snapshotTime))
+        #expect(abs(window.start.timeIntervalSince(ref.nightStart)) <= 7200, "\(ref.name)")
         // Before noon the night started the previous day.
-        let morning = ref.nightEnd.addingTimeInterval(-3600)
-        #expect(NightEvents.window(containing: morning, timeZone: ref.timeZone).start == ref.nightStart)
+        let morning = window.end.addingTimeInterval(-3600)
+        #expect(NightEvents.window(containing: morning, site: ref.site) == window)
+        #expect(NightEvents.window(containing: window.end, site: ref.site).start == window.end)
     }
 
     @Test(arguments: try ReferenceSite.all())
@@ -45,7 +53,7 @@ struct NightEventsTests {
 
     @Test func centralEuropeNovemberEvents() throws {
         let ref = try ReferenceSite.load("central-europe-november")
-        let night = NightEvents.compute(site: ref.site, containing: ref.snapshotTime, timeZone: ref.timeZone)
+        let night = NightEvents.compute(site: ref.site, containing: ref.snapshotTime)
         let sunset = try #require(night.sunset), sunrise = try #require(night.sunrise)
         #expect(abs(sunset.timeIntervalSince(ref.sun["horizon"]![0].time)) < Self.tolerance)
         #expect(abs(sunrise.timeIntervalSince(ref.sun["horizon"]![1].time)) < Self.tolerance)
@@ -58,7 +66,7 @@ struct NightEventsTests {
 
     @Test func midsummerHasNoAstronomicalDarkness() throws {
         let ref = try ReferenceSite.load("north-midsummer")
-        let night = NightEvents.compute(site: ref.site, containing: ref.snapshotTime, timeZone: ref.timeZone)
+        let night = NightEvents.compute(site: ref.site, containing: ref.snapshotTime)
         #expect(night.astronomicalDusk == nil && night.astronomicalDawn == nil)
         // The Sun only dips to about -8.6 degrees here: civil twilight yes, nautical no (fixture agrees).
         #expect(night.nauticalDusk == nil && night.nauticalDawn == nil)
@@ -67,7 +75,7 @@ struct NightEventsTests {
 
     @Test func polarNightHasNoSunrise() throws {
         let ref = try ReferenceSite.load("arctic-polar-night")
-        let night = NightEvents.compute(site: ref.site, containing: ref.snapshotTime, timeZone: ref.timeZone)
+        let night = NightEvents.compute(site: ref.site, containing: ref.snapshotTime)
         #expect(night.sunset == nil && night.sunrise == nil)
         #expect(night.sunAlwaysDown && !night.sunAlwaysUp)
     }

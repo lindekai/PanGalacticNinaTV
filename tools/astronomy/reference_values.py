@@ -3,7 +3,9 @@
 
 Definitions match the spec: Sun events are crossings of the Sun's centre (geometric, topocentric
 altitude, no refraction) through -0.833, -6, -12, -18 deg; Moon rise/set is the geocentric altitude
-of the Moon's centre crossing +0.125 deg (Meeus ch. 15). Night window: local noon to next local noon.
+of the Moon's centre crossing +0.125 deg (Meeus ch. 15). Night window: local noon to next local noon
+in the site's civil time zone (the app anchors its window at the site's mean local noon, within two
+hours of it; the tests compare crossings within these fixture windows).
 """
 import json, sys
 from datetime import datetime, timedelta
@@ -100,7 +102,7 @@ for name, lat, lon, elev, tzname, date in SITES:
     })
 
 json.dump({
-    "source": "JPL DE421 ephemeris via Skyfield 1.55, generated 2026-11-20; sunrise/sunset and civil twilight of the first site cross-checked against the U.S. Naval Observatory API (aa.usno.navy.mil)",
+    "source": "JPL DE421 ephemeris via Skyfield 1.55, generated 2026-11-20; sunset (15:39 UT) and moonrise (13:05 UT) of the first site (central-europe-november) cross-checked against the U.S. Naval Observatory API (aa.usno.navy.mil)",
     "definitions": "Sun: topocentric geometric altitude of the centre crossing -0.833/-6/-12/-18 deg. Moon rise/set: geocentric altitude of the centre crossing +0.125 deg. Snapshot altitudes: topocentric, apparent, no refraction. RA/Dec: apparent, equinox of date, geocentric. M31: J2000 00h42m44s +41d16'07\". Night window: local noon to next local noon.",
     "sites": out,
 }, sys.stdout, indent=2)

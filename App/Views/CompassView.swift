@@ -3,10 +3,13 @@ import SwiftUI
 
 /// Sky seen from above: N up, E right (as the local compass rose, east to the right when
 /// facing north on the map), zenith in the centre, horizon on the rim. Telescope as a dot,
-/// Sun and Moon as rings, dashed and on the rim when below the horizon.
+/// Sun and Moon as rings, dashed and on the rim when below the horizon; the telescope dot
+/// is dimmed while stale.
 struct CompassView: View {
     let now: NightNow
     let telescope: Horizontal?
+    /// Dimmed like every stale value: the pointing is from the last successful poll.
+    var telescopeIsStale = false
 
     var body: some View {
         Canvas { context, size in
@@ -41,7 +44,7 @@ struct CompassView: View {
             ring(now.moon, Theme.text2)
             if let telescope {
                 let p = point(telescope)
-                context.fill(Path(ellipseIn: CGRect(x: p.x - 12, y: p.y - 12, width: 24, height: 24)), with: .color(Theme.accent))
+                context.fill(Path(ellipseIn: CGRect(x: p.x - 12, y: p.y - 12, width: 24, height: 24)), with: .color(Theme.accent.opacity(telescopeIsStale ? 0.55 : 1)))
             }
         }
         .accessibilityHidden(true)

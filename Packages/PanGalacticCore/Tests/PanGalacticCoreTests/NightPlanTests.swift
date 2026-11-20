@@ -10,7 +10,7 @@ struct NightPlanTests {
 
     @Test func centralEuropeNightWithM31() throws {
         let ref = try ReferenceSite.load("central-europe-november")
-        let plan = NightPlan.compute(site: ref.site, target: Self.m31, containing: ref.snapshotTime, timeZone: ref.timeZone)
+        let plan = NightPlan.compute(site: ref.site, target: Self.m31, containing: ref.snapshotTime)
         let sunset = try #require(plan.events.sunset), sunrise = try #require(plan.events.sunrise)
         #expect(plan.chartRange.start == sunset.addingTimeInterval(-7200))
         #expect(plan.chartRange.end == sunrise.addingTimeInterval(3600))
@@ -31,7 +31,7 @@ struct NightPlanTests {
 
     @Test func noTarget() throws {
         let ref = try ReferenceSite.load("central-europe-november")
-        let plan = NightPlan.compute(site: ref.site, target: nil, containing: ref.snapshotTime, timeZone: ref.timeZone)
+        let plan = NightPlan.compute(site: ref.site, target: nil, containing: ref.snapshotTime)
         #expect(plan.targetCurve == nil && plan.targetVisibility == nil && plan.transit == nil)
         let now = NightNow.compute(plan: plan, at: ref.snapshotTime)
         #expect(now.target == nil && now.moonSeparation == nil)
@@ -40,14 +40,14 @@ struct NightPlanTests {
     @Test func targetBelowTheHorizonAllNight() throws {
         let ref = try ReferenceSite.load("south-winter") // Polaris never rises at 34° S
         let south = NightTarget(name: "Polaris", coordinates: Equatorial(ra: 37.95, dec: 89.26), epoch: .j2000, source: .sequence)
-        let plan = NightPlan.compute(site: ref.site, target: south, containing: ref.snapshotTime, timeZone: ref.timeZone)
+        let plan = NightPlan.compute(site: ref.site, target: south, containing: ref.snapshotTime)
         #expect(plan.targetVisibility == .neverRises)
     }
 
     @Test func circumpolarTargetIsVisible() throws {
         let ref = try ReferenceSite.load("central-europe-november")
         let polaris = NightTarget(name: "Polaris", coordinates: Equatorial(ra: 37.95, dec: 89.26), epoch: .j2000, source: .sequence)
-        let plan = NightPlan.compute(site: ref.site, target: polaris, containing: ref.snapshotTime, timeZone: ref.timeZone)
+        let plan = NightPlan.compute(site: ref.site, target: polaris, containing: ref.snapshotTime)
         #expect(plan.targetVisibility == .visible)
         #expect(plan.targetCurve?.allSatisfy { $0.altitude > 0 } == true)
     }
@@ -55,7 +55,7 @@ struct NightPlanTests {
     @Test func midsummerAt58NorthHasNoDarkness() throws {
         // The Sun only reaches about −8.6° at 58° N on 2026-06-21: neither astronomical nor nautical darkness.
         let ref = try ReferenceSite.load("north-midsummer")
-        let plan = NightPlan.compute(site: ref.site, target: nil, containing: ref.snapshotTime, timeZone: ref.timeZone)
+        let plan = NightPlan.compute(site: ref.site, target: nil, containing: ref.snapshotTime)
         #expect(plan.darkness == .none)
     }
 
@@ -64,26 +64,26 @@ struct NightPlanTests {
         // below −12° but not −18°.
         let ref = try ReferenceSite.load("north-midsummer")
         let site = Site(latitude: 52, longitude: 12, elevation: 0)
-        let plan = NightPlan.compute(site: site, target: nil, containing: ref.snapshotTime, timeZone: ref.timeZone)
+        let plan = NightPlan.compute(site: site, target: nil, containing: ref.snapshotTime)
         guard case .nautical(let from, let until) = plan.darkness else { Issue.record("expected nautical, got \(plan.darkness)"); return }
         #expect(from < until)
     }
 
     @Test func polarNightHasNoSunEventsAndAFullWindowChart() throws {
         let ref = try ReferenceSite.load("arctic-polar-night")
-        let plan = NightPlan.compute(site: ref.site, target: nil, containing: ref.snapshotTime, timeZone: ref.timeZone)
+        let plan = NightPlan.compute(site: ref.site, target: nil, containing: ref.snapshotTime)
         #expect(plan.events.sunAlwaysDown)
         #expect(plan.chartRange == plan.events.window)
     }
 
     @Test func recomputeOnlyWhenNightTargetOrSiteChanges() throws {
         let ref = try ReferenceSite.load("central-europe-november")
-        let plan = NightPlan.compute(site: ref.site, target: Self.m31, containing: ref.snapshotTime, timeZone: ref.timeZone)
-        #expect(plan.isCurrent(site: ref.site, target: Self.m31, at: ref.snapshotTime.addingTimeInterval(3600), timeZone: ref.timeZone))
-        #expect(!plan.isCurrent(site: ref.site, target: nil, at: ref.snapshotTime, timeZone: ref.timeZone))
-        #expect(!plan.isCurrent(site: ref.site, target: Self.m31, at: ref.nightEnd.addingTimeInterval(60), timeZone: ref.timeZone))
+        let plan = NightPlan.compute(site: ref.site, target: Self.m31, containing: ref.snapshotTime)
+        #expect(plan.isCurrent(site: ref.site, target: Self.m31, at: ref.snapshotTime.addingTimeInterval(3600)))
+        #expect(!plan.isCurrent(site: ref.site, target: nil, at: ref.snapshotTime))
+        #expect(!plan.isCurrent(site: ref.site, target: Self.m31, at: plan.events.window.end.addingTimeInterval(60)))
         let other = Site(latitude: 48, longitude: 11, elevation: 500)
-        #expect(!plan.isCurrent(site: other, target: Self.m31, at: ref.snapshotTime, timeZone: ref.timeZone))
+        #expect(!plan.isCurrent(site: other, target: Self.m31, at: ref.snapshotTime))
     }
 
     @Test func mountJitterKeepsThePlanButAMoveDoesNot() throws {
@@ -91,18 +91,38 @@ struct NightPlanTests {
         func mount(_ ra: Double, _ dec: Double) -> NightTarget {
             NightTarget(name: nil, coordinates: Equatorial(ra: ra, dec: dec), epoch: .ofDate, source: .mount)
         }
-        let plan = NightPlan.compute(site: ref.site, target: mount(10.9, 41.4), containing: ref.snapshotTime, timeZone: ref.timeZone)
-        #expect(plan.isCurrent(site: ref.site, target: mount(10.901, 41.401), at: ref.snapshotTime, timeZone: ref.timeZone))
-        #expect(!plan.isCurrent(site: ref.site, target: mount(11.9, 41.4), at: ref.snapshotTime, timeZone: ref.timeZone))
-        #expect(!plan.isCurrent(site: ref.site, target: mount(10.9, 42.4), at: ref.snapshotTime, timeZone: ref.timeZone))
+        let plan = NightPlan.compute(site: ref.site, target: mount(10.9, 41.4), containing: ref.snapshotTime)
+        #expect(plan.isCurrent(site: ref.site, target: mount(10.901, 41.401), at: ref.snapshotTime))
+        #expect(!plan.isCurrent(site: ref.site, target: mount(11.9, 41.4), at: ref.snapshotTime))
+        #expect(!plan.isCurrent(site: ref.site, target: mount(10.9, 42.4), at: ref.snapshotTime))
     }
 
     @Test func nextMoonEventInTheMorningLooksPastTheWindow() throws {
         let ref = try ReferenceSite.load("central-europe-november")
         let morning = ref.nightEnd.addingTimeInterval(-7200)
-        let plan = NightPlan.compute(site: ref.site, target: nil, containing: morning, timeZone: ref.timeZone)
+        let plan = NightPlan.compute(site: ref.site, target: nil, containing: morning)
         let next = try #require(NightNow.compute(plan: plan, at: morning).nextMoonEvent)
         #expect(next.rising && next.date > ref.nightEnd, "moonrise after noon the next day")
+    }
+
+    /// The night belongs to the site, not to the Apple TV: a remote observatory far from the
+    /// device's time zone (here: an Apple TV in Central Europe) still gets its whole night, the
+    /// window starting at the site's mean local noon. With the device's noon (11:00 / 10:00 UT)
+    /// both lost their sunrise.
+    @Test(arguments: [
+        // Invented site at 33° N 107° W, evening there; 04:00 UT is 21:00 mean local time.
+        (Site(latitude: 33, longitude: -107, elevation: 0), "2026-11-21T04:00:00Z"),
+        // south-winter's site (34° S 151° E), 21:00 local on 2026-07-15.
+        (Site(latitude: -34, longitude: 151, elevation: 0), "2026-07-15T11:00:00Z"),
+    ])
+    func remoteSiteGetsItsWholeNight(_ site: Site, _ evening: String) throws {
+        let date = try #require(ISO8601DateFormatter().date(from: evening))
+        let plan = NightPlan.compute(site: site, target: nil, containing: date)
+        let sunset = try #require(plan.events.sunset), sunrise = try #require(plan.events.sunrise)
+        #expect(sunset < date && date < sunrise)
+        guard case .astronomical(let from, let until) = plan.darkness else { Issue.record("no darkness: \(plan.darkness)"); return }
+        #expect(sunset < from && from < until && until < sunrise)
+        #expect(plan.isCurrent(site: site, target: nil, at: date.addingTimeInterval(3600)))
     }
 
     @Test func mountSiteWinsOverTheCache() {
@@ -117,7 +137,7 @@ struct NightPlanTests {
         let ref = try ReferenceSite.load("central-europe-november")
         let clock = ContinuousClock()
         let elapsed = clock.measure {
-            _ = NightPlan.compute(site: ref.site, target: Self.m31, containing: ref.snapshotTime, timeZone: ref.timeZone)
+            _ = NightPlan.compute(site: ref.site, target: Self.m31, containing: ref.snapshotTime)
         }
         #expect(elapsed < .milliseconds(50), "took \(elapsed)")
     }
