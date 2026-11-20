@@ -16,7 +16,7 @@ public struct Horizontal: Equatable, Sendable {
 
 /// Observing site; longitude east-positive. Privacy: never logged (ADR 0006), so the
 /// descriptions are redacted.
-public struct Site: Codable, Equatable, Sendable, CustomStringConvertible, CustomDebugStringConvertible {
+public struct Site: Codable, Hashable, Sendable, CustomStringConvertible, CustomDebugStringConvertible {
     public let latitude: Double
     public let longitude: Double
     public let elevation: Double

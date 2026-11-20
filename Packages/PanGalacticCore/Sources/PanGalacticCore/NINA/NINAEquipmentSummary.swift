@@ -40,6 +40,13 @@ public struct NINAEquipmentSummary: Decodable, Hashable, Sendable {
         public let rightAscension: String?
         public let declination: String?
         public let altitudeDegrees: Double?
+        /// Numeric RA in hours and Dec in degrees, epoch JNOW like the strings.
+        public let rightAscensionHours: Double?
+        public let declinationDegrees: Double?
+        /// Azimuth from north through east.
+        public let azimuthDegrees: Double?
+        /// Site as configured in N.I.N.A.; `nil` when unset (0, 0, 0). Never logged (ADR 0006).
+        public let site: Site?
         public let sideOfPier: SideOfPier?
         /// Hours until the flip, computed by N.I.N.A. while tracking; 24 means "not applicable".
         public let timeToMeridianFlipHours: Double?
@@ -114,6 +121,8 @@ public struct NINAEquipmentSummary: Decodable, Hashable, Sendable {
         case temperatureSetPoint = "TemperatureSetPoint", gain = "Gain", offset = "Offset"
         case rightAscensionString = "RightAscensionString", declinationString = "DeclinationString"
         case altitude = "Altitude", sideOfPier = "SideOfPier", timeToMeridianFlip = "TimeToMeridianFlip"
+        case rightAscension = "RightAscension", declination = "Declination", azimuth = "Azimuth"
+        case siteLatitude = "SiteLatitude", siteLongitude = "SiteLongitude", siteElevation = "SiteElevation"
         case rmsError = "RMSError", pixelScale = "PixelScale"
     }
 
@@ -165,6 +174,12 @@ public struct NINAEquipmentSummary: Decodable, Hashable, Sendable {
                   rightAscension: dev.connected ? (try? d.decodeIfPresent(String.self, forKey: .rightAscensionString)) ?? nil : nil,
                   declination: dev.connected ? (try? d.decodeIfPresent(String.self, forKey: .declinationString)) ?? nil : nil,
                   altitudeDegrees: dev.connected ? d.lenientDouble(.altitude) : nil,
+                  rightAscensionHours: dev.connected ? d.lenientDouble(.rightAscension) : nil,
+                  declinationDegrees: dev.connected ? d.lenientDouble(.declination) : nil,
+                  azimuthDegrees: dev.connected ? d.lenientDouble(.azimuth) : nil,
+                  site: dev.connected ? Site.reported(latitude: d.lenientDouble(.siteLatitude),
+                                                      longitude: d.lenientDouble(.siteLongitude),
+                                                      elevation: d.lenientDouble(.siteElevation)) : nil,
                   sideOfPier: ((try? d.decodeIfPresent(String.self, forKey: .sideOfPier)) ?? nil).flatMap(SideOfPier.init),
                   timeToMeridianFlipHours: dev.connected ? d.lenientDouble(.timeToMeridianFlip) : nil)
         }
