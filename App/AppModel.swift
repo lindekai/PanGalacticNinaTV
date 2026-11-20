@@ -12,6 +12,9 @@ final class AppModel {
     private(set) var connection: InstanceConnection?
     /// Full-resolution renders for the image viewer; one per active instance.
     private(set) var renderService: ImageRenderService?
+    let siteStore = SiteStore()
+    /// Night page and Object module of the active instance.
+    private(set) var night: NightModel?
 
     init(store: InstanceStore = InstanceStore()) {
         self.store = store
@@ -29,9 +32,11 @@ final class AppModel {
         guard let instance = store.instance(id: id) else { return }
         connection?.stop()
         let connection = InstanceConnection(instance: instance)
-        connection.onSuccess = { [weak self] date in
+        connection.onSuccess = { [weak self, weak connection] date in
             self?.store.markSeen(id: id, at: date)
+            if let site = connection?.equipment?.mount?.site { self?.siteStore.record(site, for: id, at: date) }
         }
+        night = NightModel()
         self.connection = connection
         renderService = ImageRenderService(instance: instance)
         activeInstanceID = id
@@ -43,6 +48,7 @@ final class AppModel {
         connection?.stop()
         connection = nil
         renderService = nil
+        night = nil
         activeInstanceID = nil
     }
 
@@ -59,6 +65,7 @@ final class AppModel {
     func delete(_ id: DeviceInstance.ID) {
         if id == activeInstanceID { deactivate() }
         store.remove(id: id)
+        siteStore.remove(id: id)
         if case .dashboard(let only) = store.launchRoute, activeInstanceID == nil {
             activate(only)
         }

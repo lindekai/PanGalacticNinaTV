@@ -15,6 +15,7 @@ struct DashboardView: View {
     @State private var focusedFirstImage = false
     #if DEBUG
     @State private var debugOpenSequence = false
+    @State private var debugOpenNight = false
     #endif
 
     var body: some View {
@@ -48,6 +49,7 @@ struct DashboardView: View {
             .defaultFocus($imageFocused, true)
             .onChange(of: context.date) {
                 connection.refreshPhase()
+                updateNight(at: context.date)
                 evaluateAmbient(now: context.date)
             }
             .fullScreenCover(isPresented: Binding(get: { ambient.isShowing }, set: { if !$0 { ambient.registerInput() } })) {
@@ -64,6 +66,7 @@ struct DashboardView: View {
         .onAppear {
             visible = true
             ambient.overviewVisible(true)
+            updateNight(at: .now)
         }
         .onDisappear {
             visible = false
@@ -81,11 +84,22 @@ struct DashboardView: View {
             if known, UserDefaults.standard.bool(forKey: "debug.openSequence") { debugOpenSequence = true }
         }
         .navigationDestination(isPresented: $debugOpenSequence) { SequenceView(connection: connection) }
+        // `-debug.openNight YES` opens the night page once a plan is known.
+        .onChange(of: model.night?.plan != nil) { _, known in
+            if known, UserDefaults.standard.bool(forKey: "debug.openNight") { debugOpenNight = true }
+        }
+        .navigationDestination(isPresented: $debugOpenNight) {
+            if let night = model.night { NightView(model: night, connection: connection) }
+        }
         #endif
         .fullScreenCover(item: $viewerItem) { item in
             ImageViewer(index: item.index, image: connection.latestImage, thumbnail: connection.latestThumbnail,
                         service: model.renderService)
         }
+    }
+
+    private func updateNight(at date: Date) {
+        model.night?.update(connection: connection, cached: model.siteStore.site(for: connection.instance.id), at: date)
     }
 
     /// Only the overview itself gives way to the ambient view: not the image viewer, not Settings.
@@ -120,6 +134,9 @@ struct DashboardView: View {
                     .buttonStyle(GearButtonStyle())
                     .accessibilityLabel(Text("Switch Observatory"))
             }
+            NavigationLink(value: Destination.night) { Image(systemName: "moon.stars") }
+                .buttonStyle(GearButtonStyle())
+                .accessibilityLabel(Text("Night"))
             NavigationLink(value: Destination.devices) { Image(systemName: "cable.connector") }
                 .buttonStyle(GearButtonStyle())
                 .accessibilityLabel(Text("Devices"))

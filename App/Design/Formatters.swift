@@ -76,6 +76,17 @@ enum Format {
         return formatter.string(from: date)
     }
 
+    /// Hour formatter in the region's style without AM/PM or "Uhr" ("4", "16"), for chart axes.
+    static func hourWithoutDayPeriod(locale: Locale = .current) -> DateFormatter {
+        let pattern = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: locale) ?? "H"
+        let formatter = DateFormatter()
+        formatter.locale = locale
+        // Quoted literals ("HH 'Uhr'") are not fields; the hour field tells 12 h from 24 h.
+        let fields = pattern.replacing(#/'[^']*'/#, with: "")
+        formatter.dateFormat = fields.contains("h") || fields.contains("K") ? "h" : "H"
+        return formatter
+    }
+
     /// `2:21` (hours:minutes) until the meridian flip.
     static func flipRemaining(_ minutes: Int) -> String {
         String(format: "%d:%02d", minutes / 60, minutes % 60)
@@ -94,6 +105,19 @@ enum Format {
         case .looping: return String(localized: "Looping")
         case .other(let value): return value
         }
+    }
+
+    /// Right ascension from degrees as `HHh MMm` (rounded to the minute of time).
+    static func rightAscension(_ degrees: Double) -> String {
+        let minutes = Int((degrees / 15 * 60).rounded()) % (24 * 60)
+        let total = minutes < 0 ? minutes + 24 * 60 : minutes
+        return String(format: "%02dh %02dm", total / 60, total % 60)
+    }
+
+    /// Declination from degrees as `±DD° MM′` (rounded to the arcminute).
+    static func declination(_ degrees: Double) -> String {
+        let arcminutes = Int((abs(degrees) * 60).rounded())
+        return String(format: "%@%02d° %02d′", degrees < 0 ? "−" : "+", arcminutes / 60, arcminutes % 60)
     }
 
     static func mountActivity(_ activity: MountActivity) -> String? {
