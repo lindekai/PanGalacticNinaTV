@@ -52,6 +52,50 @@ struct AstronomyEngineTests {
             #expect(!text.contains("50.1234") && !text.contains("8.5678"))
         }
     }
+
+    @Test func sunExample25a() {
+        let sun = Sun.position(jde: 2448908.5)
+        #expect(abs(sun.equatorial.ra - 198.38083) < 0.001)
+        #expect(abs(sun.equatorial.dec - -7.78507) < 0.001)
+    }
+
+    @Test func moonExample47a() {
+        // Full series: λ 133.162655, β −3.229126, Δ 368409.7 km; the main terms stay close.
+        let moon = Moon.ecliptic(jde: 2448724.5)
+        #expect(abs(moon.longitude - 133.162655) < 0.02)
+        #expect(abs(moon.latitude - -3.229126) < 0.01)
+        #expect(abs(moon.distanceKm - 368409.7) < 50)
+    }
+
+    @Test func illuminatedFractionExample48a() {
+        #expect(abs(Moon.illuminatedFraction(jde: 2448724.5) - 0.6786) < 0.005)
+    }
+
+    @Test(arguments: try ReferenceSite.all())
+    func sunAndMoonMatchTheEphemeris(_ ref: ReferenceSite) {
+        let t = ref.snapshotTime
+        let sun = Sun.position(at: t)
+        #expect(abs(sun.ra - ref.sunRA) < 0.01, "\(ref.name) sun RA")
+        #expect(abs(sun.dec - ref.sunDec) < 0.01, "\(ref.name) sun Dec")
+        let sunH = Sun.horizontal(site: ref.site, at: t)
+        #expect(abs(sunH.altitude - ref.sunAltitude) < 0.01, "\(ref.name) sun altitude")
+        let moon = Moon.position(at: t)
+        #expect(abs(moon.equatorial.ra - ref.moonRA) < 0.1, "\(ref.name) moon RA")
+        #expect(abs(moon.equatorial.dec - ref.moonDec) < 0.1, "\(ref.name) moon Dec")
+        #expect(abs(Moon.horizontal(site: ref.site, at: t).altitude - ref.moonAltitude) < 0.2, "\(ref.name) moon altitude")
+        #expect(abs(Moon.illuminatedFraction(at: t) - ref.moonIlluminated) < 0.01, "\(ref.name) illumination")
+        let m31 = Sky.precessFromJ2000(Equatorial(ra: 10.683333, dec: 41.268611), to: t)
+        #expect(abs(Sky.separation(moon.equatorial, m31) - ref.m31MoonSeparation) < 0.1, "\(ref.name) separation")
+        let m31H = Sky.horizontal(m31, site: ref.site, at: t)
+        #expect(abs(m31H.altitude - ref.m31Altitude) < 0.03, "\(ref.name) M31 altitude")
+        #expect(abs(Moon.nextFullMoon(after: t).timeIntervalSince(ref.nextFullMoon)) < 15 * 60, "\(ref.name) full moon")
+    }
+
+    @Test func waxingBeforeFullMoonWaningAfter() {
+        let full = Self.utc("2026-11-24T14:53:33Z")
+        #expect(Moon.isWaxing(at: full.addingTimeInterval(-86400)))
+        #expect(!Moon.isWaxing(at: full.addingTimeInterval(86400)))
+    }
 }
 
 /// One site of `Fixtures/astronomy/reference.json` (JPL DE421 via Skyfield).
