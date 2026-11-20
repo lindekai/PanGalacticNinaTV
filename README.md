@@ -58,7 +58,7 @@ The whole Advanced Sequence as a tree, with a status per step. The running branc
   <img src="docs/assets/screenshots/night.jpg" alt="Night page: altitude curve of the target with twilight bands and Moon, compass, Sun and Moon panels" width="100%">
 </p>
 
-The night page shows the altitude of tonight's target over the dark hours with twilight bands, the Moon and the meridian transit, a compass with the telescope, Sun and Moon, and the times of sunset, darkness, sunrise and the Moon. Everything is computed on the Apple TV from the site the mount reports (cached per instance on the device, [ADR 0006](docs/adr/0006-site-cached-on-device.md)) and the target from the sequence; no new request goes to the telescope PC. It opens from the moon icon in the header or from the Object module.
+The night page shows the altitude of tonight's target over the dark hours with twilight bands, the Moon and the meridian transit, a compass with the telescope, Sun and Moon, and the times of sunset, darkness, sunrise and the Moon. Everything is computed on the Apple TV from the site the mount reports (cached per instance on the device, [ADR 0006](docs/adr/0006-site-cached-on-device.md)) and the target from the sequence (or the tracking mount); no new request goes to the telescope PC. It opens from the moon icon in the header or from the Object module.
 
 ### Full-screen viewer with stepped zoom
 

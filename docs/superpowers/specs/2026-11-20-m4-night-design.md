@@ -79,7 +79,7 @@ Device clock; all times shown in the Apple TV's time zone like the rest of the a
 
 ### NightModel
 
-Built from site, target, telescope position and `now`. Sun, Moon, twilight and the curve are recomputed only when the night window, the target or the site changes; `now`-dependent values (current altitudes, compass positions, the now line) once a minute through the existing `TimelineView`. Values that depend only on site and clock stay valid while the connection is stale or offline; the target follows the sequence's freshness (dimmed with "as of" when stale, "—" while unknown).
+Built from site, target, telescope position and `now`. Sun, Moon, twilight and the curve are recomputed only when the night window, the target or the site changes; `now`-dependent values (current altitudes, compass positions, the now line) once a minute through the existing `TimelineView`. Values that depend only on site and clock stay valid while the connection is stale or offline; the target follows the sequence's freshness (while the connection is stale it is dimmed and shows "As of <time>" under its altitude; "—" while unknown).
 
 ### Header
 
@@ -147,7 +147,7 @@ New strings in `Localizable.xcstrings` (en, de), among them: "Night"/"Die Nacht"
 - This spec; implementation plan in `docs/superpowers/plans/`.
 - [ADR 0006](../../adr/0006-site-cached-on-device.md): the site is kept on the device per instance; what, where, never leaves the device.
 - Capability matrix §7: target container fields from the source review; §4 site row notes the local cache.
-- `docs/licensing-and-attribution.md` (new): Meeus as the source of the algorithms; USNO and JPL Horizons as sources of the reference values.
+- `docs/licensing-and-attribution.md` (new): Meeus as the source of the algorithms; JPL DE421 via Skyfield as the source of the reference values; USNO cross-check.
 - README section "The night" with screenshots, CHANGELOG, milestones (M4 split into M4.1–M4.3), status.
 
 ## Out of scope
