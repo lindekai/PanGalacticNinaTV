@@ -15,6 +15,7 @@ struct DashboardView: View {
     @State private var focusedFirstImage = false
     #if DEBUG
     @State private var debugOpenSequence = false
+    @State private var debugOpenNight = false
     #endif
 
     var body: some View {
@@ -48,6 +49,7 @@ struct DashboardView: View {
             .defaultFocus($imageFocused, true)
             .onChange(of: context.date) {
                 connection.refreshPhase()
+                updateNight(at: context.date)
                 evaluateAmbient(now: context.date)
             }
             .fullScreenCover(isPresented: Binding(get: { ambient.isShowing }, set: { if !$0 { ambient.registerInput() } })) {
@@ -64,6 +66,7 @@ struct DashboardView: View {
         .onAppear {
             visible = true
             ambient.overviewVisible(true)
+            updateNight(at: .now)
         }
         .onDisappear {
             visible = false
@@ -81,11 +84,22 @@ struct DashboardView: View {
             if known, UserDefaults.standard.bool(forKey: "debug.openSequence") { debugOpenSequence = true }
         }
         .navigationDestination(isPresented: $debugOpenSequence) { SequenceView(connection: connection) }
+        // `-debug.openNight YES` opens the night page once a plan is known.
+        .onChange(of: model.night?.plan != nil) { _, known in
+            if known, UserDefaults.standard.bool(forKey: "debug.openNight") { debugOpenNight = true }
+        }
+        .navigationDestination(isPresented: $debugOpenNight) {
+            if let night = model.night { NightView(model: night, connection: connection) }
+        }
         #endif
         .fullScreenCover(item: $viewerItem) { item in
             ImageViewer(index: item.index, image: connection.latestImage, thumbnail: connection.latestThumbnail,
                         service: model.renderService)
         }
+    }
+
+    private func updateNight(at date: Date) {
+        model.night?.update(connection: connection, cached: model.siteStore.site(for: connection.instance.id), at: date)
     }
 
     /// Only the overview itself gives way to the ambient view: not the image viewer, not Settings.
@@ -120,6 +134,9 @@ struct DashboardView: View {
                     .buttonStyle(GearButtonStyle())
                     .accessibilityLabel(Text("Switch Observatory"))
             }
+            NavigationLink(value: Destination.night) { Image(systemName: "moon.stars") }
+                .buttonStyle(GearButtonStyle())
+                .accessibilityLabel(Text("Night"))
             NavigationLink(value: Destination.devices) { Image(systemName: "cable.connector") }
                 .buttonStyle(GearButtonStyle())
                 .accessibilityLabel(Text("Devices"))
@@ -209,7 +226,9 @@ struct DashboardView: View {
 
             VStack(spacing: Theme.moduleGap) {
                 CameraModule(camera: equipment?.camera, light: StatusLight.camera(equipment?.camera, phase: phase, now: now))
-                ObjectModule(target: connection.latestImage?.targetName, mount: equipment?.mount)
+                NavigationLink(value: Destination.night) { ObjectModule(night: model.night) }
+                    .buttonStyle(LiftButtonStyle(scale: 1.01))
+                    .accessibilityLabel(Text("Night"))
                 HStack(alignment: .top, spacing: Theme.moduleGap) {
                     MountTile(mount: equipment?.mount, light: StatusLight.device(equipment?.mount?.device, phase: phase))
                         .frame(maxWidth: .infinity).frame(maxHeight: .infinity, alignment: .top)
@@ -269,18 +288,24 @@ struct CameraModule: View {
 }
 
 struct ObjectModule: View {
-    let target: String?
-    let mount: NINAEquipmentSummary.Mount?
+    let night: NightModel?
 
     var body: some View {
-        ModulePanel("Object", icon: Image(systemName: "scope"), light: nil, accessory: target) {
-            HStack(alignment: .bottom) {
-                KeyFigure(mount?.trackedObjectAltitude.map(Format.degrees), unit: "°", label: "Altitude above horizon")
-                Spacer(minLength: 24)
-                SideValues([
-                    ("RA", mount?.trackedRightAscension),
-                    ("Dec", mount?.trackedDeclination),
-                ])
+        ModulePanel("Object", icon: Image(systemName: "scope"), light: nil, accessory: night?.plan?.target?.name) {
+            HStack(alignment: .bottom, spacing: 24) {
+                if night?.plan == nil {
+                    KeyFigure(nil, unit: "°", label: "Site unknown")
+                } else {
+                    KeyFigure(night?.now?.target.map { Format.degrees($0.altitude) }, unit: "°", label: "Altitude above horizon")
+                        .opacity(night?.targetIsStale == true ? 0.55 : 1)
+                }
+                Spacer(minLength: 0)
+                // Nothing to draw while the target is not above the horizon tonight.
+                if let plan = night?.plan, plan.targetVisibility == .visible {
+                    AltitudeChart(plan: plan, now: Date(), style: .mini)
+                        .frame(width: 300, height: 90)
+                        .clipShape(.rect(cornerRadius: 6))
+                }
             }
         }
     }

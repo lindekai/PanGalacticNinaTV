@@ -16,11 +16,4 @@ extension NINAEquipmentSummary.Mount {
         case nil: return .unknown
         }
     }
-
-    /// N.I.N.A. reports where the mount points. That is the imaged object's position
-    /// only while the mount tracks; parked or slewing values must not be shown as the
-    /// object's. From M4 the object's altitude is computed from its coordinates instead.
-    public var trackedObjectAltitude: Double? { activity == .tracking ? altitudeDegrees : nil }
-    public var trackedRightAscension: String? { activity == .tracking ? rightAscension : nil }
-    public var trackedDeclination: String? { activity == .tracking ? declination : nil }
 }

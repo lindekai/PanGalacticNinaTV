@@ -52,6 +52,14 @@ One screen for the whole night, laid out for a TV across the room.
 
 The whole Advanced Sequence as a tree, with a status per step. The running branch is expanded and the page opens on the current step; containers expand and collapse with a click. Under each step you see what N.I.N.A. reports: loop end and iterations, the dither interval, exposure time, type, gain, filter and temperature. Step names are shown exactly as N.I.N.A. sends them (the German names in the screenshot come from a German N.I.N.A.). The page is read-only.
 
+### The night
+
+<p align="center">
+  <img src="docs/assets/screenshots/night.jpg" alt="Night page: altitude curve of the target with twilight bands and Moon, compass, Sun and Moon panels" width="100%">
+</p>
+
+The night page shows the altitude of tonight's target over the dark hours with twilight bands, the Moon and the meridian transit, a compass with the telescope, Sun and Moon, and the times of sunset, darkness, sunrise and the Moon. Everything is computed on the Apple TV from the site the mount reports (cached per instance on the device, [ADR 0006](docs/adr/0006-site-cached-on-device.md)) and the target from the sequence (or the tracking mount); no new request goes to the telescope PC. It opens from the moon icon in the header or from the Object module.
+
 ### Full-screen viewer with stepped zoom
 
 <table>
@@ -169,7 +177,7 @@ Then add an instance with host `127.0.0.1` in the app. The tvOS Simulator shares
 | **M1** | Xcode project, instances, discovery, reconnect | ✅ Done |
 | **M2** | Overview and imaging – dashboard, viewer with zoom, ambient mode, devices, sequence progress, TestFlight | ✅ Done – in beta on TestFlight |
 | **M3** | Guiding and alerts – PHD2 chart, RMS, WebSocket events, foreground alarms | 🟡 Part 1 done; part 2 waits for a clear night |
-| **M4** | Astronomy views – sky compass, altitude curve, Sun/Moon, star map | 🟡 Next |
+| **M4** | Astronomy views – sky compass, altitude curve, Sun/Moon, star map | 🟡 In progress – M4.1 The Night |
 | **M5** | Conditions, statistics, personality | ⚪ Planned |
 | **M6** | Reliability, field test, release readiness | ⚪ Planned |
 

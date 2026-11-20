@@ -4,6 +4,15 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ## [Unreleased]
 
+### Added (M4.1)
+- Night page: altitude curve of the target over the night with twilight bands, Moon curve (both only above the horizon) and meridian transit; compass with telescope, Sun and Moon; Sun panel (sunset, darkness, sunrise) and Moon panel (phase, rise/set, separation from the target, next full moon). Computed on the Apple TV by an own astronomy engine after Meeus, no new endpoint ([spec](docs/superpowers/specs/2026-11-20-m4-night-design.md), [licensing](docs/licensing-and-attribution.md)).
+- Moon icon in the header opens the night page.
+- Object module: computed altitude and a mini altitude curve; RA/Dec moved to the night page.
+- Site cache: the site the mount reports is kept per instance on the device, so the night can be shown while the mount is off ([ADR 0006](docs/adr/0006-site-cached-on-device.md)).
+- Target of the night from `/sequence/state` (`Target.TargetName`, `Target.InputCoordinates`), else the tracking mount ([capability matrix](docs/api-capability-matrix.md) §7).
+- Demo server: a target container (M31) and a site.
+- TestFlight build 7 is the candidate for this round.
+
 ### Added (M3)
 - Guiding chart on the overview: RA and Dec of N.I.N.A.'s last guide steps (`/equipment/guider/graph`) with dither markers and ±1″/±2″ lines; the y range grows with large errors (up to ±8″). Total, RA and Dec RMS in the header, the total coloured green below 1″, yellow up to 2″ and red above (owner's thresholds). RMS is shown only while guiding; after a stop the old curves are dimmed. The light turns red when the guide star is lost.
 - Meridian tile: time to the meridian flip as N.I.N.A. computes it, with the approximate clock time; "—" when not tracking.

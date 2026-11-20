@@ -8,7 +8,7 @@ Each milestone ends with a review; the next one starts only after approval. Exce
 | M1 Skeleton & connections | Xcode project (tvOS 26), instance store, manual add/test, saved-host discovery, bounded subnet scan, routing 0/1/many, reconnect + stale state | Fresh app connects to real Advanced API; routing rules hold | **Complete** |
 | M2 Overview & imaging | Live session metrics, preview on completed image, full-screen viewer, offline fallback | No fake-live metrics; latency and memory measured | **Complete** – TestFlight build 4 checked on Apple TV 4K (2026-11-17) |
 | M3 Guiding & alerts | Streaming chart, RMS with validated units, history, full screen, foreground-only alerts | Replays incl. pause, star lost, reconnect, dither, empty stream | **Paused** – part 1 (overview chart) done; part 2 waits for the capture night ([ADR 0005](adr/0005-m4-before-m3-part-2.md)) |
-| M4 Astronomy | Compass, altitude plot, Sun/Moon/planets, time travel, star map, FOV overlay | Reference comparisons across sites/dates; usable on Apple TV HD | **Next** – starts after #18 ([ADR 0005](adr/0005-m4-before-m3-part-2.md)) |
+| M4 Astronomy | Compass, altitude plot, Sun/Moon/planets, time travel, star map, FOV overlay | Reference comparisons across sites/dates; usable on Apple TV HD | **In progress** – M4.1 The Night ([spec](superpowers/specs/2026-11-20-m4-night-design.md)); M4.2 planets and time travel; M4.3 star map and FOV after the catalogue licence |
 | M5 Conditions, statistics, i18n, personality | Source-labelled conditions, verified metrics only, EN/DE, message engine | Freshness distinguishable; humor never replaces alarms | Not started |
 | M6 Reliability & release readiness | Overnight soak, profiling, Wi-Fi dropouts, lifecycle, accessibility, docs, licenses | Overnight stability; no write requests in network log | Not started |
 
@@ -73,6 +73,15 @@ Each milestone ends with a review; the next one starts only after approval. Exce
 - [ ] PHD2 event stream (port 4400, listen only): `GuideStep`, dither, settle, star lost (#6)
 - [ ] N.I.N.A. WebSocket events: filter change, dither, autofocus (#7)
 - [ ] Foreground alerts (star lost, guiding stopped, RMS too high)
+
+## M4 checklist
+
+- [x] M4.1 spec and plan
+- [x] Engine with reference comparisons across five sites/dates
+- [x] Night page and Object module
+- [ ] Device check of M4.1 on the TV with build 7 (focus path image ⇄ Object module ⇄ sequence strip, Menu back from the night page)
+- [ ] M4.2 planets and time travel
+- [ ] M4.3 star map and FOV overlay (catalogue licence first)
 - [ ] Review and approval for M4
 
 ## Proposed features (not yet scheduled)

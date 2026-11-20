@@ -94,7 +94,7 @@ Everything not listed above. Notably: all `connect`/`disconnect`/`rescan`/`list-
 | Autofocus | Advanced API | WS `AUTOFOCUS-STARTING/FINISHED`, `ERROR-AF`, `focuser/last-af` | spec + source | |
 | Weather (device) | Advanced API | `weather/info` | spec + source | Only if an ASCOM weather device is connected |
 | Safety | Advanced API | `safetymonitor/info`, WS `SAFETY-CHANGED` | spec + source | Display only |
-| Site location | Advanced API | `mount/info` `SiteLatitude`/`SiteLongitude`/`SiteElevation` | live | Privacy-sensitive; never logged or exported |
+| Site location | Advanced API | `mount/info` `SiteLatitude`/`SiteLongitude`/`SiteElevation` | live | Privacy-sensitive; never logged or exported; cached per instance on the device while the mount is off ([ADR 0006](adr/0006-site-cached-on-device.md)) |
 | FOV / optics | Advanced API + manual | `camera/info` XSize/YSize/PixelSize, `IMAGE-SAVE` FocalLength, profile telescope settings | spec | Camera rotation not reliably known → manual / flagged |
 | Plate-solve orientation | — | none read-only at this version without triggering a solve | **gap** | Manual entry or derived later |
 
@@ -153,6 +153,8 @@ Owner's system, 2026-11-09, idle (equipment connected, no sequence running, moun
 | `/profile/show` | Contains third-party API keys in plain text | Removed from allowlist (R11) |
 | WebSocket | Connects; no messages while idle | – |
 | PHD2 | On connect: `Version` (2.6.14, `PHDSubver` empty, `OverlapSupport` true), `CalibrationComplete`, `AppState` `Stopped`; `Timestamp` epoch seconds with milliseconds | Matches documentation |
+| Target of the night (2026-11-20) | `/sequence/state` deep sky object container: `Target.TargetName`, `Target.InputCoordinates` (`RAHours`, `RAMinutes`, `RASeconds`, `NegativeDec`, `DecDegrees`, `DecMinutes`, `DecSeconds`; J2000). `/sequence/json` has no target on the container | Running target container, else the first `CREATED` one; `NegativeDec` or a negative `DecDegrees` makes Dec negative; `PositionAngle` unused until M4.3 |
+| Mount for the night (2026-11-20) | `RightAscension` (h), `Declination` (°), JNOW; `Altitude`, `Azimuth` (°); `SiteLatitude`, `SiteLongitude`, `SiteElevation` | Mount target only while tracking; compass from `Altitude`/`Azimuth`; site `0, 0, 0` = none |
 
 ### Snapshots and camera fault (2026-11-09, 19:43–19:50)
 

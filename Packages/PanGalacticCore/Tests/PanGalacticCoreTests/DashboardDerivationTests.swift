@@ -27,18 +27,6 @@ struct DashboardDerivationTests {
         #expect(try summary(#"{"Mount":{"Connected":false,"TrackingEnabled":true}}"#).mount?.activity == .unknown)
     }
 
-    @Test func objectAltitudeOnlyWhileTracking() throws {
-        let tracking = try #require(try summary(#"{"Mount":{"Connected":true,"TrackingEnabled":true,"AtPark":false,"Altitude":38.4,"RightAscensionString":"05:35:17","DeclinationString":"-05° 23' 28\""}}"#).mount)
-        #expect(tracking.trackedObjectAltitude == 38.4)
-        #expect(tracking.trackedRightAscension == "05:35:17")
-        #expect(tracking.trackedDeclination == #"-05° 23' 28""#)
-
-        let parked = try #require(try summary(#"{"Mount":{"Connected":true,"TrackingEnabled":false,"AtPark":true,"Altitude":52.3,"RightAscensionString":"04:41:15"}}"#).mount)
-        #expect(parked.trackedObjectAltitude == nil, "parked altitude is the park position, not the object's")
-        #expect(parked.trackedRightAscension == nil)
-        #expect(parked.altitudeDegrees == 52.3, "raw pointing value stays available for the Mount page")
-    }
-
     @Test func statusLights() throws {
         let connected = NINAEquipmentSummary.Device(connected: true, name: "X")
         let disconnected = NINAEquipmentSummary.Device(connected: false, name: "X")

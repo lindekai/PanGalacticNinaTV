@@ -46,6 +46,9 @@ public final class InstanceConnection {
     public private(set) var sequenceTree: SequenceTree?
     /// `/sequence/json` answered, but without a container; distinct from an unknown tree.
     public private(set) var sequenceTreeIsEmpty = false
+    /// Target of the running (else the next) target container, from `/sequence/state`;
+    /// `nil` while unknown or when the sequence has none.
+    public private(set) var sequenceTarget: NightTarget?
 
     /// N.I.N.A.'s guide graph while the guider is connected; kept while stale, never invented.
     public private(set) var guiderGraph: NINAGuiderGraph?
@@ -146,6 +149,7 @@ public final class InstanceConnection {
                 sequence = nil
                 sequenceTree = nil
                 sequenceTreeIsEmpty = false
+                sequenceTarget = nil
                 lastSequencePoll = nil
             }
             refreshPhase()
@@ -180,6 +184,7 @@ public final class InstanceConnection {
         sequence = state.map { SequenceProgress(state: $0, json: json) }
         sequenceTree = json.flatMap { SequenceTree(json: $0) }
         sequenceTreeIsEmpty = json != nil && sequenceTree == nil
+        sequenceTarget = state.flatMap { NightTarget.fromSequence(state: $0) }
     }
 
     /// Fetches metadata and thumbnail only when the newest image changed. Reachability
