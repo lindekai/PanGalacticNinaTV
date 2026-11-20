@@ -5,7 +5,7 @@ Snapshot for picking up work on another machine. Last updated 2026-11-20 (M4.1 T
 ## Resume here
 
 - M4.1 The Night (night page, Object module with computed altitude, site cache, build 7) is merged into `main` (merge commit 389dcf5, 2026-11-20, merged locally without a PR). Merged earlier: `m3/guiding-overview` (PR #18) and `m3/tv-feedback` (PR #19, merge commit 12bfd36; sequence strip and page, build 6).
-- Build 7 is not archived yet. README screenshots `night.jpg` and `overview.jpg` were taken at 07:51 (M 31 low, before the curve stopped at the horizon): retake them in the evening with the demo server.
+- Build 7 is archived (2026-11-20). README screenshots `night.jpg` and `overview.jpg` were taken at 07:51 (M 31 low, before the curve stopped at the horizon): retake them in the evening with the demo server.
 - Device check on the TV with build 7 is open: focus path image ⇄ Object module ⇄ sequence strip, and Menu back from the night page (could not be pressed in the simulator).
 - Device check on the TV with build 6 is still open: focus path image ⇄ strip ⇄ header, Menu back from the sequence page, and the sequence page opening on the current step with a long real sequence.
 - M4 has started ([ADR 0005](adr/0005-m4-before-m3-part-2.md)); check the guiding chart on the Apple TV during the next guided night.
@@ -25,7 +25,7 @@ Snapshot for picking up work on another machine. Last updated 2026-11-20 (M4.1 T
 | M2 Overview & imaging | Done (PR #11, #13–#16): overview, viewer with zoom, ambient mode, devices and device details, sequence progress. Checked on Apple TV 4K with TestFlight build 4 |
 | M3 Guiding & alerts | Paused: part 1 (overview guiding chart, meridian tile, PR #18) and TV feedback (sequence strip and page, version, filter icon, PR #19) are merged; device check with build 6 open; part 2 waits for the capture night |
 | M4 Astronomy | In progress: M4.1 The Night merged into `main` (build 7, [spec](superpowers/specs/2026-11-20-m4-night-design.md)); next M4.2 |
-| TestFlight | Build 5 (guiding chart) uploaded 2026-11-19; build 6 (sequence strip and page) archived and uploaded, device check open; build 7 (the night) to be archived from `main` |
+| TestFlight | Build 5 (guiding chart) uploaded 2026-11-19; build 6 (sequence strip and page) archived and uploaded, device check open; build 7 (the night) archived 2026-11-20 from `main`, device check open |
 
 Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 
@@ -40,7 +40,7 @@ Details: [milestones](milestones.md), [changelog](../CHANGELOG.md).
 
 ## Next steps
 
-1. Retake the night/overview screenshots in the evening, archive build 7, device check on the TV, then M4.2 (planets, time travel); M4.3 star map and FOV overlay last, after the catalogue licence is settled ([ADR 0005](adr/0005-m4-before-m3-part-2.md)).
+1. Retake the night/overview screenshots in the evening, device check of build 7 on the TV, then M4.2 (planets, time travel); M4.3 star map and FOV overlay last, after the catalogue licence is settled ([ADR 0005](adr/0005-m4-before-m3-part-2.md)).
 2. M5 after M4: conditions, EN/DE and message engine first; statistics once verified metrics exist.
 3. Whenever a clear night comes: device check of the guiding chart, then M3 part 2 (alerts, PHD2 stream, WebSocket events). Capture night: run `tools/m0` (passive WebSocket and PHD2 listeners) during guided imaging with dithering and an autofocus run, for #6 and #7; cooling snapshots for #5. Follow the [checklist](m3-capture-night.md).
 
