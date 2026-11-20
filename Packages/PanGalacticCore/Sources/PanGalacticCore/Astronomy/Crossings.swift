@@ -3,6 +3,7 @@ import Foundation
 public struct Crossing: Equatable, Sendable {
     public let date: Date
     public let rising: Bool
+    public init(date: Date, rising: Bool) { self.date = date; self.rising = rising }
 }
 
 /// Instants when an altitude crosses a threshold: sampled every `step`, then bisected to 1 s.

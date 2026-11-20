@@ -37,7 +37,7 @@ struct NightView: View {
                     VStack(spacing: Theme.moduleGap) {
                         compassPanel(now: now)
                         sunPanel(plan: plan)
-                        moonPanel(plan: plan, now: now)
+                        moonPanel(plan: plan, now: now, date: date)
                     }
                     .frame(maxHeight: .infinity, alignment: .top)
                 }
@@ -100,8 +100,17 @@ struct NightView: View {
                         }
                     }
                     Spacer(minLength: 24)
-                    KeyFigure(now.target.map { Format.degrees($0.altitude) }, unit: "°", label: "now")
-                        .opacity(model.targetIsStale ? 0.55 : 1)
+                    VStack(alignment: .trailing, spacing: 10) {
+                        KeyFigure(now.target.map { Format.degrees($0.altitude) }, unit: "°", label: "now")
+                            .opacity(model.targetIsStale ? 0.55 : 1)
+                        // The target follows the sequence's freshness, labelled like the overview's image.
+                        if model.targetIsStale, let since = connection.lastSuccess {
+                            Text("As of \(since.formatted(date: .omitted, time: .shortened))")
+                                .font(.pgLabel).foregroundStyle(Theme.bg)
+                                .padding(.horizontal, 16).padding(.vertical, 6)
+                                .background(Theme.warn, in: .capsule)
+                        }
+                    }
                 }
                 AltitudeChart(plan: plan, now: date, style: .full)
                     .frame(minHeight: 520, maxHeight: .infinity)
@@ -226,7 +235,16 @@ struct NightView: View {
 
     // MARK: Moon
 
-    private func moonPanel(plan: NightPlan, now: NightNow) -> some View {
+    /// The next event's kind; without one, the kind that would follow the last event.
+    private func moonEventLabel(next: Crossing?, plan: NightPlan, date: Date) -> LocalizedStringKey {
+        if let next { return next.rising ? "Moonrise" : "Moonset" }
+        let past = [plan.events.moonrise.map { Crossing(date: $0, rising: true) },
+                    plan.events.moonset.map { Crossing(date: $0, rising: false) }]
+            .compactMap { $0 }.filter { $0.date <= date }.max { $0.date < $1.date }
+        return past?.rising == false ? "Moonrise" : "Moonset"
+    }
+
+    private func moonPanel(plan: NightPlan, now: NightNow, date: Date) -> some View {
         let waxingRight = now.moonWaxing == (plan.site.latitude >= 0)
         let next = now.nextMoonEvent
         return NightPanel("Moon", fillHeight: true) {
@@ -237,7 +255,7 @@ struct NightView: View {
                     ValueColumn("\(Int((now.moonIlluminated * 100).rounded())) %",
                                 label: now.moonWaxing ? "illuminated, waxing" : "illuminated, waning")
                     Spacer(minLength: 0)
-                    ValueColumn(time(next?.date), label: next?.rising == true ? "Moonrise" : "Moonset")
+                    ValueColumn(time(next?.date), label: moonEventLabel(next: next, plan: plan, date: date))
                     Spacer(minLength: 0)
                     ValueColumn(now.moonSeparation.map { "\(Int($0.rounded()))°" }, label: "Separation")
                 }

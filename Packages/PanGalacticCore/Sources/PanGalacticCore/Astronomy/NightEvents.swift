@@ -33,6 +33,11 @@ public struct NightEvents: Equatable, Sendable {
         return DateInterval(start: start, end: end)
     }
 
+    /// Moonrises and moonsets in `interval` (Moon's centre at `moonAltitude`).
+    public static func moonCrossings(site: Site, in interval: DateInterval) -> [Crossing] {
+        Crossings.find(in: interval, threshold: moonAltitude) { Moon.geocentricAltitude(site: site, at: $0) }
+    }
+
     public static func compute(site: Site, containing date: Date, timeZone: TimeZone) -> NightEvents {
         let window = window(containing: date, timeZone: timeZone)
         let sunAltitude = { (d: Date) in Sun.horizontal(site: site, at: d).altitude }
@@ -46,7 +51,7 @@ public struct NightEvents: Equatable, Sendable {
         let civil = duskDawn(civilAltitude)
         let nautical = duskDawn(nauticalAltitude)
         let astronomical = duskDawn(astronomicalAltitude)
-        let moon = Crossings.find(in: window, threshold: moonAltitude) { Moon.geocentricAltitude(site: site, at: $0) }
+        let moon = moonCrossings(site: site, in: window)
         let noHorizonCrossing = horizon.0 == nil && horizon.1 == nil
         let startsUp = sunAltitude(window.start) > horizonAltitude
         return NightEvents(window: window, sunset: horizon.0, sunrise: horizon.1,

@@ -40,6 +40,9 @@ public struct NightPlan: Equatable, Sendable {
     public let targetCurve: [AltitudePoint]?
     public let transit: Date?
     public let targetVisibility: TargetVisibility?
+    /// Moonrises and moonsets in the 24 h after the window, so the next Moon event is
+    /// known in the morning too.
+    public let laterMoonEvents: [Crossing]
     /// Target coordinates of date (middle of the night); `nil` without target.
     let targetOfDate: Equatorial?
 
@@ -64,11 +67,21 @@ public struct NightPlan: Equatable, Sendable {
                          moonCurve: AltitudeCurve.moon(site: site, over: range),
                          targetCurve: ofDate.map { AltitudeCurve.target($0, site: site, over: range) },
                          transit: ofDate.flatMap { AltitudeCurve.transit($0, site: site, over: window) },
-                         targetVisibility: visibility, targetOfDate: ofDate)
+                         targetVisibility: visibility,
+                         laterMoonEvents: NightEvents.moonCrossings(site: site, in: DateInterval(start: window.end, duration: 86400)),
+                         targetOfDate: ofDate)
+    }
+
+    /// Targets match when name, source and epoch agree and the positions lie within
+    /// 0.01°: a tracking mount reports slightly different coordinates on every poll.
+    static func sameTarget(_ a: NightTarget?, _ b: NightTarget?) -> Bool {
+        guard let a, let b else { return a == nil && b == nil }
+        return a.name == b.name && a.source == b.source && a.epoch == b.epoch
+            && Sky.separation(a.coordinates, b.coordinates) < 0.01
     }
 
     public func isCurrent(site: Site, target: NightTarget?, at date: Date, timeZone: TimeZone) -> Bool {
-        self.site == site && self.target == target && events.window.contains(date)
+        self.site == site && Self.sameTarget(self.target, target) && events.window.contains(date)
             && events.window == NightEvents.window(containing: date, timeZone: timeZone)
     }
 }
@@ -87,9 +100,9 @@ public struct NightNow: Equatable, Sendable {
     public static func compute(plan: NightPlan, at date: Date) -> NightNow {
         let site = plan.site
         let moonPosition = Moon.position(at: date)
-        let events = [plan.events.moonrise.map { Crossing(date: $0, rising: true) },
-                      plan.events.moonset.map { Crossing(date: $0, rising: false) }]
-            .compactMap { $0 }.filter { $0.date > date }.sorted { $0.date < $1.date }
+        let tonight = [plan.events.moonrise.map { Crossing(date: $0, rising: true) },
+                       plan.events.moonset.map { Crossing(date: $0, rising: false) }].compactMap { $0 }
+        let events = (tonight + plan.laterMoonEvents).filter { $0.date > date }.sorted { $0.date < $1.date }
         return NightNow(sun: Sun.horizontal(site: site, at: date),
                         moon: Moon.horizontal(site: site, at: date),
                         moonIlluminated: Moon.illuminatedFraction(at: date),

@@ -86,6 +86,25 @@ struct NightPlanTests {
         #expect(!plan.isCurrent(site: other, target: Self.m31, at: ref.snapshotTime, timeZone: ref.timeZone))
     }
 
+    @Test func mountJitterKeepsThePlanButAMoveDoesNot() throws {
+        let ref = try ReferenceSite.load("central-europe-november")
+        func mount(_ ra: Double, _ dec: Double) -> NightTarget {
+            NightTarget(name: nil, coordinates: Equatorial(ra: ra, dec: dec), epoch: .ofDate, source: .mount)
+        }
+        let plan = NightPlan.compute(site: ref.site, target: mount(10.9, 41.4), containing: ref.snapshotTime, timeZone: ref.timeZone)
+        #expect(plan.isCurrent(site: ref.site, target: mount(10.901, 41.401), at: ref.snapshotTime, timeZone: ref.timeZone))
+        #expect(!plan.isCurrent(site: ref.site, target: mount(11.9, 41.4), at: ref.snapshotTime, timeZone: ref.timeZone))
+        #expect(!plan.isCurrent(site: ref.site, target: mount(10.9, 42.4), at: ref.snapshotTime, timeZone: ref.timeZone))
+    }
+
+    @Test func nextMoonEventInTheMorningLooksPastTheWindow() throws {
+        let ref = try ReferenceSite.load("central-europe-november")
+        let morning = ref.nightEnd.addingTimeInterval(-7200)
+        let plan = NightPlan.compute(site: ref.site, target: nil, containing: morning, timeZone: ref.timeZone)
+        let next = try #require(NightNow.compute(plan: plan, at: morning).nextMoonEvent)
+        #expect(next.rising && next.date > ref.nightEnd, "moonrise after noon the next day")
+    }
+
     @Test func mountSiteWinsOverTheCache() {
         let mount = Site(latitude: 50, longitude: 8, elevation: 0)
         let cached = CachedSite(site: Site(latitude: 48, longitude: 11, elevation: 0), reported: Date(timeIntervalSince1970: 0))
