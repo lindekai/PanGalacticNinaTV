@@ -566,6 +566,17 @@
         }
       }
     },
+    "Site unknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standort unbekannt"
+          }
+        }
+      }
+    },
     "dashed = below the horizon": {
       "extractionState": "manual",
       "localizations": {

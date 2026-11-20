@@ -162,6 +162,9 @@ def guide_graph(now: datetime) -> dict:
 def sequence(name: str, now: datetime):
     """The running fixture, aimed at M 31 and ending a few hours from now."""
     text = (FIXTURES / name).read_text(encoding="utf-8").replace("Coma Cluster", TARGET)
+    # M 31's coordinates in place of the Coma Cluster's, so the altitude curve fits the demo site.
+    text = re.sub(r'"RAHours": 12,(\s*)"RAMinutes": 59,(\s*)"RASeconds": 48.7', r'"RAHours": 0,\1"RAMinutes": 42,\2"RASeconds": 44.0', text)
+    text = re.sub(r'"DecDegrees": 27,(\s*)"DecMinutes": 58,(\s*)"DecSeconds": 50.00002', r'"DecDegrees": 41,\1"DecMinutes": 16,\2"DecSeconds": 7.0', text)
     loop_end = iso(now.replace(microsecond=0) + timedelta(hours=3, minutes=12))
     text = re.sub(r'"TargetTime": "2026-11-16T05:00:[^"]*"', f'"TargetTime": "{loop_end}"', text)
     return json.loads(text)

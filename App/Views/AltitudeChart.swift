@@ -60,8 +60,14 @@ struct AltitudeChart: View {
                     meridian.move(to: CGPoint(x: x(transit), y: plot.minY + 28))
                     meridian.addLine(to: CGPoint(x: x(transit), y: plot.maxY))
                     context.stroke(meridian, with: .color(Theme.text3), style: StrokeStyle(lineWidth: 1.5, dash: [3, 6]))
-                    context.draw(Text("Meridian \(transit.formatted(date: .omitted, time: .shortened))").font(.pgLabel).foregroundStyle(Theme.text3),
-                                 at: CGPoint(x: x(transit) + 8, y: plot.minY + 14), anchor: .leading)
+                    let label = context.resolve(Text("Meridian \(transit.formatted(date: .omitted, time: .shortened))").font(.pgLabel).foregroundStyle(Theme.text3))
+                    let width = label.measure(in: size).width
+                    // Right of the line, or left of it when it would run past the chart's edge.
+                    if x(transit) + 8 + width <= plot.maxX {
+                        context.draw(label, at: CGPoint(x: x(transit) + 8, y: plot.minY + 14), anchor: .leading)
+                    } else {
+                        context.draw(label, at: CGPoint(x: x(transit) - 8, y: plot.minY + 14), anchor: .trailing)
+                    }
                 }
                 // Moon: dashed, only above the horizon.
                 var moon = Path()

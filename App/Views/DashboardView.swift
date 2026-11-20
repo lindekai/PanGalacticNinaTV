@@ -226,7 +226,9 @@ struct DashboardView: View {
 
             VStack(spacing: Theme.moduleGap) {
                 CameraModule(camera: equipment?.camera, light: StatusLight.camera(equipment?.camera, phase: phase, now: now))
-                ObjectModule(target: connection.latestImage?.targetName, mount: equipment?.mount)
+                NavigationLink(value: Destination.night) { ObjectModule(night: model.night) }
+                    .buttonStyle(LiftButtonStyle(scale: 1.01))
+                    .accessibilityLabel(Text("Night"))
                 HStack(alignment: .top, spacing: Theme.moduleGap) {
                     MountTile(mount: equipment?.mount, light: StatusLight.device(equipment?.mount?.device, phase: phase))
                         .frame(maxWidth: .infinity).frame(maxHeight: .infinity, alignment: .top)
@@ -286,18 +288,23 @@ struct CameraModule: View {
 }
 
 struct ObjectModule: View {
-    let target: String?
-    let mount: NINAEquipmentSummary.Mount?
+    let night: NightModel?
 
     var body: some View {
-        ModulePanel("Object", icon: Image(systemName: "scope"), light: nil, accessory: target) {
-            HStack(alignment: .bottom) {
-                KeyFigure(mount?.trackedObjectAltitude.map(Format.degrees), unit: "°", label: "Altitude above horizon")
-                Spacer(minLength: 24)
-                SideValues([
-                    ("RA", mount?.trackedRightAscension),
-                    ("Dec", mount?.trackedDeclination),
-                ])
+        ModulePanel("Object", icon: Image(systemName: "scope"), light: nil, accessory: night?.plan?.target?.name) {
+            HStack(alignment: .bottom, spacing: 24) {
+                if night?.plan == nil {
+                    KeyFigure(nil, unit: "°", label: "Site unknown")
+                } else {
+                    KeyFigure(night?.now?.target.map { Format.degrees($0.altitude) }, unit: "°", label: "Altitude above horizon")
+                        .opacity(night?.targetIsStale == true ? 0.55 : 1)
+                }
+                Spacer(minLength: 0)
+                if let plan = night?.plan, plan.targetCurve != nil {
+                    AltitudeChart(plan: plan, now: Date(), style: .mini)
+                        .frame(width: 300, height: 90)
+                        .clipShape(.rect(cornerRadius: 6))
+                }
             }
         }
     }
